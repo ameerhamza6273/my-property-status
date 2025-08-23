@@ -1036,7 +1036,7 @@ const _jfNiWmKw95GWjvs65KsdbYvIPBl3VbhoXZfB4tcFJdk = (function(nitro) {
 
 const rootDir = "D:/Nuxt/my-property-status";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[{"rel":"icon","type":"image/x-icon","href":"Logo.png"}],"style":[],"script":[],"noscript":[],"title":"x-trekkers"};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[{"rel":"icon","type":"image/x-icon","href":"Logo.svg"}],"style":[],"script":[],"noscript":[],"title":"My Property Status"};
 
 const appRootTag = "div";
 

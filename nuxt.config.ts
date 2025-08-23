@@ -4,9 +4,9 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
     head: {
-      title: 'x-trekkers',
+      title: 'My Property Status',
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: 'Logo.png' },
+        { rel: 'icon', type: 'image/x-icon', href: 'Logo.svg' },
       ],
     },
   },
