@@ -1,8 +1,7 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false, // ✅ Disable SSR for static hosting (SPA mode)
   app: {
-    baseURL: '/',
+    baseURL: '/', // ✅ Keep root unless deploying in subfolder
     head: {
       title: 'My Property Status',
       link: [
@@ -19,7 +18,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   css: [
     '~/assets/main.css',
-    '@fortawesome/fontawesome-free/css/all.min.css', // Add Font Awesome CSS
+    '@fortawesome/fontawesome-free/css/all.min.css',
   ],
   runtimeConfig: {
     public: {
@@ -37,6 +36,8 @@ export default defineNuxtConfig({
   build: {
     transpile: ['swiper'],
   },
+  nitro: {
+    preset: 'netlify', // ✅ Important for Netlify deployment
+  },
   devtools: { enabled: true },
-});
-
+})
