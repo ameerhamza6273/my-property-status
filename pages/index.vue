@@ -1,3 +1,40 @@
+<script setup>
+import { ref, reactive } from 'vue'
+
+// Reactive form data
+const form = reactive({
+  email: '',
+  password: '',
+  remember: false
+})
+
+// Component state
+const showPassword = ref(false)
+const loading = ref(false)
+
+// Login handler
+const handleLogin = async () => {
+  loading.value = true
+  
+  try {
+    // Add your login logic here
+    console.log('Login attempt:', form)
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    // Handle successful login
+    // Example: await $router.push('/dashboard')
+    
+  } catch (error) {
+    console.error('Login error:', error)
+    // Handle login error
+  } finally {
+    loading.value = false
+  }
+}
+</script>
+
 <template>
   <div class="min-h-screen flex items-center justify-center relative">
     <!-- Background Image -->
@@ -108,40 +145,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, reactive } from 'vue'
-
-// Reactive form data
-const form = reactive({
-  email: '',
-  password: '',
-  remember: false
-})
-
-// Component state
-const showPassword = ref(false)
-const loading = ref(false)
-
-// Login handler
-const handleLogin = async () => {
-  loading.value = true
-  
-  try {
-    // Add your login logic here
-    console.log('Login attempt:', form)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Handle successful login
-    // Example: await $router.push('/dashboard')
-    
-  } catch (error) {
-    console.error('Login error:', error)
-    // Handle login error
-  } finally {
-    loading.value = false
-  }
-}
-</script>

@@ -3,7 +3,7 @@
     class="h-screen w-screen overflow-hidden fixed top-0 left-0 bg-[#161616] z-[9999] flex justify-center items-center flex-col"
   >
     <NuxtImg
-      src="/Logo.png"
+      src="/Logo.svg"
       class="w-60 animate-bubble"
       alt="user"
     />
