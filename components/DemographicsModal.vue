@@ -5,7 +5,7 @@
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-hidden" @click.stop>
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-5 py-4">
-                    <h2 class="text-base font-medium text-gray-900">{{ modalData.title }}</h2>
+                    <h2 class="text-base font-medium text-gray-900 max-w-[80%]">{{ modalData.title }}</h2>
                     <button @click="$emit('close')" class="p-1 hover:bg-gray-100 rounded-full transition-colors">
                         <NuxtImg src="close-icon.svg" width="24" height="24" />
                     </button>

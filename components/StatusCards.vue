@@ -43,32 +43,88 @@ const currentModalData = ref({})
 const modalData = {
 
   statusChange: {
-    title: 'Pending Status Change Requests',
-    data: [
-      { country: 'Spain', flag: '🇪🇸', customers: 15 },
-      { country: 'Italy', flag: '🇮🇹', customers: 12 },
-      { country: 'France', flag: '🇫🇷', customers: 8 },
-      { country: 'Portugal', flag: '🇵🇹', customers: 3 }
+    title: 'Pending Property Status Change Requests (Sent by Agency)',
+    tabs: [
+      {
+        key: 'by-agency',
+        label: 'By Agency',
+        headers: { left: 'Agency Country', middle: 'Agency', right: 'Property Listings' },
+        data: [
+          { country: 'Spain', flag: '🇪🇸', agency: 'Luxury Sales', agencyLogo: '💎', customers: 150 },
+          { country: 'Italy', flag: '🇮🇹', agency: 'Premium Estates', agencyLogo: '🏛️', customers: 120 },
+          { country: 'France', flag: '🇫🇷', agency: 'Elite Realty', agencyLogo: '🏢', customers: 95 },
+          { country: 'Portugal', flag: '🇵🇹', agency: 'Prestige Properties', agencyLogo: '🏠', customers: 67 }
+        ]
+      },
+      {
+        key: 'by-country',
+        label: 'By Country',
+        headers: { left: 'Country', right: 'Properties' },
+        data: [
+          { country: 'Spain', flag: '🇪🇸', customers: 180 },
+          { country: 'Italy', flag: '🇮🇹', customers: 120 },
+          { country: 'France', flag: '🇫🇷', customers: 90 },
+          { country: 'Portugal', flag: '🇵🇹', customers: 42 }
+        ]
+      }
     ]
   },
   addition: {
-    title: 'Pending Addition Requests',
-    data: [
-      { country: 'Spain', flag: '🇪🇸', customers: 25 },
-      { country: 'Italy', flag: '🇮🇹', customers: 18 },
-      { country: 'France', flag: '🇫🇷', customers: 12 },
-      { country: 'Portugal', flag: '🇵🇹', customers: 4 }
+    title: 'Pending Property Addition Requests (Sent by Agency)',
+    tabs: [
+      {
+        key: 'by-agency',
+        label: 'By Agency',
+        headers: { left: 'Agency Country', middle: 'Agency', right: 'Property Listings' },
+        data: [
+          { country: 'Spain', flag: '🇪🇸', agency: 'Luxury Sales', agencyLogo: '💎', customers: 150 },
+          { country: 'Italy', flag: '🇮🇹', agency: 'Premium Estates', agencyLogo: '🏛️', customers: 120 },
+          { country: 'France', flag: '🇫🇷', agency: 'Elite Realty', agencyLogo: '🏢', customers: 95 },
+          { country: 'Portugal', flag: '🇵🇹', agency: 'Prestige Properties', agencyLogo: '🏠', customers: 67 }
+        ]
+      },
+      {
+        key: 'by-country',
+        label: 'By Country',
+        headers: { left: 'Country', right: 'Properties' },
+        data: [
+          { country: 'Spain', flag: '🇪🇸', customers: 180 },
+          { country: 'Italy', flag: '🇮🇹', customers: 120 },
+          { country: 'France', flag: '🇫🇷', customers: 90 },
+          { country: 'Portugal', flag: '🇵🇹', customers: 42 }
+        ]
+      }
     ]
   },
+  
   connection: {
-    title: 'Pending Connection Requests',
-    data: [
-      { country: 'Spain', flag: '🇪🇸', customers: 16 },
-      { country: 'Italy', flag: '🇮🇹', customers: 11 },
-      { country: 'France', flag: '🇫🇷', customers: 8 },
-      { country: 'Portugal', flag: '🇵🇹', customers: 3 }
+    title: 'Pending Property Connection Requests (Sent by Customer)',
+    tabs: [
+      {
+        key: 'by-agency',
+        label: 'By Agency',
+        headers: { left: 'Agency Country', middle: 'Agency', right: 'Property Listings' },
+        data: [
+          { country: 'Spain', flag: '🇪🇸', agency: 'Luxury Sales', agencyLogo: '💎', customers: 150 },
+          { country: 'Italy', flag: '🇮🇹', agency: 'Premium Estates', agencyLogo: '🏛️', customers: 120 },
+          { country: 'France', flag: '🇫🇷', agency: 'Elite Realty', agencyLogo: '🏢', customers: 95 },
+          { country: 'Portugal', flag: '🇵🇹', agency: 'Prestige Properties', agencyLogo: '🏠', customers: 67 }
+        ]
+      },
+      {
+        key: 'by-country',
+        label: 'By Country',
+        headers: { left: 'Country', right: 'Properties' },
+        data: [
+          { country: 'Spain', flag: '🇪🇸', customers: 180 },
+          { country: 'Italy', flag: '🇮🇹', customers: 120 },
+          { country: 'France', flag: '🇫🇷', customers: 90 },
+          { country: 'Portugal', flag: '🇵🇹', customers: 42 }
+        ]
+      }
     ]
-  }
+  },
+
 }
 
 const openModal = (type) => {
