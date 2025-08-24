@@ -71,7 +71,7 @@
               >
                 <NuxtLink
                   :to="child.to"
-                  class="flex items-center space-x-1 text-sm transition-colors w-full pt-1"
+                  class="flex items-center space-x-2 text-sm transition-colors w-full pt-1"
                   :class="isActive(child.to)
                     ? 'font-semibold text-[#0F4841]'
                     : 'text-[#595959] hover:text-[#0F4841]'"
