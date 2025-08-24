@@ -11,13 +11,13 @@
     </div>
     
     <!-- Login Card -->
-    <div class="relative z-10 bg-white rounded-3xl shadow-2xl p-8 pb-7 w-full max-w-[600px]">
+    <div class="relative z-10 bg-white rounded-3xl shadow-2xl p-5 md:p-8 pb-7 w-full max-w-[320px] sm:max-w-[400px] md:max-w-[600px] ">
       <!-- Logo -->
       <NuxtImg src="Logo.svg" alt="Logo" width="170" />
      
       
       <!-- Header -->
-      <div class="my-6">
+      <div class="my-4 md:my-6">
         <h1 class="text-2xl font-bold text-black mb-1">Admin Portal</h1>
         <p class="text-[#767676] text-sm">Log in to the My Property Status Admin Portal</p>
       </div>
@@ -102,7 +102,7 @@
       <!-- Footer -->
       <div class="mt-8 text-center">
         <p class="text-xs text-[#626262]">
-          © Copyright 2024 by PropertyStatus Ltd. All Rights Reserved.
+          © Copyright 2025 by PropertyStatus Ltd. All Rights Reserved.
         </p>
       </div>
     </div>
