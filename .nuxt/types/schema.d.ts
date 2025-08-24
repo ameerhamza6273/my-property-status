@@ -122,7 +122,7 @@ declare module 'nuxt/schema' {
    },
   }
   interface PublicRuntimeConfig {
-
+   GOOGLE_SHEETS_HOOK_URL: string,
   }
 }
 declare module 'vue' {

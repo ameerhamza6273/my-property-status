@@ -15,9 +15,3 @@ html {
     scroll-behavior: smooth;
 }
 
-.dropdown-icon::before {
-  content: url('/before-icon.svg');
-  display: inline-block;
-  margin-right: 8px;
-  vertical-align: middle;
-}

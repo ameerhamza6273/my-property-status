@@ -646,7 +646,9 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {},
+  "public": {
+    "GOOGLE_SHEETS_HOOK_URL": "https://script.google.com/macros/s/AKfycbwBBuLMJxDVqpyD-q7pKAlRrADDS5JjjdYtBJp3ZVschc_ClC32kHZqAzN-tZuBiP0UPQ/exec?gid=0"
+  },
   "resend": {
     "apiKey": ""
   },
