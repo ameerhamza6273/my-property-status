@@ -1,0 +1,1 @@
+import{_ as s}from"./DlAUqK2U.js";import{c as o,o as t,a as r}from"./CtnLomB_.js";const c={},a={class:"flex h-screen bg-gray-50"};function n(f,e){return t(),o("div",a,e[0]||(e[0]=[r("h1",{class:"p-5 text-2xl font-semibold"},"Costomers",-1)]))}const _=s(c,[["render",n]]);export{_ as default};

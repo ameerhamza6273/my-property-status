@@ -1,1 +1,0 @@
-import{_ as o}from"./DlAUqK2U.js";import{c as s,o as t,a as n}from"./DK-V4OD5.js";const c={},r={class:"flex h-screen bg-gray-50"};function a(f,e){return t(),s("div",r,e[0]||(e[0]=[n("h1",{class:"p-5 text-2xl font-semibold"},"New Connection ",-1)]))}const _=o(c,[["render",a]]);export{_ as default};

@@ -1,0 +1,1 @@
+{"file":"agencies.vue.mjs","mappings":";;;;AAAA,SAAA,eAAA,MAAA,OAAA,SACc;;;;;;;;;;","names":[],"sources":["../../../../pages/agencies.vue"],"sourcesContent":["<template>\r\n    <div class=\"flex h-screen bg-gray-50\">\r\n        <h1 class=\"p-5 text-2xl font-semibold\">agency</h1>\r\n    </div>\r\n</template>\r\n"],"version":3}
