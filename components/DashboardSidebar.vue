@@ -62,7 +62,7 @@
           <transition name="fade">
             <ul
               v-if="item.children && isDropdownOpen(item)"
-              class="pl-6 mt-2 space-y-1"
+              class="pl-4 mt-2 space-y-1"
             >
               <li
                 v-for="child in item.children"
@@ -71,13 +71,13 @@
               >
                 <NuxtLink
                   :to="child.to"
-                  class="flex items-center space-x-2 text-sm transition-colors w-full py-2"
+                  class="flex items-center space-x-1 text-sm transition-colors w-full pt-1"
                   :class="isActive(child.to)
                     ? 'font-semibold text-[#0F4841]'
                     : 'text-[#595959] hover:text-[#0F4841]'"
                   @click="openDropdown = null"
                 >
-                  <NuxtImg src="/before-icon.svg" alt="icon" width="14" height="24" />
+                  <NuxtImg src="/before-icon.svg" alt="icon" height="30" class="mt-[-20px]" />
                   <span>{{ child.label }}</span>
                 </NuxtLink>
               </li>
@@ -127,8 +127,8 @@ const menuItems = [
     icon: 'properties-icon.svg',
     children: [
       { to: '/new-connection-requests', label: 'New Connection Requests' },
-      { to: '/properties/rental', label: 'Rental Properties' },
-      { to: '/properties/sale', label: 'Sale Properties' }
+      { to: '/rental-properties', label: 'Rental Properties' },
+      { to: '/sale-properties', label: 'Sale Properties' }
     ]
   },
   { to: '/customers', label: 'Customers', icon: 'customers-icon.svg' },
@@ -137,9 +137,9 @@ const menuItems = [
     icon: 'notifications-icon.svg',
     children: [
       { to: '/send-push-notification', label: 'Send Push Notification' },
-      { to: '/notifications/email', label: 'Send Email Notification' },
-      { to: '/notifications/system', label: 'System Notifications' },
-      { to: '/notifications/history', label: 'Notification History' }
+      { to: '/send-email-notification', label: 'Send Email Notification' },
+      { to: '/system-notifications', label: 'System Notifications' },
+      { to: '/notification-History', label: 'Notification History' }
     ]
   },
   { to: '/support', label: 'Support', icon: '/support-icon.svg' },
