@@ -15,6 +15,7 @@ interface _GlobalComponents {
       'ChartsSection': typeof import("../components/ChartsSection.vue")['default']
     'DashboardHeader': typeof import("../components/DashboardHeader.vue")['default']
     'DashboardSidebar': typeof import("../components/DashboardSidebar.vue")['default']
+    'DemographicsModal': typeof import("../components/DemographicsModal.vue")['default']
     'OverviewCards': typeof import("../components/OverviewCards.vue")['default']
     'SpinLoader': typeof import("../components/SpinLoader.vue")['default']
     'StatsCards': typeof import("../components/StatsCards.vue")['default']
@@ -45,6 +46,7 @@ interface _GlobalComponents {
       'LazyChartsSection': LazyComponent<typeof import("../components/ChartsSection.vue")['default']>
     'LazyDashboardHeader': LazyComponent<typeof import("../components/DashboardHeader.vue")['default']>
     'LazyDashboardSidebar': LazyComponent<typeof import("../components/DashboardSidebar.vue")['default']>
+    'LazyDemographicsModal': LazyComponent<typeof import("../components/DemographicsModal.vue")['default']>
     'LazyOverviewCards': LazyComponent<typeof import("../components/OverviewCards.vue")['default']>
     'LazySpinLoader': LazyComponent<typeof import("../components/SpinLoader.vue")['default']>
     'LazyStatsCards': LazyComponent<typeof import("../components/StatsCards.vue")['default']>
@@ -81,6 +83,7 @@ declare module 'vue' {
 export const ChartsSection: typeof import("../components/ChartsSection.vue")['default']
 export const DashboardHeader: typeof import("../components/DashboardHeader.vue")['default']
 export const DashboardSidebar: typeof import("../components/DashboardSidebar.vue")['default']
+export const DemographicsModal: typeof import("../components/DemographicsModal.vue")['default']
 export const OverviewCards: typeof import("../components/OverviewCards.vue")['default']
 export const SpinLoader: typeof import("../components/SpinLoader.vue")['default']
 export const StatsCards: typeof import("../components/StatsCards.vue")['default']
@@ -111,6 +114,7 @@ export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/
 export const LazyChartsSection: LazyComponent<typeof import("../components/ChartsSection.vue")['default']>
 export const LazyDashboardHeader: LazyComponent<typeof import("../components/DashboardHeader.vue")['default']>
 export const LazyDashboardSidebar: LazyComponent<typeof import("../components/DashboardSidebar.vue")['default']>
+export const LazyDemographicsModal: LazyComponent<typeof import("../components/DemographicsModal.vue")['default']>
 export const LazyOverviewCards: LazyComponent<typeof import("../components/OverviewCards.vue")['default']>
 export const LazySpinLoader: LazyComponent<typeof import("../components/SpinLoader.vue")['default']>
 export const LazyStatsCards: LazyComponent<typeof import("../components/StatsCards.vue")['default']>
