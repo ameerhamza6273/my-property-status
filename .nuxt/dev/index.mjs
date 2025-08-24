@@ -646,17 +646,7 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {
-    "wordpressUrl": "https://www.x-trekkers.com/graphql",
-    "BASE_URL": "https://www.x-trekkers.com/wp-json/wp/v2",
-    "RESEND_API_KEY": "",
-    "FROM_EMAIL": "",
-    "TO_EMAIL": "",
-    "SUBJECT": "",
-    "CLIENT_EMAIL": "",
-    "REPLY_TO_EMAIL": "",
-    "GOOGLE_SHEETS_HOOK_URL": "https://script.google.com/macros/s/AKfycbwBBuLMJxDVqpyD-q7pKAlRrADDS5JjjdYtBJp3ZVschc_ClC32kHZqAzN-tZuBiP0UPQ/exec?gid=0"
-  },
+  "public": {},
   "resend": {
     "apiKey": ""
   },

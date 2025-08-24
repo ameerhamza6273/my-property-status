@@ -122,23 +122,7 @@ declare module 'nuxt/schema' {
    },
   }
   interface PublicRuntimeConfig {
-   wordpressUrl: string,
 
-   BASE_URL: string,
-
-   RESEND_API_KEY: string,
-
-   FROM_EMAIL: string,
-
-   TO_EMAIL: string,
-
-   SUBJECT: string,
-
-   CLIENT_EMAIL: string,
-
-   REPLY_TO_EMAIL: string,
-
-   GOOGLE_SHEETS_HOOK_URL: string,
   }
 }
 declare module 'vue' {
