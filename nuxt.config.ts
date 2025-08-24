@@ -1,9 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true, // or false, depending on your setup
-  nitro: {
-    preset: 'vercel',
-  },
+  ssr: true,
   app: {
     baseURL: '/',
     head: {
