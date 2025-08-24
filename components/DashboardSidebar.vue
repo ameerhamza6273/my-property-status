@@ -77,7 +77,7 @@
                     : 'text-[#595959] hover:text-[#0F4841]'"
                   @click="openDropdown = null"
                 >
-                  <NuxtImg src="/before-icon.svg" alt="icon" height="30" class="mt-[-20px]" />
+                  <NuxtImg src="/before-icon.svg" alt="icon" width="18" height="30" class="mt-[-20px]" />
                   <span>{{ child.label }}</span>
                 </NuxtLink>
               </li>
