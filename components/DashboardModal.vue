@@ -2,7 +2,7 @@
     <Teleport to="body">
         <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
             @click="$emit('close')">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-hidden" @click.stop>
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden" @click.stop>
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-5 py-4">
                     <h2 class="text-base font-medium text-gray-900 max-w-[80%]">{{ modalData.title }}</h2>
@@ -32,13 +32,13 @@
                     <div v-if="currentTabData.headers?.middle"
                         class="flex justify-between items-center py-2 px-3 bg-[#F8F8F8] rounded-t-xl text-xs font-medium text-gray-600 border">
                         <span class="flex-1">{{ currentTabData.headers.left }}</span>
-                        <span class="flex-1 text-center">{{ currentTabData.headers.middle }}</span>
-                        <span class="flex-1 text-right">{{ currentTabData.headers.right }}</span>
+                        <span class="flex-1 text-left">{{ currentTabData.headers.middle }}</span>
+                        <span class="flex-1 text-center">{{ currentTabData.headers.right }}</span>
                     </div>
                     <div v-else
                         class="flex justify-between items-center py-2 px-3 bg-[#F8F8F8] rounded-t-xl text-xs font-medium text-gray-600 border">
-                        <span>{{ currentTabData.headers?.left || 'Country' }}</span>
-                        <span>{{ currentTabData.headers?.right || 'Customers' }}</span>
+                        <span class="flex-1">{{ currentTabData.headers?.left || 'Country' }}</span>
+                        <span class="flex-1 text-center">{{ currentTabData.headers?.right || 'Customers' }}</span>
                     </div>
 
                     <!-- Updated table content to support three-column layout -->
@@ -51,23 +51,25 @@
                                     <NuxtImg src="Spanish.svg" width="20" height="20" />
                                     <span class="text-sm text-gray-900">{{ item.country || item.name }}</span>
                                 </div>
-                                <div class="flex items-center space-x-2 flex-1 justify-center">
+                                <div class="flex items-center space-x-2 flex-1 justify-start">
                                     <span v-if="item.agencyLogo" class="text-base">{{ item.agencyLogo }}</span>
-                                    <span class="text-sm text-gray-900">{{ item.agency }}</span>
+                                    <span class="text-sm text-black">{{ item.agency }}</span>
                                 </div>
-                                <div class="flex-1 text-right">
+                                <div class="flex-1 text-center">
                                     <span class="text-sm font-medium text-gray-900">{{ (item.customers || item.count ||
                                         item.value).toLocaleString() }}</span>
                                 </div>
                             </div>
                             <!-- Two column layout for country view -->
                             <template v-else>
-                                <div class="flex items-center space-x-3">
+                                <div class="flex items-center space-x-3 flex-1">
                                     <NuxtImg src="Spanish.svg" width="20" height="20" />
-                                    <span class="text-sm text-gray-900">{{ item.country || item.name }}</span>
+                                    <span class="text-sm text-gray-900 text-center">{{ item.country || item.name }}</span>
                                 </div>
-                                <span class="text-sm font-medium text-gray-900">{{ (item.customers || item.count ||
+                                <div class="flex-1 text-center">
+                                <span class="text-sm font-medium text-black">{{ (item.customers || item.count ||
                                     item.value).toLocaleString() }}</span>
+                                </div>
                             </template>
                         </div>
                     </div>

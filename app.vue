@@ -2,7 +2,7 @@
   <div class="flex h-screen">
     <!-- Sidebar: Show only on dashboard routes -->
     <div v-if="showSidebar" class="w-[18%] h-screen">
-      <DashboardSidebar />
+      <Sidebar />
     </div>
     
     <!-- Main Content -->

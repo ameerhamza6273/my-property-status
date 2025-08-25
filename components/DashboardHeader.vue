@@ -23,7 +23,7 @@
               <option>Date Period From - To</option>
             </select>
 
-             <NuxtImg src="/dropdown-icon.svg" class="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+             <NuxtImg src="/dropdown-icon.svg" width="14" height="14" class="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
@@ -63,7 +63,7 @@
               class="flex items-center space-x-1 text-gray-700 text-sm font-medium"
             >
               <span>Matt</span>
-              <NuxtImg src="/dropdown-icon.svg" />
+              <NuxtImg src="/dropdown-icon.svg" width="14" height="14" />
             </button>
           </div>
         </div>
