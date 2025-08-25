@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen">
+  <div class="flex h-screen bg-gray-50">
     <!-- Sidebar: Show only on dashboard routes -->
     <div v-if="showSidebar" class="w-[18%] h-screen">
       <Sidebar />
