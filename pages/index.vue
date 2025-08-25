@@ -86,7 +86,7 @@
         <button
           type="submit"
           :disabled="loading"
-          class="mt-6 w-full bg-[#0F4841] hover:bg-[#0f4841e6] disabled:bg-[#0f4841e6] text-white font-medium py-2 rounded-full transition-colors duration-200 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+          class="mt-6 w-full bg-[#0F4841] hover:bg-[##0F4841] disabled:bg-[#0f4841e6] text-white font-medium py-2 rounded-full transition-colors duration-200 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
         >
           <span v-if="loading" class="flex items-center justify-center">
             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

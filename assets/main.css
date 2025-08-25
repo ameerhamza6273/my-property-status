@@ -3,11 +3,15 @@
 @import "swiper/css/pagination";
 @import "swiper/css/navigation";
 
-@import url(https://fonts.googleapis.com/css?family=Barlow);
-/* @import url(https://fonts.googleapis.com/css?family=Epilogue); */
+/* @import url(https://fonts.googleapis.com/css?family=Barlow); */
+@import url(https://fonts.googleapis.com/css?family=Inter);
 
 :root {
     --transition: all 0.5s ease-in-out;
+}
+
+body{
+    font-family: 'Inter';
 }
 
 html {
