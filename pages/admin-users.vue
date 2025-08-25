@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 bg-white">
+    <div class="p-6 bg-gray-50 h-screen">
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-semibold text-gray-900">Admin Users</h1>
@@ -12,7 +12,7 @@
 
         <!-- Results Count -->
         <div class="mb-4">
-            <p class="text-sm text-[#0F4841]">{{ users.length }} Results</p>
+            <p class="text-sm text-[#0F4841] font-semibold">{{ users.length }} Results</p>
         </div>
 
         <!-- Users Table -->
@@ -55,26 +55,21 @@
                                 <div class="text-sm text-black">{{ user.email }}</div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap">
-  <div class="flex flex-wrap gap-1">
-    <!-- Show first 3 permissions -->
-    <span
-      v-for="(permission, index) in user.permissions.slice(0, 3)"
-      :key="permission"
-      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
-      :class="getPermissionClass(permission)"
-    >
-      {{ permission }}
-    </span>
+                                <div class="flex flex-wrap gap-1">
+                                    <!-- Show first 3 permissions -->
+                                    <span v-for="(permission, index) in user.permissions.slice(0, 3)" :key="permission"
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                                        :class="getPermissionClass(permission)">
+                                        {{ permission }}
+                                    </span>
 
-    <!-- Show +X if more than 3 permissions -->
-    <span
-      v-if="user.permissions.length > 3"
-      :class="['inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium', getPermissionClass('+' + (user.permissions.length - 3))]"
-    >
-      +{{ user.permissions.length - 3 }}
-    </span>
-  </div>
-</td>
+                                    <!-- Show +X if more than 3 permissions -->
+                                    <span v-if="user.permissions.length > 3"
+                                        :class="['inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium', getPermissionClass('+' + (user.permissions.length - 3))]">
+                                        +{{ user.permissions.length - 3 }}
+                                    </span>
+                                </div>
+                            </td>
 
 
                             <td class="px-4 py-3 whitespace-nowrap text-right">
