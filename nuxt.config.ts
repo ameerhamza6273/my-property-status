@@ -8,9 +8,6 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: 'Logo.svg' },
       ],
-      meta: [
-        { name: 'viewport', content: 'width=1300' } // Fixed width
-      ]
     },
   },
   modules: [

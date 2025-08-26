@@ -465,4 +465,9 @@ const removeFilter = (filterKey: string) => {
 // ✅ Expose filters
 defineExpose({ filters });
 
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=1300' }
+  ]
+})
 </script>

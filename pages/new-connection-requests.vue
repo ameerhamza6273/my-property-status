@@ -1,6 +1,11 @@
 <script setup>
 import { ref, computed } from "vue";
 
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=1300' }
+  ]
+})
 const activeTab = ref("all"); // default active tab (can be "all", "customer", "agency")
 
 // ------------------- Customer Filters -------------------

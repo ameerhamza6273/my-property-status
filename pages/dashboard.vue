@@ -23,5 +23,9 @@ import { definePageMeta } from '#imports';
 definePageMeta({
   title: 'Dashboard'
 })
-
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=1300' }
+  ]
+})
 </script>

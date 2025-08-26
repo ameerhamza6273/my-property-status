@@ -380,4 +380,9 @@ const sortUsers = () => {
             : nameB.localeCompare(nameA);
     });
 };
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=1300' }
+  ]
+})
 </script>

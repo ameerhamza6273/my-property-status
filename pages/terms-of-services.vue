@@ -102,4 +102,10 @@ const toggleEdit = () => {
     }
     isEditing.value = !isEditing.value;
 };
+
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=1300' }
+  ]
+})
 </script>
