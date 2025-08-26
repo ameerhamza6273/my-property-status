@@ -9,7 +9,7 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: 'Logo.svg' },
       ],
       meta: [
-        { name: 'viewport', content: 'width=1200' } // Fixed width
+        { name: 'viewport', content: 'width=1300' } // Fixed width
       ]
     },
   },
