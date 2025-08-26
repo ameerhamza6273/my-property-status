@@ -23,4 +23,5 @@ import { definePageMeta } from '#imports';
 definePageMeta({
   title: 'Dashboard'
 })
+
 </script>

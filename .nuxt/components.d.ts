@@ -18,7 +18,7 @@ interface _GlobalComponents {
     'DashboardComOverviewCards': typeof import("../components/DashboardCom/OverviewCards.vue")['default']
     'DashboardComStatsCards': typeof import("../components/DashboardCom/StatsCards.vue")['default']
     'DashboardComStatusCards': typeof import("../components/DashboardCom/StatusCards.vue")['default']
-    'Sidebar': typeof import("../components/Sidebar../components/Tailwinddropdown.vue
+    'Sidebar': typeof import("../components/Sidebar.vue")['default']
     'SpinLoader': typeof import("../components/SpinLoader.vue")['default']
     'Tailwinddropdown': typeof import("../components/Tailwinddropdown.vue")['default']
     'NuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
@@ -50,7 +50,7 @@ interface _GlobalComponents {
     'LazyDashboardComOverviewCards': LazyComponent<typeof import("../components/DashboardCom/OverviewCards.vue")['default']>
     'LazyDashboardComStatsCards': LazyComponent<typeof import("../components/DashboardCom/StatsCards.vue")['default']>
     'LazyDashboardComStatusCards': LazyComponent<typeof import("../components/DashboardCom/StatusCards.vue")['default']>
-    'LazySidebar': LazyComponent<typeof import("../components/Sidebar../components/Tailwinddropdown.vue
+    'LazySidebar': LazyComponent<typeof import("../components/Sidebar.vue")['default']>
     'LazySpinLoader': LazyComponent<typeof import("../components/SpinLoader.vue")['default']>
     'LazyTailwinddropdown': LazyComponent<typeof import("../components/Tailwinddropdown.vue")['default']>
     'LazyNuxtWelcome': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
@@ -88,7 +88,7 @@ export const DashboardComModalBox: typeof import("../components/DashboardCom/Mod
 export const DashboardComOverviewCards: typeof import("../components/DashboardCom/OverviewCards.vue")['default']
 export const DashboardComStatsCards: typeof import("../components/DashboardCom/StatsCards.vue")['default']
 export const DashboardComStatusCards: typeof import("../components/DashboardCom/StatusCards.vue")['default']
-export const Sidebar: typeof import("../components/Sidebar../components/Tailwinddropdown.vue
+export const Sidebar: typeof import("../components/Sidebar.vue")['default']
 export const SpinLoader: typeof import("../components/SpinLoader.vue")['default']
 export const Tailwinddropdown: typeof import("../components/Tailwinddropdown.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
@@ -120,7 +120,7 @@ export const LazyDashboardComModalBox: LazyComponent<typeof import("../component
 export const LazyDashboardComOverviewCards: LazyComponent<typeof import("../components/DashboardCom/OverviewCards.vue")['default']>
 export const LazyDashboardComStatsCards: LazyComponent<typeof import("../components/DashboardCom/StatsCards.vue")['default']>
 export const LazyDashboardComStatusCards: LazyComponent<typeof import("../components/DashboardCom/StatusCards.vue")['default']>
-export const LazySidebar: LazyComponent<typeof import("../components/Sidebar../components/Tailwinddropdown.vue
+export const LazySidebar: LazyComponent<typeof import("../components/Sidebar.vue")['default']>
 export const LazySpinLoader: LazyComponent<typeof import("../components/SpinLoader.vue")['default']>
 export const LazyTailwinddropdown: LazyComponent<typeof import("../components/Tailwinddropdown.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>

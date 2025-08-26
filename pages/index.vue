@@ -146,4 +146,10 @@ const handleLogin = async () => {
     loading.value = false
   }
 }
+
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+  ]
+})
 </script>
