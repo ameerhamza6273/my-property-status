@@ -29,7 +29,7 @@
       <p class="text-2xl font-bold text-black text-center mt-2">432</p>
     </div>
       <!-- Modal Component -->
-    <DashboardModal 
+    <DashboardComModalBox 
       :is-open="isModalOpen" 
       :modal-data="currentModalData"
       @close="closeModal"

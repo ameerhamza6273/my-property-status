@@ -17,14 +17,9 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Name
                 </label>
-                <select v-model="filters.agencyName"
-                    class="w-full px-3 py-2 border border-[#D9D9D9] text-sm rounded-full bg-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    :class="filters.agencyName === '' ? 'text-[#BCBCBC]' : 'text-black'">
-                    <option value="">Select Agency</option>
-                    <option value="Remax">Remax</option>
-                    <option value="Century21">Century 21</option>
-                    <option value="Coldwell">Coldwell Banker</option>
-                </select>
+                <Tailwinddropdown v-model="filters.agencyName" placeholder="Select Country"
+                    :options="agencyNameOptions" />
+
             </div>
 
             <!-- Agency Country -->
@@ -32,15 +27,9 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Country
                 </label>
-                <select v-model="filters.agencyCountry"
-                    class="w-full px-3 py-2 border border-[#D9D9D9] text-sm  rounded-full bg-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    :class="filters.agencyCountry === '' ? 'text-[#BCBCBC]' : 'text-black'">
-                    <option value="">Select Agency Country</option>
-                    <option value="Malta">Malta</option>
-                    <option value="Usa">USA</option>
-                    <option value="Uk">UK</option>
-                    <option value="Canada">Canada</option>
-                </select>
+                 <Tailwinddropdown v-model="filters.agencyCountry" placeholder="Select Country"
+                    :options="agencyCountryOptions" />
+                
             </div>
 
             <!-- Admin Users -->
@@ -153,7 +142,8 @@
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('agencyCountry')">
+                                <div class="flex items-center gap-1 cursor-pointer"
+                                    @click="toggleSort('agencyCountry')">
                                     <span>Agency Country</span>
                                     <NuxtImg :src="getSortIcon('agencyCountry')" width="16" height="16" />
                                 </div>
@@ -172,13 +162,15 @@
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('rentalProperties')">
+                                <div class="flex items-center gap-1 cursor-pointer"
+                                    @click="toggleSort('rentalProperties')">
                                     <span>Rental Properties</span>
                                     <NuxtImg :src="getSortIcon('rentalProperties')" width="16" height="16" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('saleProperties')">
+                                <div class="flex items-center gap-1 cursor-pointer"
+                                    @click="toggleSort('saleProperties')">
                                     <span>Sale Properties</span>
                                     <NuxtImg :src="getSortIcon('saleProperties')" width="16" height="16" />
                                 </div>
@@ -297,7 +289,7 @@ const users = ref<User[]>([
         saleProperties: 800,
         apiKey: "API_KEY_XY11223..",
     },
-     {
+    {
         id: 4,
         agency: [{ img: "Spanish.svg", value: "Remax" }],
         agencyCountry: [{ img: "Spanish.svg", value: "Malta" }],
@@ -318,6 +310,17 @@ const users = ref<User[]>([
         apiKey: "API_KEY_XY67890..",
     }
 ]);
+
+const agencyCountryOptions = [
+    { value: 'Malta', label: 'Malta' },
+    { value: 'USA', label: 'USA' },
+    { value: 'UK', label: 'UK' }
+]
+const agencyNameOptions = [
+    { value: 'Remax', label: 'Remax' },
+    { value: 'Century', label: 'Century' },
+    { value: 'Coldwell', label: 'Coldwell' },
+]
 
 const filters = ref({
     agencyName: '',
@@ -343,6 +346,8 @@ const toggleSort = (column: string) => {
         sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
     }
 };
+
+
 
 const getSortIcon = (column: string) => {
     if (sortColumn.value !== column || !sortOrder.value) {
@@ -421,31 +426,31 @@ const activeFilters = computed(() => {
 
     // ✅ Add field name before numeric filters
     if (filters.value.adminUsers) {
-        active.push({ 
-            key: 'adminUsers', 
-            type: 'number', 
-            label: `Admin Users: ${filters.value.adminUsersOperator} ${filters.value.adminUsers}` 
+        active.push({
+            key: 'adminUsers',
+            type: 'number',
+            label: `Admin Users: ${filters.value.adminUsersOperator} ${filters.value.adminUsers}`
         });
     }
     if (filters.value.connectedProperties) {
-        active.push({ 
-            key: 'connectedProperties', 
-            type: 'number', 
-            label: `Total Connected Properties: ${filters.value.connectedPropertiesOperator} ${filters.value.connectedProperties}` 
+        active.push({
+            key: 'connectedProperties',
+            type: 'number',
+            label: `Total Connected Properties: ${filters.value.connectedPropertiesOperator} ${filters.value.connectedProperties}`
         });
     }
     if (filters.value.rentalProperties) {
-        active.push({ 
-            key: 'rentalProperties', 
-            type: 'number', 
-            label: `Rental Properties: ${filters.value.rentalPropertiesOperator} ${filters.value.rentalProperties}` 
+        active.push({
+            key: 'rentalProperties',
+            type: 'number',
+            label: `Rental Properties: ${filters.value.rentalPropertiesOperator} ${filters.value.rentalProperties}`
         });
     }
     if (filters.value.saleProperties) {
-        active.push({ 
-            key: 'saleProperties', 
-            type: 'number', 
-            label: `Sale Properties: ${filters.value.salePropertiesOperator} ${filters.value.saleProperties}` 
+        active.push({
+            key: 'saleProperties',
+            type: 'number',
+            label: `Sale Properties: ${filters.value.salePropertiesOperator} ${filters.value.saleProperties}`
         });
     }
 

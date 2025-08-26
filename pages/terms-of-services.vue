@@ -1,7 +1,6 @@
 <template>
     <div class="p-6 bg-gray-50 h-screen">
         <!-- Header Section -->
-        <!-- Header Section -->
         <div class="flex items-center gap-6 mb-6">
             <h1 class="text-2xl font-semibold text-gray-900">Terms Of Service</h1>
 
@@ -47,10 +46,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-// State to toggle edit mode
 const isEditing = ref(false);
 
-// Reactive terms data
 const terms = ref([
     {
         title: "Usage",
@@ -101,7 +98,6 @@ const terms = ref([
 
 const toggleEdit = () => {
     if (isEditing.value) {
-        // When saving, you can send updated data to backend API here
         console.log("Saving updated terms:", terms.value);
     }
     isEditing.value = !isEditing.value;

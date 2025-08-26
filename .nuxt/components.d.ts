@@ -12,14 +12,15 @@ type HydrationStrategies = {
 }
 type LazyComponent<T> = (T & DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }>)
 interface _GlobalComponents {
-      'ChartsSection': typeof import("../components/ChartsSection.vue")['default']
-    'DashboardHeader': typeof import("../components/DashboardHeader.vue")['default']
-    'DashboardModal': typeof import("../components/DashboardModal.vue")['default']
-    'OverviewCards': typeof import("../components/OverviewCards.vue")['default']
-    'Sidebar': typeof import("../components/Sidebar.vue")['default']
+      'DashboardComChartsSection': typeof import("../components/DashboardCom/ChartsSection.vue")['default']
+    'DashboardComHeader': typeof import("../components/DashboardCom/Header.vue")['default']
+    'DashboardComModalBox': typeof import("../components/DashboardCom/ModalBox.vue")['default']
+    'DashboardComOverviewCards': typeof import("../components/DashboardCom/OverviewCards.vue")['default']
+    'DashboardComStatsCards': typeof import("../components/DashboardCom/StatsCards.vue")['default']
+    'DashboardComStatusCards': typeof import("../components/DashboardCom/StatusCards.vue")['default']
+    'Sidebar': typeof import("../components/Sidebar../components/Tailwinddropdown.vue
     'SpinLoader': typeof import("../components/SpinLoader.vue")['default']
-    'StatsCards': typeof import("../components/StatsCards.vue")['default']
-    'StatusCards': typeof import("../components/StatusCards.vue")['default']
+    'Tailwinddropdown': typeof import("../components/Tailwinddropdown.vue")['default']
     'NuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
     'NuxtLayout': typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
     'NuxtErrorBoundary': typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']
@@ -43,14 +44,15 @@ interface _GlobalComponents {
     'Body': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
-      'LazyChartsSection': LazyComponent<typeof import("../components/ChartsSection.vue")['default']>
-    'LazyDashboardHeader': LazyComponent<typeof import("../components/DashboardHeader.vue")['default']>
-    'LazyDashboardModal': LazyComponent<typeof import("../components/DashboardModal.vue")['default']>
-    'LazyOverviewCards': LazyComponent<typeof import("../components/OverviewCards.vue")['default']>
-    'LazySidebar': LazyComponent<typeof import("../components/Sidebar.vue")['default']>
+      'LazyDashboardComChartsSection': LazyComponent<typeof import("../components/DashboardCom/ChartsSection.vue")['default']>
+    'LazyDashboardComHeader': LazyComponent<typeof import("../components/DashboardCom/Header.vue")['default']>
+    'LazyDashboardComModalBox': LazyComponent<typeof import("../components/DashboardCom/ModalBox.vue")['default']>
+    'LazyDashboardComOverviewCards': LazyComponent<typeof import("../components/DashboardCom/OverviewCards.vue")['default']>
+    'LazyDashboardComStatsCards': LazyComponent<typeof import("../components/DashboardCom/StatsCards.vue")['default']>
+    'LazyDashboardComStatusCards': LazyComponent<typeof import("../components/DashboardCom/StatusCards.vue")['default']>
+    'LazySidebar': LazyComponent<typeof import("../components/Sidebar../components/Tailwinddropdown.vue
     'LazySpinLoader': LazyComponent<typeof import("../components/SpinLoader.vue")['default']>
-    'LazyStatsCards': LazyComponent<typeof import("../components/StatsCards.vue")['default']>
-    'LazyStatusCards': LazyComponent<typeof import("../components/StatusCards.vue")['default']>
+    'LazyTailwinddropdown': LazyComponent<typeof import("../components/Tailwinddropdown.vue")['default']>
     'LazyNuxtWelcome': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
     'LazyNuxtLayout': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
     'LazyNuxtErrorBoundary': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']>
@@ -80,14 +82,15 @@ declare module 'vue' {
   export interface GlobalComponents extends _GlobalComponents { }
 }
 
-export const ChartsSection: typeof import("../components/ChartsSection.vue")['default']
-export const DashboardHeader: typeof import("../components/DashboardHeader.vue")['default']
-export const DashboardModal: typeof import("../components/DashboardModal.vue")['default']
-export const OverviewCards: typeof import("../components/OverviewCards.vue")['default']
-export const Sidebar: typeof import("../components/Sidebar.vue")['default']
+export const DashboardComChartsSection: typeof import("../components/DashboardCom/ChartsSection.vue")['default']
+export const DashboardComHeader: typeof import("../components/DashboardCom/Header.vue")['default']
+export const DashboardComModalBox: typeof import("../components/DashboardCom/ModalBox.vue")['default']
+export const DashboardComOverviewCards: typeof import("../components/DashboardCom/OverviewCards.vue")['default']
+export const DashboardComStatsCards: typeof import("../components/DashboardCom/StatsCards.vue")['default']
+export const DashboardComStatusCards: typeof import("../components/DashboardCom/StatusCards.vue")['default']
+export const Sidebar: typeof import("../components/Sidebar../components/Tailwinddropdown.vue
 export const SpinLoader: typeof import("../components/SpinLoader.vue")['default']
-export const StatsCards: typeof import("../components/StatsCards.vue")['default']
-export const StatusCards: typeof import("../components/StatusCards.vue")['default']
+export const Tailwinddropdown: typeof import("../components/Tailwinddropdown.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']
@@ -111,14 +114,15 @@ export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
-export const LazyChartsSection: LazyComponent<typeof import("../components/ChartsSection.vue")['default']>
-export const LazyDashboardHeader: LazyComponent<typeof import("../components/DashboardHeader.vue")['default']>
-export const LazyDashboardModal: LazyComponent<typeof import("../components/DashboardModal.vue")['default']>
-export const LazyOverviewCards: LazyComponent<typeof import("../components/OverviewCards.vue")['default']>
-export const LazySidebar: LazyComponent<typeof import("../components/Sidebar.vue")['default']>
+export const LazyDashboardComChartsSection: LazyComponent<typeof import("../components/DashboardCom/ChartsSection.vue")['default']>
+export const LazyDashboardComHeader: LazyComponent<typeof import("../components/DashboardCom/Header.vue")['default']>
+export const LazyDashboardComModalBox: LazyComponent<typeof import("../components/DashboardCom/ModalBox.vue")['default']>
+export const LazyDashboardComOverviewCards: LazyComponent<typeof import("../components/DashboardCom/OverviewCards.vue")['default']>
+export const LazyDashboardComStatsCards: LazyComponent<typeof import("../components/DashboardCom/StatsCards.vue")['default']>
+export const LazyDashboardComStatusCards: LazyComponent<typeof import("../components/DashboardCom/StatusCards.vue")['default']>
+export const LazySidebar: LazyComponent<typeof import("../components/Sidebar../components/Tailwinddropdown.vue
 export const LazySpinLoader: LazyComponent<typeof import("../components/SpinLoader.vue")['default']>
-export const LazyStatsCards: LazyComponent<typeof import("../components/StatsCards.vue")['default']>
-export const LazyStatusCards: LazyComponent<typeof import("../components/StatusCards.vue")['default']>
+export const LazyTailwinddropdown: LazyComponent<typeof import("../components/Tailwinddropdown.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']>
