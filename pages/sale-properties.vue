@@ -2,9 +2,9 @@
 import { ref, computed } from "vue";
 
 useHead({
-  meta: [
-    { name: 'viewport', content: 'width=1300' }
-  ]
+    meta: [
+        { name: 'viewport', content: 'width=1300' }
+    ]
 })
 
 const activeTab = ref("all"); // default active tab (can be "all", "customer", "agency")
@@ -23,7 +23,7 @@ const countryOptions = [
     { value: 'USA', label: 'USA' },
     { value: 'UK', label: 'UK' }
 ]
-const agencyCountryOptions = [
+const agencyCountriesOptions = [
     { value: 'Malta', label: 'Malta' },
     { value: 'USA', label: 'USA' },
     { value: 'UK', label: 'UK' }
@@ -46,11 +46,11 @@ const propertyTypeOptions = [
 // ------------------- Property Filters -------------------
 const propertyFilters = ref({
     agencyName: "",
-    agencyCountry: "",
+    agencyCountries: "",
     mpsId: "",
     agencyPropertyId: "",
     propertyType: "",
-    requestDate: "",
+    dateofContract: "",
     adminUsers: "",
     adminUsersOperator: "=",
     connectedProperties: "",
@@ -65,39 +65,59 @@ const propertyFilters = ref({
 const users = ref([
     {
         id: 1,
-        agency: [{ img: "Spanish.svg", value: "Remax" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Malta" }],
+        agencyImages: [
+            { value: "Remax", img: "Spanish.svg" },
+            { value: "Century", img: "Spanish.svg" }
+        ],
+        agencyCountries: [
+            { value: "Malta", img: "Spanish.svg" },
+            { value: "USA", img: "Spanish.svg" },
+            { value: "UK", img: "Spanish.svg" }
+        ],
         MPSPropertyID: 876543,
         nameAndSurname: "Savannah Nguyen",
-        mobileNumber: "+356 99 314 342",
-        type: "Sale",
-        requestDate: "25/04/2026",
+        propertyStatus: "Promise of Sale",
+        inAppAction: "Archived",
+        dateofContract: "25/04/2026",
         sentBy: "Agency",
-
     },
     {
         id: 2,
-        agency: [{ img: "Spanish.svg", value: "Alliance" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Sweden" }],
+        agencyImages: [
+            { value: "Coldwell", img: "Spanish.svg" },
+            { value: "Remax", img: "Spanish.svg" }
+        ],
+        agencyCountries: [
+            { value: "Malta", img: "Spanish.svg" },
+            { value: "USA", img: "Spanish.svg" }
+        ],
         MPSPropertyID: 23546,
         nameAndSurname: "Arlene McCoy",
-        mobileNumber: "+356 99 314 342",
-        type: "Rental",
-        requestDate: "25/04/2026",
+        propertyStatus: "Sold",
+        inAppAction: "Deleted",
+        dateofContract: "25/04/2026",
         sentBy: "Customer",
     },
     {
         id: 3,
-        agency: [{ img: "Spanish.svg", value: "Century 21" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "USA" }],
+        agencyImages: [
+            { value: "Century", img: "Spanish.svg" },
+            { value: "Coldwell", img: "Spanish.svg" }
+        ],
+        agencyCountries: [
+            { value: "UK", img: "Spanish.svg" },
+            { value: "USA", img: "Spanish.svg" },
+            { value: "Malta", img: "Spanish.svg" }
+        ],
         MPSPropertyID: 56789,
         nameAndSurname: "Cody Fisher",
-        mobileNumber: "+356 99 314 342",
-        type: "Sale",
-        requestDate: "25/04/2026",
+        propertyStatus: "Available",
+        inAppAction: "Active",
+        dateofContract: "25/04/2026",
         sentBy: "Agency",
     }
 ]);
+
 
 // ------------------- Sorting Logic -------------------
 const sortColumn = ref(null);
@@ -123,17 +143,17 @@ const getSortIcon = (column) => {
 const filteredUsers = computed(() => {
     let result = [...users.value];
 
-    // Apply property filters
-    if (propertyFilters.value.agencyName) {
-        result = result.filter(u =>
-            u.agency.some(a => a.value.toLowerCase() === propertyFilters.value.agencyName.toLowerCase())
-        );
-    }
-    if (propertyFilters.value.agencyCountry) {
-        result = result.filter(u =>
-            u.agencyCountry.some(c => c.value.toLowerCase() === propertyFilters.value.agencyCountry.toLowerCase())
-        );
-    }
+   if (propertyFilters.value.agencyName) {
+    result = result.filter(u =>
+        u.agencyImages.some(a => a.value.toLowerCase() === propertyFilters.value.agencyName.toLowerCase())
+    );
+}
+if (propertyFilters.value.agencyCountries) {
+    result = result.filter(u =>
+        u.agencyCountries.some(c => c.value.toLowerCase() === propertyFilters.value.agencyCountries.toLowerCase())
+    );
+}
+
 
     // Numeric property filters
     const applyNumericFilter = (key, value, operator) => {
@@ -157,9 +177,9 @@ const filteredUsers = computed(() => {
             if (sortColumn.value === "agency") {
                 valA = a.agency[0].value;
                 valB = b.agency[0].value;
-            } else if (sortColumn.value === "agencyCountry") {
-                valA = a.agencyCountry[0].value;
-                valB = b.agencyCountry[0].value;
+            } else if (sortColumn.value === "agencyCountries") {
+                valA = a.agencyCountries[0].value;
+                valB = b.agencyCountries[0].value;
             } else {
                 valA = a[sortColumn.value];
                 valB = b[sortColumn.value];
@@ -191,11 +211,11 @@ const customerActiveFilters = computed(() => {
 const propertyActiveFilters = computed(() => {
     const result = [];
     if (propertyFilters.value.agencyName) result.push({ key: "agencyName", label: `Agency: ${propertyFilters.value.agencyName}` });
-    if (propertyFilters.value.agencyCountry) result.push({ key: "agencyCountry", label: `Agency Country: ${propertyFilters.value.agencyCountry}` });
+    if (propertyFilters.value.agencyCountries) result.push({ key: "agencyCountries", label: `Agency Country: ${propertyFilters.value.agencyCountries}` });
     if (propertyFilters.value.mpsId) result.push({ key: "mpsId", label: `MPS ID: ${propertyFilters.value.mpsId}` });
     if (propertyFilters.value.agencyPropertyId) result.push({ key: "agencyPropertyId", label: `Agency Property ID: ${propertyFilters.value.agencyPropertyId}` });
     if (propertyFilters.value.propertyType) result.push({ key: "propertyType", label: `Property Type: ${propertyFilters.value.propertyType}` });
-    if (propertyFilters.value.requestDate) result.push({ key: "requestDate", label: `Date: ${propertyFilters.value.requestDate}` });
+    if (propertyFilters.value.dateofContract) result.push({ key: "dateofContract", label: `Date: ${propertyFilters.value.dateofContract}` });
     if (propertyFilters.value.adminUsers) result.push({ key: "adminUsers", label: `Admin Users: ${propertyFilters.value.adminUsersOperator} ${propertyFilters.value.adminUsers}` });
     if (propertyFilters.value.connectedProperties) result.push({ key: "connectedProperties", label: `Connected Properties: ${propertyFilters.value.connectedPropertiesOperator} ${propertyFilters.value.connectedProperties}` });
     if (propertyFilters.value.rentalProperties) result.push({ key: "rentalProperties", label: `Rental Properties: ${propertyFilters.value.rentalPropertiesOperator} ${propertyFilters.value.rentalProperties}` });
@@ -211,6 +231,21 @@ function removeCustomerFilter(key) {
 function removePropertyFilter(key) {
     propertyFilters.value[key] = "";
 }
+
+// Function to get status dot color class
+const getStatusDotClass = (status) => {
+    switch (status?.toLowerCase()) {
+        case 'available':
+            return 'bg-green-500'
+        case 'sold':
+            return 'bg-red-500'
+        case 'promise of sale':
+            return 'bg-yellow-500'
+        default:
+            return 'bg-gray-400'
+    }
+}
+
 </script>
 
 
@@ -316,11 +351,9 @@ function removePropertyFilter(key) {
                         <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in customerActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
-
                             <!-- Optional indicator based on filter key -->
                             <span v-if="filter.key === 'country'" class="w-2 h-2 bg-red-500 rounded-full"></span>
                             <span v-else-if="filter.key === 'gender'" class="w-2 h-2 bg-blue-500 rounded-full"></span>
-
                             <span class="text-[#595959]">{{ filter.label }}</span>
                             <button @click="removeCustomerFilter(filter.key)" class="text-gray-500 hover:text-gray-700">
                                 <NuxtImg src="filter-cros-Icon.svg" width="14" height="14" />
@@ -343,8 +376,8 @@ function removePropertyFilter(key) {
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency Country</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyCountry" placeholder="Select Country"
-                                :options="agencyCountryOptions" />
+                            <Tailwinddropdown v-model="propertyFilters.agencyCountries" placeholder="Select Country"
+                                :options="agencyCountriesOptions" />
                         </div>
                     </div>
                     <div class="flex gap-4 mt-2">
@@ -369,8 +402,8 @@ function removePropertyFilter(key) {
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Request Date</label>
-                            <input v-model="propertyFilters.requestDate" type="date" style="height: 38px;"
-                                :class="propertyFilters.requestDate === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
+                            <input v-model="propertyFilters.dateofContract" type="date" style="height: 38px;"
+                                :class="propertyFilters.dateofContract === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
                         </div>
                     </div>
@@ -384,7 +417,8 @@ function removePropertyFilter(key) {
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
 
                             <!-- Indicator based on type -->
-                            <span v-if="filter.key === 'agencyCountry'" class="w-2 h-2 bg-red-500 rounded-full"></span>
+                            <span v-if="filter.key === 'agencyCountries'"
+                                class="w-2 h-2 bg-red-500 rounded-full"></span>
                             <span v-else-if="filter.key === 'agencyName'"
                                 class="w-2 h-2 bg-blue-500 rounded-full"></span>
 
@@ -415,36 +449,32 @@ function removePropertyFilter(key) {
                                 <div class="flex items-center gap-1 cursor-pointer"
                                     @click="toggleSort('nameAndSurname')">
                                     <span>Name & Surname</span>
-                                    <img :src="getSortIcon('nameAndSurname')" width="16" height="16" />
+                                    <NuxtImg :src="getSortIcon('nameAndSurname')" width="14" height="14" />
+                                </div>
+                            </th>
+
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <div>
+                                    <span>Agency Listings</span>
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Mobile Number</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('type')">
-                                    <span>Type</span>
-                                    <img :src="getSortIcon('type')" width="16" height="16" />
+                                <div>
+                                    <span>Agency Countries</span>
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('agency')">
-                                    <span>Agency</span>
-                                    <img :src="getSortIcon('agency')" width="16" height="16" />
+                                <div class="flex items-center cursor-pointer" @click="toggleSort('propertyStatus')">
+                                    <span>Property Status</span>
+                                    <NuxtImg :src="getSortIcon('propertyStatus')" width="14" height="14" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('agencyCountry')">
-                                    <span>Agency Country</span>
-                                    <img :src="getSortIcon('agencyCountry')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date Available</th>
+                                Date of Contract</th>
                             <th class="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('sentBy')">
-                                    <span>Sent By</span>
-                                    <img :src="getSortIcon('sentBy')" width="16" height="16" />
+                                    <span>In-App Action</span>
+                                    <NuxtImg :src="getSortIcon('sentBy')" width="14" height="14" />
                                 </div>
                             </th>
                         </tr>
@@ -455,29 +485,60 @@ function removePropertyFilter(key) {
 
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.MPSPropertyID }}</td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.nameAndSurname }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.mobileNumber }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.type }}</td>
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <div class="flex items-center space-x-2">
-                                    <div v-for="item in user.agency" :key="item.value"
+                                    <!-- First 3 images -->
+                                    <div v-for="(item, index) in user.agencyImages.slice(0, 3)" :key="index"
                                         class="flex items-center space-x-1">
-                                        <img :src="item.img" alt="agency" class="w-5 h-5" />
-                                        <span class="text-sm font-medium text-black">{{ item.value }}</span>
+                                        <NuxtImg :src="item.img" alt="agency" class="w-5 h-5 rounded-full" />
                                     </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="flex items-center space-x-2">
-                                    <div v-for="item in user.agencyCountry" :key="item.value"
-                                        class="flex items-center space-x-1">
-                                        <img :src="item.img" alt="country" class="w-5 h-5" />
-                                        <span class="text-sm font-medium text-black">{{ item.value }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.requestDate }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.sentBy }}</td>
 
+                                    <!-- If more than 3, show +X -->
+                                    <div v-if="user.agencyImages.length > 3" class="text-xs font-medium text-gray-600">
+                                        +{{ user.agencyImages.length - 3 }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="flex items-center space-x-2">
+                                    <!-- First 3 images -->
+                                    <div v-for="(item, index) in user.agencyCountries.slice(0, 3)" :key="index"
+                                        class="flex items-center space-x-1">
+                                        <NuxtImg :src="item.img" alt="country" class="w-5 h-5 rounded-full" />
+                                    </div>
+
+                                    <!-- If more than 3, show +X -->
+                                    <div v-if="user.agencyCountries.length > 3"
+                                        class="text-xs font-medium text-gray-600">
+                                        +{{ user.agencyCountries.length - 3 }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm">
+                                <div class="inline-flex items-center rounded-full p-1 px-2" 
+                                    :class="user.propertyStatus.trim().toLowerCase() === 'available' ? 'bg-green-100'
+                                    : user.propertyStatus.trim().toLowerCase() === 'promise of sale' ? 'bg-yellow-100' : 'bg-red-100'">
+                                    <div :class="getStatusDotClass(user.propertyStatus)"
+                                        class="w-2 h-2 rounded-full mr-2"></div>
+                                    <span class="text-xs">
+                                        {{ user.propertyStatus }}
+                                    </span>
+                                </div>
+                            </td>
+
+                            <!-- Date of Contract Column (no conditional styling) -->
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">
+                                {{ user.dateofContract }}
+                            </td>
+
+                            <!-- In-App Action Column with conditional styling -->
+                            <td class="px-4 py-3 whitespace-nowrap text-sm">
+                                <span :class="user.inAppAction === 'Archived' ? 'text-green-800' : 'text-red-800'"
+                                    class="px-2 py-1 rounded-full text-xs font-medium">
+                                    {{ user.inAppAction }}
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

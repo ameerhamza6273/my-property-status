@@ -411,7 +411,7 @@ function removePropertyFilter(key) {
                                 <div class="flex items-center gap-1 cursor-pointer"
                                     @click="toggleSort('nameAndSurname')">
                                     <span>Name & Surname</span>
-                                    <img :src="getSortIcon('nameAndSurname')" width="16" height="16" />
+                                    <NuxtImg :src="getSortIcon('nameAndSurname')" width="16" height="16" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -419,20 +419,20 @@ function removePropertyFilter(key) {
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('type')">
                                     <span>Type</span>
-                                    <img :src="getSortIcon('type')" width="16" height="16" />
+                                    <NuxtImg :src="getSortIcon('type')" width="16" height="16" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('agency')">
                                     <span>Agency</span>
-                                    <img :src="getSortIcon('agency')" width="16" height="16" />
+                                    <NuxtImg :src="getSortIcon('agency')" width="16" height="16" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer"
                                     @click="toggleSort('agencyCountry')">
                                     <span>Agency Country</span>
-                                    <img :src="getSortIcon('agencyCountry')" width="16" height="16" />
+                                    <NuxtImg :src="getSortIcon('agencyCountry')" width="16" height="16" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -440,7 +440,7 @@ function removePropertyFilter(key) {
                             <th class="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('sentBy')">
                                     <span>Sent By</span>
-                                    <img :src="getSortIcon('sentBy')" width="16" height="16" />
+                                    <NuxtImg :src="getSortIcon('sentBy')" width="16" height="16" />
                                 </div>
                             </th>
                         </tr>
@@ -459,7 +459,7 @@ function removePropertyFilter(key) {
                                 <div class="flex items-center space-x-2">
                                     <div v-for="item in user.agency" :key="item.value"
                                         class="flex items-center space-x-1">
-                                        <img :src="item.img" alt="agency" class="w-5 h-5" />
+                                        <NuxtImg :src="item.img" alt="agency" class="w-5 h-5" />
                                         <span class="text-sm font-medium text-black">{{ item.value }}</span>
                                     </div>
                                 </div>
@@ -468,7 +468,7 @@ function removePropertyFilter(key) {
                                 <div class="flex items-center space-x-2">
                                     <div v-for="item in user.agencyCountry" :key="item.value"
                                         class="flex items-center space-x-1">
-                                        <img :src="item.img" alt="country" class="w-5 h-5" />
+                                        <NuxtImg :src="item.img" alt="country" class="w-5 h-5" />
                                         <span class="text-sm font-medium text-black">{{ item.value }}</span>
                                     </div>
                                 </div>
