@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 ">
+    <div class="p-6">
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-semibold text-gray-900">Agencies</h1>
@@ -10,7 +10,7 @@
             </button>
         </div>
 
-
+        <!-- Filters Section -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 border border-[#D9D9D9] bg-white rounded-xl p-6">
             <!-- Agency Name -->
             <div>
@@ -19,7 +19,6 @@
                 </label>
                 <Tailwinddropdown v-model="filters.agencyName" placeholder="Select Country"
                     :options="agencyNameOptions" />
-
             </div>
 
             <!-- Agency Country -->
@@ -27,9 +26,8 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Country
                 </label>
-                 <Tailwinddropdown v-model="filters.agencyCountry" placeholder="Select Country"
+                <Tailwinddropdown v-model="filters.agencyCountry" placeholder="Select Country"
                     :options="agencyCountryOptions" />
-                
             </div>
 
             <!-- Admin Users -->
@@ -38,15 +36,14 @@
                     Admin Users
                 </label>
                 <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <select v-model="filters.adminUsersOperator" class=" px-2 rounded-full ">
+                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                    <select v-model="filters.adminUsersOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
                         <option value=">">></option>
-                        <option value="<">
-                            < </option>
+                        <option value="<"><</option>
                     </select>
                     <input v-model="filters.adminUsers" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm " />
+                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
                 </div>
             </div>
 
@@ -56,15 +53,14 @@
                     Total Connected Properties
                 </label>
                 <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <select v-model="filters.connectedPropertiesOperator" class=" px-2 rounded-full ">
+                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                    <select v-model="filters.connectedPropertiesOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
                         <option value=">">></option>
-                        <option value="<">
-                            < </option>
+                        <option value="<"><</option>
                     </select>
                     <input v-model="filters.connectedProperties" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm " />
+                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
                 </div>
             </div>
 
@@ -74,15 +70,14 @@
                     Rental Properties
                 </label>
                 <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <select v-model="filters.rentalPropertiesOperator" class=" px-2 rounded-full ">
+                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                    <select v-model="filters.rentalPropertiesOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
                         <option value=">">></option>
-                        <option value="<">
-                            < </option>
+                        <option value="<"><</option>
                     </select>
                     <input v-model="filters.rentalProperties" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm " />
+                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
                 </div>
             </div>
 
@@ -92,15 +87,14 @@
                     Sale Properties
                 </label>
                 <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <select v-model="filters.salePropertiesOperator" class=" px-2 rounded-full ">
+                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                    <select v-model="filters.salePropertiesOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
                         <option value=">">></option>
-                        <option value="<">
-                            < </option>
+                        <option value="<"><</option>
                     </select>
                     <input v-model="filters.saleProperties" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm " />
+                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
                 </div>
             </div>
         </div>
@@ -111,8 +105,8 @@
                 <span class="text-sm font-medium text-gray-700">Filtered by:</span>
                 <div v-for="filter in activeFilters" :key="filter.key"
                     class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
-                    <span v-if="filter.type === 'country'" class="w-2 h-2 bg-red-500 rounded-full "></span>
-                    <span v-else-if="filter.type === 'agency'" class="w-2 h-2 bg-blue-500 rounded-full "></span>
+                    <span v-if="filter.type === 'country'" class="w-2 h-2 bg-red-500 rounded-full"></span>
+                    <span v-else-if="filter.type === 'agency'" class="w-2 h-2 bg-blue-500 rounded-full"></span>
                     <span>{{ filter.label }}</span>
                     <button @click="removeFilter(filter.key)" class="text-gray-500 hover:text-gray-700">
                         <NuxtImg src="filter-cros-Icon.svg" width="14" height="14" />
@@ -120,8 +114,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <!-- Results Count -->
         <div class="my-4">
@@ -135,59 +127,18 @@
                     <!-- Table Header -->
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('agency')">
-                                    <span>Agency</span>
-                                    <NuxtImg :src="getSortIcon('agency')" width="16" height="16" />
+                            <th v-for="column in tableHeaders" :key="column.key"
+                                class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort(column.key)">
+                                    <span>{{ column.label }}</span>
+                                    <NuxtImg :src="getSortIcon(column.key)" width="16" height="16" />
                                 </div>
                             </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('agencyCountry')">
-                                    <span>Agency Country</span>
-                                    <NuxtImg :src="getSortIcon('agencyCountry')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('adminUsers')">
-                                    <span>Admin Users</span>
-                                    <NuxtImg :src="getSortIcon('adminUsers')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('totalConnectedProperties')">
-                                    <span>Total Connected Properties</span>
-                                    <NuxtImg :src="getSortIcon('totalConnectedProperties')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('rentalProperties')">
-                                    <span>Rental Properties</span>
-                                    <NuxtImg :src="getSortIcon('rentalProperties')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('saleProperties')">
-                                    <span>Sale Properties</span>
-                                    <NuxtImg :src="getSortIcon('saleProperties')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('apiKey')">
-                                    <span>API Key</span>
-                                    <NuxtImg :src="getSortIcon('apiKey')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            </th>
+                            <th class="px-3 py-3 text-right"></th>
                         </tr>
                     </thead>
 
-
-                    <!-- Table Body -->
+                     <!-- Table Body -->
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
                             <td class="px-4 py-3 whitespace-nowrap">
@@ -243,22 +194,10 @@
     </div>
 </template>
 
-
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from "vue";
 
-interface User {
-    id: number;
-    agency: Array<{ img: string; value: string }>;
-    agencyCountry: Array<{ img: string; value: string }>;
-    adminUsers: number;
-    totalConnectedProperties: number;
-    rentalProperties: number;
-    saleProperties: number;
-    apiKey: string;
-}
-
-const users = ref<User[]>([
+const users = ref([
     {
         id: 1,
         agency: [{ img: "Spanish.svg", value: "Remax" }],
@@ -281,16 +220,6 @@ const users = ref<User[]>([
     },
     {
         id: 3,
-        agency: [{ img: "Spanish.svg", value: "Century 21" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "USA" }],
-        adminUsers: 6,
-        totalConnectedProperties: 2000,
-        rentalProperties: 1200,
-        saleProperties: 800,
-        apiKey: "API_KEY_XY11223..",
-    },
-    {
-        id: 4,
         agency: [{ img: "Spanish.svg", value: "Remax" }],
         agencyCountry: [{ img: "Spanish.svg", value: "Malta" }],
         adminUsers: 5,
@@ -300,7 +229,7 @@ const users = ref<User[]>([
         apiKey: "API_KEY_XY12345..",
     },
     {
-        id: 5,
+        id: 4,
         agency: [{ img: "Spanish.svg", value: "Alliance" }],
         agencyCountry: [{ img: "Spanish.svg", value: "Sweden" }],
         adminUsers: 3,
@@ -315,12 +244,13 @@ const agencyCountryOptions = [
     { value: 'Malta', label: 'Malta' },
     { value: 'USA', label: 'USA' },
     { value: 'UK', label: 'UK' }
-]
+];
+
 const agencyNameOptions = [
     { value: 'Remax', label: 'Remax' },
     { value: 'Century', label: 'Century' },
     { value: 'Coldwell', label: 'Coldwell' },
-]
+];
 
 const filters = ref({
     agencyName: '',
@@ -335,10 +265,20 @@ const filters = ref({
     salePropertiesOperator: '='
 });
 
-const sortColumn = ref<string | null>(null);
-const sortOrder = ref<"asc" | "desc" | null>(null);
+const sortColumn = ref(null);
+const sortOrder = ref(null);
 
-const toggleSort = (column: string) => {
+const tableHeaders = [
+    { key: 'agency', label: 'Agency' },
+    { key: 'agencyCountry', label: 'Agency Country' },
+    { key: 'adminUsers', label: 'Admin Users' },
+    { key: 'totalConnectedProperties', label: 'Total Connected Properties' },
+    { key: 'rentalProperties', label: 'Rental Properties' },
+    { key: 'saleProperties', label: 'Sale Properties' },
+    { key: 'apiKey', label: 'API Key' },
+];
+
+const toggleSort = (column) => {
     if (sortColumn.value !== column) {
         sortColumn.value = column;
         sortOrder.value = "asc";
@@ -347,31 +287,25 @@ const toggleSort = (column: string) => {
     }
 };
 
-
-
-const getSortIcon = (column: string) => {
+const getSortIcon = (column) => {
     if (sortColumn.value !== column || !sortOrder.value) {
-        return "switch-vertical.svg"; // Default icon
+        return "switch-vertical.svg";
     }
-    return "export-switch-vertical.svg"; // Use different icons if you want for asc/desc
+    return "export-switch-vertical.svg";
 };
 
-// ✅ Apply filters & sorting
 const filteredUsers = computed(() => {
     let result = [...users.value];
 
-    // Agency Name filter
     if (filters.value.agencyName) {
         result = result.filter(u => u.agency.some(a => a.value.toLowerCase() === filters.value.agencyName.toLowerCase()));
     }
 
-    // Agency Country filter
     if (filters.value.agencyCountry) {
         result = result.filter(u => u.agencyCountry.some(c => c.value.toLowerCase() === filters.value.agencyCountry.toLowerCase()));
     }
 
-    // Numeric filters with operator
-    const applyNumericFilter = (key: keyof User, value: string, operator: string) => {
+    const applyNumericFilter = (key, value, operator) => {
         if (!value) return;
         const num = Number(value);
         if (operator === "=") result = result.filter(u => u[key] === num);
@@ -384,11 +318,10 @@ const filteredUsers = computed(() => {
     applyNumericFilter("rentalProperties", filters.value.rentalProperties, filters.value.rentalPropertiesOperator);
     applyNumericFilter("saleProperties", filters.value.saleProperties, filters.value.salePropertiesOperator);
 
-    // Sorting logic
     if (sortColumn.value && sortOrder.value) {
         result.sort((a, b) => {
-            let valA: string | number = "";
-            let valB: string | number = "";
+            let valA = "";
+            let valB = "";
             if (sortColumn.value === "agency") {
                 valA = a.agency[0].value;
                 valB = b.agency[0].value;
@@ -396,8 +329,8 @@ const filteredUsers = computed(() => {
                 valA = a.agencyCountry[0].value;
                 valB = b.agencyCountry[0].value;
             } else {
-                valA = a[sortColumn.value as keyof User] as any;
-                valB = b[sortColumn.value as keyof User] as any;
+                valA = a[sortColumn.value];
+                valB = b[sortColumn.value];
             }
 
             if (typeof valA === "number" && typeof valB === "number") {
@@ -412,8 +345,6 @@ const filteredUsers = computed(() => {
     return result;
 });
 
-// ✅ Active filters pills
-// Active filters pills
 const activeFilters = computed(() => {
     const active = [];
 
@@ -424,7 +355,6 @@ const activeFilters = computed(() => {
         active.push({ key: 'agencyName', type: 'agency', label: filters.value.agencyName });
     }
 
-    // ✅ Add field name before numeric filters
     if (filters.value.adminUsers) {
         active.push({
             key: 'adminUsers',
@@ -457,17 +387,9 @@ const activeFilters = computed(() => {
     return active;
 });
 
-
-const removeFilter = (filterKey: string) => {
-    filters.value[filterKey as keyof typeof filters.value] = '';
+const removeFilter = (filterKey) => {
+    filters.value[filterKey] = '';
 };
 
-// ✅ Expose filters
 defineExpose({ filters });
-
-useHead({
-  meta: [
-    { name: 'viewport', content: 'width=1300' }
-  ]
-})
 </script>
