@@ -521,7 +521,7 @@ function removePropertyFilter(key) {
                             <!-- In-App Action Column with conditional styling -->
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                 <span :class="user.inAppAction === 'Archived' ? 'text-green-800' : 'text-red-800'"
-                                    class="px-2 py-1 rounded-full text-xs font-medium">
+                                    class="px-2 py-1 rounded-full text-sm font-medium">
                                     {{ user.inAppAction }}
                                 </span>
                             </td>
