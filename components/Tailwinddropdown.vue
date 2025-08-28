@@ -1,10 +1,11 @@
 <template>
-    <div class="relative w-full">
+    <div class="relative ">
         <button @click="toggleDropdown" @blur="handleBlur"
-            class="w-full text-sm px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] text-left flex items-center justify-between focus:bg-white focus:ring-1 focus:ring-[#0F4841]"
-            :class="selectedValue === '' ? 'text-[#BCBCBC]' : 'text-black'">
+            class="w-full text-sm px-3 border border-[#D9D9D9] rounded-full  text-left flex items-center justify-between focus:bg-white focus:ring-1 focus:ring-[#0F4841]"
+            :class="selectedValue === '' ? 'text-[#BCBCBC]' : 'text-black', buttonClass">
             <span>{{ selectedValue === '' ? placeholder : selectedValue }}</span>
-            <NuxtImg src="/dropdown-icon.svg" width="14" height="14" :class="{ 'rotate-180': isOpen }" class="transition-transform duration-200" />
+            <NuxtImg src="/dropdown-icon.svg" width="14" height="14" :class="{ 'rotate-180': isOpen }"
+                class="transition-transform duration-200" />
         </button>
 
         <div v-show="isOpen"
@@ -34,7 +35,9 @@ const props = defineProps({
         type: Array,
         required: true,
         default: () => []
-    }
+    },
+    buttonClass: { type: String, default: '' } 
+
 })
 
 const emit = defineEmits(['update:modelValue'])

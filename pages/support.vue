@@ -47,7 +47,7 @@
                     <!-- Country -->
                     <div>
                         <label class="block text-sm font-medium text-[#595959] mb-2">Country</label>
-                        <Tailwinddropdown v-model="filters.country" placeholder="Select Country"
+                        <Tailwinddropdown v-model="filters.country" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Country"
                             :options="countryOptions" />
 
                     </div>
@@ -72,7 +72,7 @@
                     <!-- Gender -->
                     <div>
                         <label class="block text-sm font-medium text-[#595959] mb-2">Gender</label>
-                        <Tailwinddropdown v-model="filters.gender" placeholder="Select Country"
+                        <Tailwinddropdown v-model="filters.gender" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Gender"
                             :options="genderOptions" />
                     </div>
 

@@ -333,12 +333,12 @@ const getStatusDotClass = (status) => {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Country</label>
-                            <Tailwinddropdown v-model="customerFilters.country" placeholder="Select Country"
+                            <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Country"
                                 :options="countryOptions" />
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Gender</label>
-                            <Tailwinddropdown v-model="customerFilters.gender" placeholder="Select Country"
+                            <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Gender"
                                 :options="genderOptions" />
 
                         </div>
@@ -370,13 +370,13 @@ const getStatusDotClass = (status) => {
                     <div class="flex gap-4">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency Name</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyName" placeholder="Select Country"
+                            <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 bg-[#F8F8F8]" placeholder="Agency Name"
                                 :options="agencyNameOptions" />
 
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency Country</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyCountries" placeholder="Select Country"
+                            <Tailwinddropdown v-model="propertyFilters.agencyCountries" button-class="py-2 bg-[#F8F8F8]" placeholder="Agency Country"
                                 :options="agencyCountriesOptions" />
                         </div>
                     </div>
@@ -396,7 +396,7 @@ const getStatusDotClass = (status) => {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Property Type</label>
-                            <Tailwinddropdown v-model="propertyFilters.propertyType" placeholder="Select Country"
+                            <Tailwinddropdown v-model="propertyFilters.propertyType" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Property Type"
                                 :options="propertyTypeOptions" />
 
                         </div>

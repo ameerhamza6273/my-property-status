@@ -3,11 +3,10 @@
     <div class="bg-white rounded-2xl shadow-sm p-3 pb-10 border border-gray-200">
       <div class="flex items-center justify-between mb-6 pb-3 border-b border-[#D9D9D9]">
         <h3 class="text-lg font-semibold text-gray-900">Listings Overview</h3>
-        <select class="border border-[#D9D9D9] rounded-full px-2 py-1 text-sm bg-white focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
+         <Tailwinddropdown class="w-20" button-class="py-1" placeholder="2021"
+           :options="listingYearOptions" />
+        <!-- <select class="border border-[#D9D9D9] rounded-full px-2 py-1 text-sm bg-white focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
+        </select> -->
       </div>
       
       <!-- Chart Container -->
@@ -35,11 +34,8 @@
    <div class="bg-white rounded-2xl shadow-sm p-3 pb-10 border border-gray-200">
       <div class="flex items-center justify-between mb-6 pb-3 border-b border-[#D9D9D9]">
         <h3 class="text-lg font-semibold text-gray-900">Customers Overview</h3>
-        <select class="border border-[#D9D9D9] rounded-full px-2 py-1 text-sm bg-white  focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
-        </select>
+         <Tailwinddropdown class="w-20" button-class="py-1" placeholder="2020"
+           :options="customerYearOptions" />
       </div>     
       
       <!-- Chart Container -->
@@ -75,4 +71,16 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 const listingsData = ref([18, 19, 22, 18, 24, 13, 20, 11, 23, 12, 15, 20]);
 const customersData = ref([17, 18, 22, 18, 25, 14, 20, 23, 13, 16, 20, 19]);
+
+const listingYearOptions = [
+    { value: 2022, label: 2022 },
+    { value: 2023, label: 2023 },
+    { value: 20224, label: 2024 },
+];
+const customerYearOptions = [
+    { value: 2022, label: 2022 },
+    { value: 2023, label: 2023 },
+    { value: 20224, label: 2024 },
+];
+
 </script>

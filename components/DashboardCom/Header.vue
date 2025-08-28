@@ -17,13 +17,8 @@
         <div class="flex items-center space-x-2">
           <span class="text-sm text-black">Filter By : </span>
           <div class="relative">
-            <select
-              class="appearance-none border border-gray-300 rounded-full pl-3 pr-6 py-1 text-sm text-gray-600 focus:outline-none"
-            >
-              <option>Date Period From - To</option>
-            </select>
-
-             <NuxtImg src="/dropdown-icon.svg" width="14" height="14" class="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+            <Tailwinddropdown button-class="py-1 bg-white" placeholder="Date Period From - To"
+              :options="datePeriod" />
           </div>
         </div>
 
@@ -71,3 +66,16 @@
     </div>
   </header>
 </template>
+
+
+<script setup>
+import { ref, computed } from "vue";
+
+const datePeriod = [
+    { value: "Date Period 5 - 10", label: "Date Period 5 - 10" },
+    { value: "Date Period From - To", label: "Date Period From - To" },
+];
+
+
+</script>
+

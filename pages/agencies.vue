@@ -17,7 +17,7 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Name
                 </label>
-                <Tailwinddropdown v-model="filters.agencyName" placeholder="Select Country"
+                <Tailwinddropdown v-model="filters.agencyName" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Agency Name"
                     :options="agencyNameOptions" />
             </div>
 
@@ -26,7 +26,7 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Country
                 </label>
-                <Tailwinddropdown v-model="filters.agencyCountry" placeholder="Select Country"
+                <Tailwinddropdown v-model="filters.agencyCountry" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Agency Country"
                     :options="agencyCountryOptions" />
             </div>
 
