@@ -132,19 +132,19 @@ const menuItems = [
     ]
   },
   { to: '/customers', label: 'Customers', icon: 'customers-icon.svg' },
-  {
-    label: 'Notifications',
-    icon: 'notifications-icon.svg',
-    children: [
-      { to: '/send-push-notification', label: 'Send Push Notification' },
-      { to: '/send-email-notification', label: 'Send Email Notification' },
-      { to: '/system-notifications', label: 'System Notifications' },
-      { to: '/notification-History', label: 'Notification History' }
-    ]
-  },
-  { to: '/what-new', label: 'What’s New', icon: '/whatsnew-icon.svg' },
-  { to: '/support', label: 'Support', icon: '/support-icon.svg' },
-  { to: '/reports', label: 'Reports', icon: '/reports-icon.svg' }
+  // {
+  //   label: 'Notifications',
+  //   icon: 'notifications-icon.svg',
+  //   children: [
+  //     { to: '/send-push-notification', label: 'Send Push Notification' },
+  //     { to: '/send-email-notification', label: 'Send Email Notification' },
+  //     { to: '/system-notifications', label: 'System Notifications' },
+  //     { to: '/notification-History', label: 'Notification History' }
+  //   ]
+  // },
+  // { to: '/what-new', label: 'What’s New', icon: '/whatsnew-icon.svg' },
+  // { to: '/support', label: 'Support', icon: '/support-icon.svg' },
+  // { to: '/reports', label: 'Reports', icon: '/reports-icon.svg' }
 ]
 
 // ✅ Check if a parent is active based on current route
