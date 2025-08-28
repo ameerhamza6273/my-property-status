@@ -12,15 +12,22 @@
         <table class="w-full min-w-[900px]">
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th v-for="column in columns" :key="column.key"
-                class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-44">
-                <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer"
-                  @click="toggleSort(column.key)">
-                  <span>{{ column.label }}</span>
-                  <NuxtImg src="switch-vertical.svg" width="16" height="16" />
-                </div>
-                <span v-else>{{ column.label }}</span>
-              </th>
+<th
+  v-for="column in columns"
+  :key="column.key"
+  :class="[
+    'px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
+    allNumeric ? 'min-w-20' : 'min-w-44'
+  ]"
+>
+  <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer" @click="toggleSort(column.key)">
+    <span>{{ column.label }}</span>
+    <NuxtImg src="switch-vertical.svg" width="16" height="16" />
+  </div>
+  <span v-else>{{ column.label }}</span>
+</th>
+
+
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
@@ -229,6 +236,13 @@ const handleItemsPerPageChange = () => {
   currentPage.value = 1
   emit('page-change', 1)
 }
+const allNumeric = computed(() => {
+  if (!props.data.length || !props.columns.length) return false;
+  const firstRowFirstValue = getNestedValue(props.data[0], props.columns[0].key);
+  return typeof firstRowFirstValue === 'number';
+});
+
+
 
 // Watch for data changes to reset pagination
 watch(() => props.data, () => {

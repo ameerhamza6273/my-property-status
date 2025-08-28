@@ -142,6 +142,7 @@ const menuItems = [
       { to: '/notification-History', label: 'Notification History' }
     ]
   },
+  { to: '/what-new', label: 'What’s New', icon: '/whatsnew-icon.svg' },
   { to: '/support', label: 'Support', icon: '/support-icon.svg' },
   { to: '/reports', label: 'Reports', icon: '/reports-icon.svg' }
 ]
