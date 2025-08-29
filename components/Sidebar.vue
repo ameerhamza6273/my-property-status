@@ -8,75 +8,42 @@
     <!-- Navigation -->
     <nav class="flex-1 p-4 overflow-y-auto custom-scroll">
       <ul class="space-y-1">
-        <li
-          v-for="item in menuItems"
-          :key="item.label"
-          class="relative"
-          @click.stop
-        >
+        <li v-for="item in menuItems" :key="item.label" class="relative" @click.stop>
           <!-- Parent -->
-          <NuxtLink
-            :to="item.to || '#'"
+          <NuxtLink :to="item.to || '#'"
             class="group flex items-center justify-between px-3 py-2 rounded-full transition-colors duration-200"
             :class="isActiveParent(item)
               ? 'bg-[#0F4841] text-white'
-              : 'text-gray-600 hover:bg-[#0F4841] hover:text-white'"
-            @click="handleClick(item, $event)"
-          >
+              : 'text-gray-600 hover:bg-[#0F4841] hover:text-white'" @click="handleClick(item, $event)">
             <div class="flex items-center space-x-3">
-              <NuxtImg
-                :src="item.icon"
-                :alt="item.label"
-                width="20"
-                class="transition-all duration-200"
-                :class="isActiveParent(item)
-                  ? 'filter brightness-[4.5]'
-                  : 'group-hover:filter group-hover:brightness-[4.5]'"
-              />
-              <span
-                class="text-sm transition-colors duration-200"
-                :class="isActiveParent(item)
-                  ? 'text-white'
-                  : 'text-[#595959] group-hover:text-white'"
-              >
+              <NuxtImg :src="item.icon" :alt="item.label" width="20" class="transition-all duration-200" :class="isActiveParent(item)
+                ? 'filter brightness-[4.5]'
+                : 'group-hover:filter group-hover:brightness-[4.5]'" />
+              <span class="text-sm transition-colors duration-200" :class="isActiveParent(item)
+                ? 'text-white'
+                : 'text-[#595959] group-hover:text-white'">
                 {{ item.label }}
               </span>
             </div>
 
             <!-- Arrow -->
-            <NuxtImg
-              v-if="item.children"
-              src="/dropdown-icon.svg"
-              alt="Dropdown"
-              class="w-4 h-4 transition-transform"
+            <NuxtImg v-if="item.children" src="/dropdown-icon.svg" alt="Dropdown" class="w-4 h-4 transition-transform"
               :class="[
                 (isDropdownOpen(item) ? 'rotate-180' : ''),
                 isActiveParent(item)
                   ? 'filter brightness-[4.5]'
                   : 'group-hover:filter group-hover:brightness-[4.5]'
-              ]"
-            />
+              ]" />
           </NuxtLink>
 
           <!-- Dropdown Items -->
           <transition name="fade">
-            <ul
-              v-if="item.children && isDropdownOpen(item)"
-              class="pl-4 mt-2 space-y-1"
-            >
-              <li
-                v-for="child in item.children"
-                :key="child.to"
-                class="flex items-center"
-              >
-                <NuxtLink
-                  :to="child.to"
-                  class="flex items-center space-x-2 text-sm transition-colors w-full pt-1"
+            <ul v-if="item.children && isDropdownOpen(item)" class="pl-4 mt-2 space-y-1">
+              <li v-for="child in item.children" :key="child.to" class="flex items-center">
+                <NuxtLink :to="child.to" class="flex items-center space-x-2 text-sm transition-colors w-full pt-1"
                   :class="isActive(child.to)
                     ? 'font-semibold text-[#0F4841]'
-                    : 'text-[#595959] hover:text-[#0F4841]'"
-                  @click="openDropdown = null"
-                >
+                    : 'text-[#595959] hover:text-[#0F4841]'" @click="openDropdown = null">
                   <NuxtImg src="/before-icon.svg" alt="icon" width="18" height="30" class="mt-[-20px]" />
                   <span>{{ child.label }}</span>
                 </NuxtLink>
@@ -132,19 +99,19 @@ const menuItems = [
     ]
   },
   { to: '/customers', label: 'Customers', icon: 'customers-icon.svg' },
-  // {
-  //   label: 'Notifications',
-  //   icon: 'notifications-icon.svg',
-  //   children: [
-  //     { to: '/send-push-notification', label: 'Send Push Notification' },
-  //     { to: '/send-email-notification', label: 'Send Email Notification' },
-  //     { to: '/system-notifications', label: 'System Notifications' },
-  //     { to: '/notification-History', label: 'Notification History' }
-  //   ]
-  // },
-  // { to: '/what-new', label: 'What’s New', icon: '/whatsnew-icon.svg' },
-  // { to: '/support', label: 'Support', icon: '/support-icon.svg' },
-  // { to: '/reports', label: 'Reports', icon: '/reports-icon.svg' }
+  {
+    label: 'Notifications',
+    icon: 'notifications-icon.svg',
+    children: [
+      { to: '/send-push-notification', label: 'Send Push Notification' },
+      { to: '/send-email-notification', label: 'Send Email Notification' },
+      { to: '/system-notifications', label: 'System Notifications' },
+      { to: '/notification-History', label: 'Notification History' }
+    ]
+  },
+  { to: '/what-new', label: 'What’s New', icon: '/whatsnew-icon.svg' },
+  { to: '/support', label: 'Support', icon: '/support-icon.svg' },
+  { to: '/reports', label: 'Reports', icon: '/reports-icon.svg' }
 ]
 
 // ✅ Check if a parent is active based on current route
@@ -197,6 +164,7 @@ onBeforeUnmount(() => {
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
