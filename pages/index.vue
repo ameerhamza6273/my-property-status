@@ -14,7 +14,6 @@
     <div class="relative z-10 bg-white rounded-3xl shadow-2xl p-5 md:p-8 pb-7 w-full max-w-[320px] sm:max-w-[400px] md:max-w-[600px] ">
       <!-- Logo -->
       <NuxtImg src="Logo.svg" alt="Logo" width="170" />
-     
       
       <!-- Header -->
       <div class="my-4 md:my-6">
@@ -86,7 +85,7 @@
         <button
           type="submit"
           :disabled="loading"
-          class="mt-6 w-full bg-[#0F4841] hover:bg-[##0F4841] disabled:bg-[#0f4841e6] text-white font-medium py-2 rounded-full transition-colors duration-200 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+          class="mt-6 w-full bg-[#0F4841] hover:bg-[#0F4841] disabled:bg-[#0f4841e6] text-white font-medium py-2 rounded-full transition-colors duration-200 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
         >
           <span v-if="loading" class="flex items-center justify-center">
             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -111,37 +110,38 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'  // ✅ Import router
+import { useRouter } from 'vue-router'
 
-// Router instance
 const router = useRouter()
 
-// Reactive form data
+// Form data
 const form = reactive({
   email: '',
   password: '',
   remember: false
 })
 
-// Component state
 const showPassword = ref(false)
 const loading = ref(false)
 
-// ✅ Login handler
+// ✅ Updated Login Logic (Role Auto-Detect)
 const handleLogin = async () => {
   loading.value = true
-  
   try {
-    // Simulate API call (replace with real login logic)
-    console.log('Login attempt:', form)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // ✅ Navigate to dashboard after successful login
-    router.push('/dashboard')
+    const { email, password } = form
 
+    // Fake role-based login
+    if (email === 'admin@test.com' && password === 'admin123') {
+      localStorage.setItem('user', JSON.stringify({ email, role: 'admin' }))
+      router.push('/admin/dashboard')
+    } else if (email === 'agency@test.com' && password === 'agency123') {
+      localStorage.setItem('user', JSON.stringify({ email, role: 'agency' }))
+      router.push('/agency/dashboard')
+    } else {
+      alert('Invalid credentials!')
+    }
   } catch (error) {
     console.error('Login error:', error)
-    // Handle login error
   } finally {
     loading.value = false
   }
