@@ -12,20 +12,17 @@
         <table class="w-full min-w-[900px]">
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
-<th
-  v-for="column in columns"
-  :key="column.key"
-  :class="[
-    'px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
-    allNumeric ? 'min-w-20' : 'min-w-44'
-  ]"
->
-  <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer" @click="toggleSort(column.key)">
-    <span>{{ column.label }}</span>
-    <NuxtImg src="switch-vertical.svg" width="16" height="16" />
-  </div>
-  <span v-else>{{ column.label }}</span>
-</th>
+              <th v-for="column in columns" :key="column.key" :class="[
+                'px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
+                allNumeric ? 'min-w-20' : 'min-w-44'
+              ]">
+                <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer"
+                  @click="toggleSort(column.key)">
+                  <span>{{ column.label }}</span>
+                  <NuxtImg src="switch-vertical.svg" width="16" height="16" />
+                </div>
+                <span v-else>{{ column.label }}</span>
+              </th>
 
 
             </tr>
@@ -110,6 +107,8 @@
             <option value="25">25</option>
             <option value="50">50</option>
           </select>
+          <!-- <Tailwinddropdown v-model="itemsPerPage" button-class="py-1 bg-white" placeholder="Date Period From - To"
+              :options="pagValue"  @change="handleItemsPerPageChange" /> -->
         </div>
       </div>
 
@@ -145,7 +144,12 @@ const props = defineProps({
     default: 'asc'
   }
 })
-
+const pagValue = [
+  { value: "5", label: "5" },
+  { value: "10", label: "10" },
+  { value: "25", label: "25" },
+  { value: "50", label: "50" },
+];
 // Emits
 const emit = defineEmits(['sort-change', 'page-change'])
 

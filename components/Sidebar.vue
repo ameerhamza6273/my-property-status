@@ -120,7 +120,7 @@ onMounted(() => {
 // ✅ Logout Function
 const logout = () => {
   localStorage.removeItem('user')
-  router.push('/login')
+  router.push('/')
 }
 
 // ✅ Admin & Agency Menus
