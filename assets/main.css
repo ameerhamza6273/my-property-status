@@ -3,15 +3,46 @@
 @import "swiper/css/pagination";
 @import "swiper/css/navigation";
 
-/* @import url(https://fonts.googleapis.com/css?family=Barlow); */
-@import url(https://fonts.googleapis.com/css?family=Inter);
+/* Light (300) */
+@font-face {
+  font-family: 'ViveBody';
+  src: url('/Vive-Body/ViveBody-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Regular (400) */
+@font-face {
+  font-family: 'ViveBody';
+  src: url('/Vive-Body/ViveBody-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Medium (500) */
+@font-face {
+  font-family: 'ViveBody';
+  src: url('/Vive-Body/ViveBody-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Bold (700) */
+@font-face {
+  font-family: 'ViveBody';
+  src: url('/Vive-Body/ViveBody-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+
 
 :root {
     --transition: all 0.5s ease-in-out;
 }
 
 body{
-    font-family: 'Inter';
+    font-family: 'ViveBody';
 }
 
 html {
