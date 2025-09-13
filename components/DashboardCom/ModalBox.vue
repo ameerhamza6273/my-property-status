@@ -1,23 +1,15 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      @click="$emit('close')"
-    >
-      <div
-        class="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden"
-        @click.stop
-      >
+    <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      @click="$emit('close')">
+      <div class="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden" @click.stop>
         <!-- Modal Header -->
         <div class="flex items-center justify-between px-5 py-4">
           <h2 class="text-base font-semibold text-[#292929] max-w-[80%]">
-            {{ modalData.title }}
+            {{ modalData.title }}<br>
+            {{ modalData.title2 }}
           </h2>
-          <button
-            @click="$emit('close')"
-            class="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
+          <button @click="$emit('close')" class="p-1 hover:bg-gray-100 rounded-full transition-colors">
             <NuxtImg src="close-icon.svg" width="24" height="24" />
           </button>
         </div>
@@ -25,17 +17,12 @@
         <!-- Tabs Navigation -->
         <div v-if="modalData.tabs" class="px-5">
           <div class="inline-flex border border-[#D9D9D9] rounded-full">
-            <button
-              v-for="tab in modalData.tabs"
-              :key="tab.key"
-              @click="activeTab = tab.key"
-              :class="[
-                'py-2 px-6 text-sm font-medium rounded-full transition-colors',
-                activeTab === tab.key
-                  ? 'bg-[#0F4841] text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-200'
-              ]"
-            >
+            <button v-for="tab in modalData.tabs" :key="tab.key" @click="activeTab = tab.key" :class="[
+              'py-2 px-6 text-sm font-medium rounded-full transition-colors',
+              activeTab === tab.key
+                ? 'bg-[#0F4841] text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-200'
+            ]">
               {{ tab.label }}
             </button>
           </div>
@@ -44,67 +31,40 @@
         <!-- Modal Content -->
         <div class="px-5 pb-5" :class="modalData.tabs ? 'pt-4' : ''">
           <!-- Table Header -->
-          <div
-            v-if="currentTabData.headers?.middle"
-            class="flex justify-between items-center py-2 px-3 bg-[#F8F8F8] rounded-t-xl text-xs font-medium text-gray-600 border"
-          >
-            <button
-              class="flex items-center gap-1 flex-1 text-left"
-              @click="toggleSort('left')"
-            >
+          <div v-if="currentTabData.headers?.middle"
+            class="flex justify-between items-center py-2 px-3 bg-[#F8F8F8] rounded-t-xl text-xs font-medium text-gray-600 border">
+            <button class="flex items-center gap-1 flex-1 text-left" @click="toggleSort('left')">
               <span>{{ currentTabData.headers.left }}</span>
               <NuxtImg :src="getIcon('left')" width="14" height="14" />
             </button>
-            <button
-              class="flex items-center gap-1 flex-1 justify-start"
-              @click="toggleSort('middle')"
-            >
+            <button class="flex items-center gap-1 flex-1 justify-start" @click="toggleSort('middle')">
               <span>{{ currentTabData.headers.middle }}</span>
               <NuxtImg :src="getIcon('middle')" width="14" height="14" />
             </button>
-            <button
-              class="flex items-center gap-1 flex-1 justify-center"
-              @click="toggleSort('right')"
-            >
+            <button class="flex items-center gap-1 flex-1 justify-center" @click="toggleSort('right')">
               <span>{{ currentTabData.headers.right }}</span>
               <NuxtImg :src="getIcon('right')" width="14" height="14" />
             </button>
           </div>
 
-          <div
-            v-else
-            class="flex justify-between items-center py-2 px-3 bg-[#F8F8F8] rounded-t-xl text-xs font-medium text-gray-600 border"
-          >
-            <button
-              class="flex items-center gap-1 flex-1 text-left"
-              @click="toggleSort('left')"
-            >
+          <div v-else
+            class="flex justify-between items-center py-2 px-3 bg-[#F8F8F8] rounded-t-xl text-xs font-medium text-gray-600 border">
+            <button class="flex items-center gap-1 flex-1 text-left" @click="toggleSort('left')">
               <span>{{ currentTabData.headers?.left || 'Country' }}</span>
               <NuxtImg :src="getIcon('left')" width="14" height="14" />
             </button>
-            <button
-              class="flex items-center gap-1 flex-1 justify-center"
-              @click="toggleSort('right')"
-            >
+            <button class="flex items-center gap-1 flex-1 justify-center" @click="toggleSort('right')">
               <span>{{ currentTabData.headers?.right || 'Customers' }}</span>
               <NuxtImg :src="getIcon('right')" width="14" height="14" />
             </button>
           </div>
 
           <!-- Table Content -->
-          <div
-            class="bg-white border border-[#D9D9D9] rounded-b-xl max-h-80 overflow-y-auto"
-          >
-            <div
-              v-for="(item, index) in sortedData"
-              :key="(item.country || item.name) + index"
-              class="flex items-center justify-between py-3 px-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-25"
-            >
+          <div class="bg-white border border-[#D9D9D9] rounded-b-xl max-h-80 overflow-y-auto">
+            <div v-for="(item, index) in sortedData" :key="(item.country || item.name) + index"
+              class="flex items-center justify-between py-3 px-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-25">
               <!-- Three column layout -->
-              <div
-                v-if="currentTabData.headers?.middle"
-                class="flex items-center justify-between w-full"
-              >
+              <div v-if="currentTabData.headers?.middle" class="flex items-center justify-between w-full">
                 <div class="flex items-center space-x-3 flex-1">
                   <NuxtImg src="Spanish.svg" width="20" height="20" />
                   <span class="text-sm text-gray-900">{{
@@ -119,8 +79,9 @@
                 </div>
                 <div class="flex-1 text-center">
                   <span class="text-sm font-medium text-gray-900">{{
-                    (item.customers || item.count || item.value).toLocaleString()
-                  }}</span>
+                    item.customers || item.count || item.value
+                    }}</span>
+
                 </div>
               </div>
 
@@ -134,7 +95,7 @@
                 </div>
                 <div class="flex-1 text-center">
                   <span class="text-sm font-medium text-black">{{
-                    (item.customers || item.count || item.value).toLocaleString()
+                    (item.customers || item.count || item.value)
                   }}</span>
                 </div>
               </template>
@@ -197,33 +158,42 @@ const sortedData = computed(() => {
       valB = b.customers || b.count || b.value || 0
     }
 
-    if (typeof valA === 'string') {
-      valA = valA.toLowerCase()
-      valB = valB.toLowerCase()
-    }
+    // Check if number
+    const isNumber = typeof valA === 'number' && typeof valB === 'number'
 
-    if (valA < valB) return order === 'asc' ? -1 : 1
-    if (valA > valB) return order === 'asc' ? 1 : -1
-    return 0
+    if (!isNumber) {
+      // string sort
+      valA = String(valA).toLowerCase()
+      valB = String(valB).toLowerCase()
+      if (valA < valB) return order === 'asc' ? -1 : 1
+      if (valA > valB) return order === 'asc' ? 1 : -1
+      return 0
+    } else {
+      // number sort
+      return order === 'asc' ? valA - valB : valB - valA
+    }
   })
 })
 
 const toggleSort = (column) => {
+  const isNumberColumn = column === 'right' // right wala column number hai
+
   if (sortState.value.column === column) {
+    // toggle
     if (sortState.value.order === 'asc') {
       sortState.value.order = 'desc'
     } else if (sortState.value.order === 'desc') {
-      // reset to no sort on third click
       sortState.value.column = null
       sortState.value.order = null
     } else {
-      sortState.value.order = 'asc'
+      sortState.value.order = isNumberColumn ? 'desc' : 'asc'
     }
   } else {
     sortState.value.column = column
-    sortState.value.order = 'asc'
+    sortState.value.order = isNumberColumn ? 'desc' : 'asc'
   }
 }
+
 
 const getIcon = (column) => {
   return sortState.value.column === column ? 'export-switch-vertical.svg' : 'switch-vertical.svg'

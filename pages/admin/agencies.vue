@@ -200,8 +200,8 @@ import { ref, computed } from "vue";
 const users = ref([
     {
         id: 1,
-        agency: [{ img: "Spanish.svg", value: "Remax" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Malta" }],
+        agency: [{ img: "/Spanish.svg", value: "Remax" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "Malta" }],
         adminUsers: 5,
         totalConnectedProperties: 3249,
         rentalProperties: 2000,
@@ -210,8 +210,8 @@ const users = ref([
     },
     {
         id: 2,
-        agency: [{ img: "Spanish.svg", value: "Alliance" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Sweden" }],
+        agency: [{ img: "/Spanish.svg", value: "Alliance" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "Sweden" }],
         adminUsers: 3,
         totalConnectedProperties: 1500,
         rentalProperties: 800,
@@ -220,8 +220,8 @@ const users = ref([
     },
     {
         id: 3,
-        agency: [{ img: "Spanish.svg", value: "Remax" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Malta" }],
+        agency: [{ img: "/Spanish.svg", value: "Remax" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "Malta" }],
         adminUsers: 5,
         totalConnectedProperties: 3249,
         rentalProperties: 2000,
@@ -230,8 +230,8 @@ const users = ref([
     },
     {
         id: 4,
-        agency: [{ img: "Spanish.svg", value: "Alliance" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Sweden" }],
+        agency: [{ img: "/Spanish.svg", value: "Alliance" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "Sweden" }],
         adminUsers: 3,
         totalConnectedProperties: 1500,
         rentalProperties: 800,

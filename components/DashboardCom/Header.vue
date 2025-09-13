@@ -17,65 +17,70 @@
         <div class="flex items-center space-x-2">
           <span class="text-sm text-black">Filter By : </span>
           <div class="relative">
-            <Tailwinddropdown button-class="py-1 bg-white" placeholder="Date Period From - To"
-              :options="datePeriod" />
+            <Tailwinddropdown
+              button-class="py-1 bg-white border border-gray-300 text-sm rounded-full"
+              placeholder="Date Period From - To"
+              :options="datePeriod"
+            />
           </div>
         </div>
 
         <!-- Filter Buttons -->
         <div class="flex items-center space-x-2">
           <button
-            class="px-3 py-1 text-sm rounded-full bg-white border border-gray-300 hover:bg-gray-100"
+            v-for="btn in filterButtons"
+            :key="btn.value"
+            @click="activeFilter = btn.value"
+            class="px-3 py-1 text-sm rounded-full border transition"
+            :class="[
+              activeFilter === btn.value
+                ? 'bg-[#0F4841] text-white border-[#0F4841]'
+                : 'bg-white border-gray-300 hover:bg-gray-100 text-black'
+            ]"
           >
-            Today
-          </button>
-          <button
-            class="px-3 py-1 text-sm rounded-full bg-white border border-gray-300 hover:bg-gray-100"
-          >
-            This Month
-          </button>
-          <button
-            class="px-3 py-1 text-sm rounded-full bg-white border border-gray-300 hover:bg-gray-100"
-          >
-            This Year
-          </button>
-          <button
-            class="px-3 py-1 text-sm rounded-full bg-[#0F4841] text-white"
-          >
-            All Time
+            {{ btn.label }}
           </button>
         </div>
 
         <!-- Profile Dropdown -->
-        <div class="flex items-center space-x-2 bg-white border border-gray-300 hover:bg-gray-100 p-1 text-sm rounded-full">
-          <span
-            class="inline-flex items-center justify-center w-5 h-5 bg-red-500 text-white rounded-full text-xs"
-          >
-            9
-          </span>
-          <div class="relative">
-            <button
-              class="flex items-center space-x-1 text-gray-700 text-sm font-medium"
-            >
-              <span>Matt</span>
-              <NuxtImg src="/dropdown-icon.svg" width="14" height="14" />
-            </button>
-          </div>
-        </div>
+        <Tailwinddropdown
+          v-model="selectedProfile"
+          :options="profileOptions"
+          button-class="bg-white p-1"
+          dropdownMinWidth="min-w-[140px]"
+        />
       </div>
     </div>
   </header>
 </template>
 
-
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 const datePeriod = [
-    { value: "Date Period 5 - 10", label: "Date Period 5 - 10" },
-    { value: "Date Period From - To", label: "Date Period From - To" },
+  { value: "Date Period 5 - 10", label: "Date Period 5 - 10" },
+  { value: "Date Period From - To", label: "Date Period From - To" },
+];
+
+const profileOptions = [
+  { value: "all contories", label: "All Contories", img: "all-cont-icon.svg" },
+  { value: "malta", label: "Malta", img: "Spanish.svg" },
+  { value: "italy", label: "Italy", img: "Spanish.svg" },
+  { value: "france", label: "France", img: "Spanish.svg" },
+  { value: "germany", label: "Germany", img: "Spanish.svg" },
 ];
 
 
-</script>
+// ✅ Filter buttons config
+const filterButtons = [
+  { value: "today", label: "Today" },
+  { value: "month", label: "This Month" },
+  { value: "year", label: "This Year" },
+  { value: "all", label: "All Time" },
+];
 
+// ✅ Active filter state (default: All Time)
+const activeFilter = ref("all");
+
+const selectedProfile = ref(profileOptions[0]);
+</script>

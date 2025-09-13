@@ -13,7 +13,7 @@
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
               <th v-for="column in columns" :key="column.key" :class="[
-                'px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
+                'px-3 py-2 text-left text-xs font-medium text-gray-500  tracking-wider',
                 allNumeric ? 'min-w-20' : 'min-w-44'
               ]">
                 <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer"
@@ -100,15 +100,9 @@
 
         <div class="flex items-center space-x-2">
           <span class="text-sm text-gray-500">Result per page:</span>
-          <select v-model="itemsPerPage" @change="handleItemsPerPageChange"
-            class="text-sm border border-gray-300 rounded-full px-2 py-1 bg-white">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-          </select>
-          <!-- <Tailwinddropdown v-model="itemsPerPage" button-class="py-1 bg-white" placeholder="Date Period From - To"
-              :options="pagValue"  @change="handleItemsPerPageChange" /> -->
+         
+          <Tailwinddropdown v-model="itemsPerPage" button-class="py-1 bg-white" :options="pagValue"
+            @change="handleItemsPerPageChange" />
         </div>
       </div>
 
@@ -145,11 +139,12 @@ const props = defineProps({
   }
 })
 const pagValue = [
-  { value: "5", label: "5" },
-  { value: "10", label: "10" },
-  { value: "25", label: "25" },
-  { value: "50", label: "50" },
+  { value: 5, label: "5" },
+  { value: 10, label: "10" },
+  { value: 25, label: "25" },
+  { value: 50, label: "50" },
 ];
+
 // Emits
 const emit = defineEmits(['sort-change', 'page-change'])
 

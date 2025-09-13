@@ -22,22 +22,22 @@
                     <!-- Table Header -->
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort">
                                     <span>Name & Surname</span>
                                     <NuxtImg :src="sortIcon" width="16" height="16" />
                                 </div>
                             </th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
                                 Mobile Number
                             </th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
                                 Email
                             </th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
                                 Permissions
                             </th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-500  tracking-wider">
                             </th>
                         </tr>
                     </thead>
