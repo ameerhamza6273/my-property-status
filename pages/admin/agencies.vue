@@ -17,8 +17,8 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Name
                 </label>
-                <Tailwinddropdown v-model="filters.agencyName" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Agency Name"
-                    :options="agencyNameOptions" />
+                <Tailwinddropdown v-model="filters.agencyName" button-class="py-2 bg-[#F8F8F8]"
+                    placeholder="Select Agency " :options="agencyNameOptions" />
             </div>
 
             <!-- Agency Country -->
@@ -26,8 +26,8 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Country
                 </label>
-                <Tailwinddropdown v-model="filters.agencyCountry" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Agency Country"
-                    :options="agencyCountryOptions" />
+                <Tailwinddropdown v-model="filters.agencyCountry" button-class="py-2 bg-[#F8F8F8]"
+                    placeholder="Select Agency Country" :options="agencyCountryOptions" />
             </div>
 
             <!-- Admin Users -->
@@ -35,12 +35,12 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Admin Users
                 </label>
-                <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
                     <select v-model="filters.adminUsersOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
-                        <option value=">">></option>
-                        <option value="<"><</option>
+                        <option value=">"> ></option>
+                        <option value="<">
+                             < </option>
                     </select>
                     <input v-model="filters.adminUsers" type="number" placeholder="Type Number..."
                         class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
@@ -52,12 +52,12 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Total Connected Properties
                 </label>
-                <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
                     <select v-model="filters.connectedPropertiesOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
-                        <option value=">">></option>
-                        <option value="<"><</option>
+                        <option value=">"> ></option>
+                        <option value="<">
+                            < </option>
                     </select>
                     <input v-model="filters.connectedProperties" type="number" placeholder="Type Number..."
                         class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
@@ -69,12 +69,12 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Rental Properties
                 </label>
-                <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
                     <select v-model="filters.rentalPropertiesOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
-                        <option value=">">></option>
-                        <option value="<"><</option>
+                        <option value=">"> ></option>
+                        <option value="<">
+                            < </option>
                     </select>
                     <input v-model="filters.rentalProperties" type="number" placeholder="Type Number..."
                         class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
@@ -86,12 +86,12 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Sale Properties
                 </label>
-                <div
-                    class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
+                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
                     <select v-model="filters.salePropertiesOperator" class="px-2 rounded-full">
                         <option value="=">=</option>
-                        <option value=">">></option>
-                        <option value="<"><</option>
+                        <option value=">"> ></option>
+                        <option value="<">
+                            < </option>
                     </select>
                     <input v-model="filters.saleProperties" type="number" placeholder="Type Number..."
                         class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
@@ -121,14 +121,18 @@
         </div>
 
         <!-- Users Table -->
+        <!-- <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10"
+            @sort-change="handleSortChange" @page-change="handlePageChange" /> -->
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
             <div class="overflow-x-auto">
+
                 <table class="w-full min-w-[900px]">
                     <!-- Table Header -->
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
                             <th v-for="column in tableHeaders" :key="column.key"
-                                class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort(column.key)">
                                     <span>{{ column.label }}</span>
                                     <NuxtImg :src="getSortIcon(column.key)" width="16" height="16" />
@@ -138,7 +142,7 @@
                         </tr>
                     </thead>
 
-                     <!-- Table Body -->
+                    <!-- Table Body -->
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
                             <td class="px-4 py-3 whitespace-nowrap">
@@ -207,6 +211,8 @@ const users = ref([
         rentalProperties: 2000,
         saleProperties: 1249,
         apiKey: "API_KEY_XY12345..",
+        edit: [{ img: "/edit-red-icon.svg", value: "Edit" }],
+
     },
     {
         id: 2,
@@ -217,6 +223,8 @@ const users = ref([
         rentalProperties: 800,
         saleProperties: 700,
         apiKey: "API_KEY_XY67890..",
+        edit: [{ img: "/edit-red-icon.svg", value: "Edit" }],
+
     },
     {
         id: 3,
@@ -227,6 +235,8 @@ const users = ref([
         rentalProperties: 2000,
         saleProperties: 1249,
         apiKey: "API_KEY_XY12345..",
+        edit: [{ img: "/edit-red-icon.svg", value: "Edit" }],
+
     },
     {
         id: 4,
@@ -237,6 +247,8 @@ const users = ref([
         rentalProperties: 800,
         saleProperties: 700,
         apiKey: "API_KEY_XY67890..",
+        edit: [{ img: "/edit-red-icon.svg", value: "Edit" }],
+
     }
 ]);
 
@@ -269,13 +281,15 @@ const sortColumn = ref(null);
 const sortOrder = ref(null);
 
 const tableHeaders = [
-    { key: 'agency', label: 'Agency' },
-    { key: 'agencyCountry', label: 'Agency Country' },
+    { key: 'agency', label: 'Agency', type: 'array-with-flags' },
+    { key: 'agencyCountry', label: 'Agency Country', type: 'array-with-flags' },
     { key: 'adminUsers', label: 'Admin Users' },
     { key: 'totalConnectedProperties', label: 'Total Connected Properties' },
     { key: 'rentalProperties', label: 'Rental Properties' },
     { key: 'saleProperties', label: 'Sale Properties' },
     { key: 'apiKey', label: 'API Key' },
+    { key: 'edit', label: '', type: 'array-with-flags' },
+
 ];
 
 const toggleSort = (column) => {

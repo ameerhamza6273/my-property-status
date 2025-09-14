@@ -9,21 +9,21 @@ const activeArticles = ref([
     {
         id: 1,
         position: 1,
-        image: "What-New-Image.svg",
+        image: "/What-New-Image.svg",
         title: "Tips to Sell Faster",
         description: "Boost your property visibility with our latest expert guide."
     },
     {
         id: 2,
         position: 2,
-        image: "What-New-Image.svg",
+        image: "/What-New-Image.svg",
         title: "Tips to Sell Faster",
         description: "Boost your property visibility with our latest expert guide."
     },
     {
         id: 3,
         position: 3,
-        image: "What-New-Image.svg",
+        image: "/What-New-Image.svg",
         title: "Tips to Sell Faster",
         description: "Boost your property visibility with our latest expert guide."
     }
@@ -33,14 +33,14 @@ const archivedArticles = ref([
     {
         id: 6,
         position: 1,
-        image: "What-New-Image.svg",
+        image: "/What-New-Image.svg",
         title: "Old Marketing Tips",
         description: "Previous strategies that were effective in past markets."
     },
     {
         id: 7,
         position: 2,
-        image: "What-New-Image.svg",
+        image: "/What-New-Image.svg",
         title: "Legacy Practices",
         description: "Traditional approaches to property management and sales."
     }

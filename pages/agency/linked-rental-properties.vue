@@ -82,6 +82,33 @@ const customers = ref([
         inAppAction: "Archived",
         action: "View Details",
     },
+    {
+        id: 7024,
+        fullName: "John Smith",
+        number: "+1 234 567 890",
+        type: "rented",
+        date: "2025-09-01",
+        inAppAction: "Archived",
+        action: "View Details",
+    },
+    {
+        id: 7024,
+        fullName: "John Smith",
+        number: "+1 234 567 890",
+        type: "rented",
+        date: "2025-09-01",
+        inAppAction: "Archived",
+        action: "View Details",
+    },
+    {
+        id: 7024,
+        fullName: "John Smith",
+        number: "+1 234 567 890",
+        type: "rented",
+        date: "2025-09-01",
+        inAppAction: "Archived",
+        action: "View Details",
+    },
 ]);
 
 // Table column configuration

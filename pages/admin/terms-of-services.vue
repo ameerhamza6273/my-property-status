@@ -27,12 +27,12 @@
         <div class="bg-white rounded-2xl py-3 pl-6 ">
             <div class="h-[80vh] overflow-y-auto custom-scroll pt-2">
                 <div v-for="(section, index) in terms" :key="index" class="mb-6 ">
-                    <h3 class="text-base font-semibold text-black">
+                    <h3 class="text-sm font-bold text-black">
                         <span v-if="!isEditing">{{ section.title }}</span>
                         <input v-else v-model="section.title" class="border rounded px-2 py-1 text-sm w-full mb-2" />
                     </h3>
 
-                    <p class="text-base text-[#595959] font-medium mt-1">
+                    <p class="text-sm text-[#595959] font-medium mt-1">
                         <span v-if="!isEditing">{{ section.content }}</span>
                         <textarea v-else v-model="section.content" class="border rounded px-2 py-1 text-sm w-full"
                             rows="3"></textarea>
