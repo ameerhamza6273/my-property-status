@@ -160,37 +160,24 @@
                         <label for="permission" class="block text-sm font-medium text-[#767676] mb-2">
                             Permissions
                         </label>
-                        <div
-  class="flex flex-nowrap items-center gap-2 w-full px-3 py-1 border border-gray-300 rounded-full bg-white focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] focus-within:border-[#0F4841] transition-colors overflow-x-auto scrollbar-hide"
-  style="min-height: 42px;"
-  @click="focusInput"
->
-  <!-- Selected Permissions -->
-  <span
-    v-for="(perm, index) in selectedPermissions"
-    :key="index"
-    class="flex items-center gap-1 px-2 py-1 bg-[#F8F8F8] rounded-full text-[#0F4841] text-sm font-medium border border-[#D9D9D9] shrink-0"
-  >
-    {{ perm }}
-    <button
-      type="button"
-      class="text-gray-500 hover:text-red-500"
-      @click.stop="removePermission(index)"
-    >
-      <NuxtImg src="x-circle-red.svg" alt="icon" class="w-[16px] h-[16px]" />
-    </button>
-  </span>
+                        <div class="flex flex-nowrap items-center gap-2 w-full px-3 py-1 border border-gray-300 rounded-full bg-white focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] focus-within:border-[#0F4841] transition-colors overflow-x-auto scrollbar-hide"
+                            style="min-height: 42px;" @click="focusInput">
+                            <!-- Selected Permissions -->
+                            <span v-for="(perm, index) in selectedPermissions" :key="index"
+                                class="flex items-center gap-1 px-2 py-1 bg-[#F8F8F8] rounded-full text-[#0F4841] text-sm font-medium border border-[#D9D9D9] shrink-0">
+                                {{ perm }}
+                                <button type="button" class="text-gray-500 hover:text-red-500"
+                                    @click.stop="removePermission(index)">
+                                    <NuxtImg src="x-circle-red.svg" alt="icon" class="w-[16px] h-[16px]" />
+                                </button>
+                            </span>
 
-  <!-- Input -->
-  <input
-    ref="permissionInput"
-    type="text"
-    v-model="inputValue"
-    placeholder="Select Permissions below"
-    class="flex-1 text-sm bg-transparent outline-none min-w-[100px]"
-    @keydown.enter.prevent="addPermission"
-  />
-</div>
+                            <!-- Input -->
+                            <input ref="permissionInput" type="text" v-model="inputValue"
+                                placeholder="Select Permissions below"
+                                class="flex-1 text-sm bg-transparent outline-none min-w-[100px]"
+                                @keydown.enter.prevent="addPermission" />
+                        </div>
 
 
                         <!-- Available Permissions -->
@@ -395,9 +382,9 @@ const sortUsers = () => {
     });
 };
 useHead({
-  meta: [
-    { name: 'viewport', content: 'width=1300' }
-  ]
+    meta: [
+        { name: 'viewport', content: 'width=1300' }
+    ]
 })
 </script>
 
@@ -405,12 +392,14 @@ useHead({
 <style scoped>
 /* Hide scrollbar but keep scroll functionality */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, Opera */
+    display: none;
+    /* Chrome, Safari, Opera */
 }
-
 </style>

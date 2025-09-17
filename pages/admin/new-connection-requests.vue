@@ -64,8 +64,8 @@ const propertyFilters = ref({
 const users = ref([
     {
         id: 1,
-        agency: [{ img: "Spanish.svg", value: "Remax" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Malta" }],
+        agency: [{ img: "/Spanish.svg", value: "Remax" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "Malta" }],
         MPSPropertyID: 5,
         agencyPropertyID: 3249,
         nameAndSurname: "Savannah Nguyen",
@@ -77,8 +77,8 @@ const users = ref([
     },
     {
         id: 2,
-        agency: [{ img: "Spanish.svg", value: "Alliance" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "Sweden" }],
+        agency: [{ img: "/Spanish.svg", value: "Alliance" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "Sweden" }],
         MPSPropertyID: 3,
         agencyPropertyID: 1500,
         nameAndSurname: "Arlene McCoy",
@@ -89,8 +89,8 @@ const users = ref([
     },
     {
         id: 3,
-        agency: [{ img: "Spanish.svg", value: "Century 21" }],
-        agencyCountry: [{ img: "Spanish.svg", value: "USA" }],
+        agency: [{ img: "/Spanish.svg", value: "Century 21" }],
+        agencyCountry: [{ img: "/Spanish.svg", value: "USA" }],
         MPSPropertyID: 6,
         agencyPropertyID: 2000,
         nameAndSurname: "Cody Fisher",
@@ -100,7 +100,17 @@ const users = ref([
         sentBy: "Agency",
     }
 ]);
-
+const tableHeaders = [
+    { key: 'MPSPropertyID', label: 'MPS Property ID' },
+    { key: 'agencyPropertyID', label: 'Agency Property ID' },
+    { key: 'nameAndSurname', label: 'Name & Surname', sortable: true },
+    { key: 'mobileNumber', label: 'Mobile Number' },
+    { key: 'type', label: 'Type', sortable: true },
+    { key: 'agency', label: 'Agency',type: 'array-with-flags', sortable: true },
+    { key: 'agencyCountry', label: 'Agency Country',type: 'array-with-flags',sortable: true },
+    { key: 'requestDate', label: 'Request Date',sortable: true },
+    { key: 'sentBy', label: 'Sent By', sortable: true },
+];
 // ------------------- Sorting Logic -------------------
 const sortColumn = ref(null);
 const sortOrder = ref(null);
@@ -397,89 +407,7 @@ function removePropertyFilter(key) {
             <p class="text-sm text-[#0F4841] font-semibold">{{ filteredUsers.length }} Results</p>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[900px]">
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>
+        <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100" />
 
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                MPS Property ID</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Agency Property ID</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('nameAndSurname')">
-                                    <span>Name & Surname</span>
-                                    <NuxtImg :src="getSortIcon('nameAndSurname')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Mobile Number</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('type')">
-                                    <span>Type</span>
-                                    <NuxtImg :src="getSortIcon('type')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('agency')">
-                                    <span>Agency</span>
-                                    <NuxtImg :src="getSortIcon('agency')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('agencyCountry')">
-                                    <span>Agency Country</span>
-                                    <NuxtImg :src="getSortIcon('agencyCountry')" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Request Date</th>
-                            <th class="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('sentBy')">
-                                    <span>Sent By</span>
-                                    <NuxtImg :src="getSortIcon('sentBy')" width="16" height="16" />
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
-
-
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.MPSPropertyID }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.agencyPropertyID
-                            }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.nameAndSurname }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.mobileNumber }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.type }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="flex items-center space-x-2">
-                                    <div v-for="item in user.agency" :key="item.value"
-                                        class="flex items-center space-x-1">
-                                        <NuxtImg :src="item.img" alt="agency" class="w-5 h-5" />
-                                        <span class="text-sm font-medium text-black">{{ item.value }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="flex items-center space-x-2">
-                                    <div v-for="item in user.agencyCountry" :key="item.value"
-                                        class="flex items-center space-x-1">
-                                        <NuxtImg :src="item.img" alt="country" class="w-5 h-5" />
-                                        <span class="text-sm font-medium text-black">{{ item.value }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.requestDate }}</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.sentBy }}</td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </template>

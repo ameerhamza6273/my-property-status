@@ -6,8 +6,8 @@ const activeTab = ref("push"); // Default active tab
 // ------------------- Table Columns -------------------
 const tableColumns = [
   { label: "Notification Name", key: "notificationName", sortable: true },
-  { label: "Title", key: "title", sortable: true },
-  { label: "Description", key: "description", sortable: false }
+  { label: "Title", key: "title" },
+  { label: "Description", key: "description" }
 ];
 
 // ------------------- Data -------------------
@@ -29,14 +29,7 @@ const currentData = computed(() => {
   return activeTab.value === "push" ? pushNotifications.value : emailNotifications.value;
 });
 
-// ------------------- Event Handlers (Optional) -------------------
-const handleSortChange = (sortInfo) => {
-  console.log("Sort changed:", sortInfo);
-};
 
-const handlePageChange = (pageInfo) => {
-  console.log("Page changed:", pageInfo);
-};
 </script>
 
 <template>

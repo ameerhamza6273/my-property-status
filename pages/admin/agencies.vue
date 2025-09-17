@@ -35,15 +35,20 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Admin Users
                 </label>
-                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
-                    <select v-model="filters.adminUsersOperator" class="px-2 rounded-full">
+
+                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
+                    style="height: 38px;">
+                    <!-- <Tailwinddropdown v-model="filters.adminUsersOperator" button-class="py-1 bg-[#fff]"
+                     :options="adminUsersOperatorOptions" /> -->
+                    <select v-model="filters.adminUsersOperator"
+                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
                         <option value="=">=</option>
                         <option value=">"> ></option>
                         <option value="<">
-                             < </option>
+                            < </option>
                     </select>
                     <input v-model="filters.adminUsers" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
+                        class="text-sm w-full outline-none bg-transparent" />
                 </div>
             </div>
 
@@ -52,15 +57,17 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Total Connected Properties
                 </label>
-                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
-                    <select v-model="filters.connectedPropertiesOperator" class="px-2 rounded-full">
+                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
+                    style="height: 38px;">
+                    <select v-model="filters.connectedPropertiesOperator"
+                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
                         <option value="=">=</option>
                         <option value=">"> ></option>
                         <option value="<">
                             < </option>
                     </select>
                     <input v-model="filters.connectedProperties" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
+                        class="text-sm w-full outline-none bg-transparent" />
                 </div>
             </div>
 
@@ -69,15 +76,17 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Rental Properties
                 </label>
-                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
-                    <select v-model="filters.rentalPropertiesOperator" class="px-2 rounded-full">
+                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
+                    style="height: 38px;">
+                    <select v-model="filters.rentalPropertiesOperator"
+                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
                         <option value="=">=</option>
                         <option value=">"> ></option>
                         <option value="<">
                             < </option>
                     </select>
                     <input v-model="filters.rentalProperties" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
+                        class="text-sm w-full outline-none bg-transparent" />
                 </div>
             </div>
 
@@ -86,15 +95,17 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Sale Properties
                 </label>
-                <div class="flex w-full px-2 py-1.5 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]">
-                    <select v-model="filters.salePropertiesOperator" class="px-2 rounded-full">
+                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
+                    style="height: 38px;">
+                    <select v-model="filters.salePropertiesOperator"
+                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
                         <option value="=">=</option>
                         <option value=">"> ></option>
                         <option value="<">
                             < </option>
                     </select>
                     <input v-model="filters.saleProperties" type="number" placeholder="Type Number..."
-                        class="flex-1 bg-[#F8F8F8] pl-2 text-sm" />
+                        class="text-sm w-full outline-none bg-transparent" />
                 </div>
             </div>
         </div>
@@ -121,80 +132,8 @@
         </div>
 
         <!-- Users Table -->
-        <!-- <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10"
-            @sort-change="handleSortChange" @page-change="handlePageChange" /> -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100" />
 
-            <div class="overflow-x-auto">
-
-                <table class="w-full min-w-[900px]">
-                    <!-- Table Header -->
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th v-for="column in tableHeaders" :key="column.key"
-                                class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort(column.key)">
-                                    <span>{{ column.label }}</span>
-                                    <NuxtImg :src="getSortIcon(column.key)" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-3 py-3 text-right"></th>
-                        </tr>
-                    </thead>
-
-                    <!-- Table Body -->
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="flex items-center space-x-2">
-                                    <div v-for="item in user.agency" :key="item.value"
-                                        class="flex items-center space-x-1">
-                                        <img :src="item.img" alt="agency" class="w-5 h-5" />
-                                        <span class="text-sm font-medium text-black">{{ item.value }}</span>
-                                    </div>
-                                </div>
-                            </td>
-
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="flex items-center space-x-2">
-                                    <div v-for="item in user.agencyCountry" :key="item.value"
-                                        class="flex items-center space-x-1">
-                                        <img :src="item.img" alt="country" class="w-5 h-5" />
-                                        <span class="text-sm font-medium text-black">{{ item.value }}</span>
-                                    </div>
-                                </div>
-                            </td>
-
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm font-medium text-black">{{ user.adminUsers }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm text-black">{{ user.totalConnectedProperties }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm text-black">{{ user.rentalProperties }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm text-black">{{ user.saleProperties }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm text-black">{{ user.apiKey }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-right">
-                                <button
-                                    class="inline-flex items-center gap-1 px-3 py-1 text-sm text-[#E2522E] hover:text-red-700">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -263,6 +202,11 @@ const agencyNameOptions = [
     { value: 'Century', label: 'Century' },
     { value: 'Coldwell', label: 'Coldwell' },
 ];
+const adminUsersOperatorOptions = [
+    { value: '=', label: '=' },
+    { value: '>', label: '>' },
+    { value: '<', label: '<' },
+];
 
 const filters = ref({
     agencyName: '',
@@ -281,15 +225,14 @@ const sortColumn = ref(null);
 const sortOrder = ref(null);
 
 const tableHeaders = [
-    { key: 'agency', label: 'Agency', type: 'array-with-flags' },
-    { key: 'agencyCountry', label: 'Agency Country', type: 'array-with-flags' },
-    { key: 'adminUsers', label: 'Admin Users' },
-    { key: 'totalConnectedProperties', label: 'Total Connected Properties' },
-    { key: 'rentalProperties', label: 'Rental Properties' },
-    { key: 'saleProperties', label: 'Sale Properties' },
+    { key: 'agency', label: 'Agency', type: 'array-with-flags', sortable: true },
+    { key: 'agencyCountry', label: 'Agency Country', type: 'array-with-flags', sortable: true },
+    { key: 'adminUsers', label: 'Admin Users', sortable: true },
+    { key: 'totalConnectedProperties', label: 'Total Connected Properties', sortable: true },
+    { key: 'rentalProperties', label: 'Rental Properties', sortable: true },
+    { key: 'saleProperties', label: 'Sale Properties', sortable: true },
     { key: 'apiKey', label: 'API Key' },
     { key: 'edit', label: '', type: 'array-with-flags' },
-
 ];
 
 const toggleSort = (column) => {

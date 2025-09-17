@@ -7,8 +7,8 @@ const activeTab = ref("customPush"); // Default active tab
 const tableColumns = [
   { label: "# Sent", key: "sent", sortable: true },
   { label: "Date", key: "date", sortable: true },
-  { label: "Title", key: "title", sortable: false },
-  { label: "Description", key: "description", sortable: false }
+  { label: "Title", key: "title"},
+  { label: "Description", key: "description" }
 ];
 
 // ------------------- Notifications Data -------------------
@@ -40,15 +40,7 @@ const filteredCustomers = computed(() => {
   return [];
 });
 
-// ------------------- Event Handlers -------------------
-const handleSortChange = (sortInfo) => {
-  console.log("Sort changed:", sortInfo);
-  // If your DataTable handles sorting internally, nothing else needed.
-};
 
-const handlePageChange = (pageInfo) => {
-  console.log("Page changed:", pageInfo);
-};
 </script>
 
 <template>

@@ -86,11 +86,11 @@ const customers = ref([
 
 // Table column configuration
 const tableColumns = ref([
-    { key: "id", label: "Property ID", sortable: true },
+    { key: "id", label: "Property ID" },
     { key: "fullName", label: "Name & Surname", sortable: true },
-    { key: "number", label: "Mobile Number", sortable: true },
+    { key: "number", label: "Mobile Number" },
     { key: "type", label: "Property Status", sortable: true },
-    { key: "date", label: "Date Available", sortable: true },
+    { key: "date", label: "Date Available"},
     { key: "inAppAction", label: "In- App Action", sortable: true },
     { key: "action", label: "Actions", sortable: true },
 ]);

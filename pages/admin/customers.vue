@@ -63,7 +63,7 @@ const customers = ref([
         nameAndSurname: "Kathryn Murphy",
         mobileNumber: "+356 99 314 342",
         email: "kathryn@myproperty...",
-        customer: { flag: "Spanish.svg", country: "" },
+        customer: { flag: "/Spanish.svg", country: "" },
         totalProperties: 54,
         rentalProperties: 4,
         saleProperties: 4,
@@ -75,7 +75,7 @@ const customers = ref([
         nameAndSurname: "Ronald Richards",
         mobileNumber: "+356 99 314 342",
         email: "ronald@myproperty...",
-        customer: { flag: "Spanish.svg", country: "" },
+        customer: { flag: "/Spanish.svg", country: "" },
         totalProperties: 4,
         rentalProperties: 3,
         saleProperties: 3,
@@ -87,7 +87,7 @@ const customers = ref([
         nameAndSurname: "Courtney Henry",
         mobileNumber: "+356 99 314 342",
         email: "courtney@myproperty...",
-        customer: { flag: "Spanish.svg", country: "" },
+        customer: { flag: "/Spanish.svg", country: "" },
         totalProperties: 3,
         rentalProperties: 2,
         saleProperties: 2,
@@ -99,7 +99,7 @@ const customers = ref([
         nameAndSurname: "Cameron Williamson",
         mobileNumber: "+356 99 314 342",
         email: "cameron@myproperty...",
-        customer: { flag: "Spanish.svg", country: "" },
+        customer: { flag: "/Spanish.svg", country: "" },
         totalProperties: 10,
         rentalProperties: 1,
         saleProperties: 1,
@@ -111,8 +111,8 @@ const customers = ref([
 // Table column configuration
 const tableColumns = ref([
     { key: "nameAndSurname", label: "Name & Surname", sortable: true },
-    { key: "mobileNumber", label: "Mobile Number", sortable: false },
-    { key: "email", label: "Email", sortable: true },
+    { key: "mobileNumber", label: "Mobile Number" },
+    { key: "email", label: "Email"},
     { key: "customer", label: "Customer", sortable: true },
     { key: "totalProperties", label: "Total Properties", sortable: true },
     { key: "rentalProperties", label: "Rental Properties", sortable: true },
@@ -120,15 +120,6 @@ const tableColumns = ref([
     { key: "pendingRequests", label: "Pending Requests sent by Agency", sortable: true },
     { key: "pendingRequestsCustomer", label: "Pending Requests sent by Customer", sortable: true },
 ]);
-
-// Event handlers
-const handleSortChange = (sortData) => {
-    console.log("Sort changed:", sortData);
-};
-
-const handlePageChange = (page) => {
-    console.log("Page changed:", page);
-};
 
 // ------------------- Active Filters -------------------
 const customerActiveFilters = computed(() => {
@@ -432,8 +423,7 @@ function compare(value, filterValue, operator) {
             <p class="text-sm text-[#0F4841] font-semibold">{{ filteredCustomers.length }} Results</p>
         </div>
 
-        <DataTable :data="filteredCustomers" :columns="tableColumns" :initial-items-per-page="10"
-            @sort-change="handleSortChange" @page-change="handlePageChange">
+        <DataTable :data="filteredCustomers" :columns="tableColumns" :initial-items-per-page="10" :th-width="160">
             <!-- Custom slot for customer column with flag -->
             <template #cell-customer="{ item }">
                 <div :class="['flex', item.customer.country ? 'items-center space-x-2 justify-start' : 'justify-center']">

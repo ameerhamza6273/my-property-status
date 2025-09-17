@@ -49,7 +49,7 @@ useHead({
     ]
 })
 const tableColumns = [
-    { key: 'id', label: 'Property ID', sortable: true },
+    { key: 'id', label: 'Property ID' },
     { key: 'fullName', label: 'Name & Surname', sortable: true },
     { key: 'customerCountry', label: 'Customer Country', sortable: true },
     { key: 'number', label: 'Mobile Number', sortable: true },

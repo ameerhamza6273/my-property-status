@@ -12,9 +12,9 @@
                 v-for="column in columns"
                 :key="column.key"
                 :class="[
-                  'px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider',
-                  allNumeric ? 'min-w-20' : 'min-w-44'
+                  'px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider'
                 ]"
+                :style="{ minWidth: props.thWidth + 'px' }"
               >
                 <div
                   v-if="column.sortable"
@@ -22,7 +22,15 @@
                   @click="toggleSort(column.key)"
                 >
                   <span>{{ column.label }}</span>
-                  <NuxtImg src="switch-vertical.svg" width="16" height="16" />
+
+                  <!-- dynamic icon -->
+                  <NuxtImg
+                    :src="getSortIcon(column.key)"
+                    width="16"
+                    height="16"
+                    alt="sort icon"
+                    class="transition-transform duration-150"
+                  />
                 </div>
                 <span v-else>{{ column.label }}</span>
               </th>
@@ -101,7 +109,9 @@
               1
             </button>
 
-            <span v-if="currentPage > 4" class="px-2 py-1 text-sm text-gray-500"
+            <span
+              v-if="currentPage > 4"
+              class="px-2 py-1 text-sm text-gray-500"
               >...</span
             >
 
@@ -166,13 +176,14 @@ const props = defineProps({
   initialItemsPerPage: { type: Number, default: 10 },
   initialSortColumn: { type: String, default: null },
   initialSortOrder: { type: String, default: "asc" },
+  thWidth: { type: [String, Number], default: 20 }
 });
 
 const pagValue = [
   { value: 5, label: "5" },
   { value: 10, label: "10" },
   { value: 25, label: "25" },
-  { value: 50, label: "50" },
+  { value: 50, label: "50" }
 ];
 
 const emit = defineEmits(["sort-change", "page-change"]);
@@ -180,13 +191,24 @@ const emit = defineEmits(["sort-change", "page-change"]);
 const currentPage = ref(1);
 const itemsPerPage = ref(props.initialItemsPerPage);
 const sortColumn = ref(props.initialSortColumn);
-const sortOrder = ref(props.initialSortOrder);
+const sortOrder = ref(props.initialSortOrder); // can be "asc" | "desc" | null
 
 const totalResults = computed(() => props.data.length);
 const totalPages = computed(() =>
   Math.ceil(totalResults.value / Number(itemsPerPage.value))
 );
 
+// helper to decide icon (active vs neutral)
+const getSortIcon = (columnKey) => {
+  // when this column is active and has order -> show active icon
+  if (sortColumn.value === columnKey && sortOrder.value) {
+    return "export-switch-vertical.svg";
+  }
+  // neutral icon
+  return "switch-vertical.svg";
+};
+
+// ✅ Auto detect sorting (number, date, string)
 const sortedData = computed(() => {
   if (!sortColumn.value) return props.data;
 
@@ -197,11 +219,21 @@ const sortedData = computed(() => {
     const aValue = Array.isArray(aVal) ? aVal[0]?.value || "" : aVal;
     const bValue = Array.isArray(bVal) ? bVal[0]?.value || "" : bVal;
 
-    if (typeof aValue === "number" && typeof bValue === "number") {
-      return sortOrder.value === "asc" ? aValue - bValue : bValue - aValue;
+    let comparison = 0;
+
+    // Number sorting (works with numeric strings too)
+    if (!isNaN(aValue) && !isNaN(bValue)) {
+      comparison = Number(aValue) - Number(bValue);
+    }
+    // Date sorting
+    else if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
+      comparison = new Date(aValue).getTime() - new Date(bValue).getTime();
+    }
+    // String sorting
+    else {
+      comparison = String(aValue).localeCompare(String(bValue));
     }
 
-    const comparison = String(aValue).localeCompare(String(bValue));
     return sortOrder.value === "asc" ? comparison : -comparison;
   });
 });
@@ -238,9 +270,16 @@ const visiblePages = computed(() => {
 const getNestedValue = (obj, path) =>
   path.split(".").reduce((current, key) => current?.[key], obj);
 
+// ✅ toggleSort now cycles: null -> asc -> desc -> null
 const toggleSort = (column) => {
   if (sortColumn.value === column) {
-    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+    if (sortOrder.value === null) sortOrder.value = "asc";
+    else if (sortOrder.value === "asc") sortOrder.value = "desc";
+    else {
+      // clear sorting
+      sortOrder.value = null;
+      sortColumn.value = null;
+    }
   } else {
     sortColumn.value = column;
     sortOrder.value = "asc";
@@ -256,17 +295,10 @@ const goToPage = (page) => {
 };
 
 const handleItemsPerPageChange = (val) => {
-  // normalize object to number
   itemsPerPage.value = typeof val === "object" ? val.value : val;
   currentPage.value = 1;
   emit("page-change", 1);
 };
-
-const allNumeric = computed(() => {
-  if (!props.data.length || !props.columns.length) return false;
-  const firstRowFirstValue = getNestedValue(props.data[0], props.columns[0].key);
-  return typeof firstRowFirstValue === "number";
-});
 
 watch(
   () => props.data,

@@ -79,10 +79,10 @@ const customers = ref([
 
 // Table column configuration
 const tableColumns = ref([
-    { key: "id", label: "Property ID", sortable: true },
+    { key: "id", label: "Property ID" },
     { key: "fullName", label: "Name & Surname", sortable: true },
     { key: "customerCountry", label: "Customer Country", sortable: true },
-    { key: "number", label: "Mobile Number", sortable: true },
+    { key: "number", label: "Mobile Number" },
     { key: "type", label: "Type", sortable: true },
     { key: "date", label: "Date", sortable: true },
     { key: "numberMatches", label: "Mobile Number matches system?", sortable: true },

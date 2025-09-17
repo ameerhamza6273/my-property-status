@@ -122,9 +122,10 @@ const adjustDropdownPosition = () => {
 
 const selectOption = (option) => {
   selectedOption.value = option;
-  emit("update:modelValue", option);
+  emit("update:modelValue", option.value); // sirf value bhej rahe hain
   isOpen.value = false;
 };
+
 
 const handleBlur = () => {
   setTimeout(() => {
