@@ -1,230 +1,290 @@
 <script setup>
 import { ref, computed } from "vue";
 
+// head
 useHead({
-  meta: [
-    { name: 'viewport', content: 'width=1300' }
-  ]
-})
-const activeTab = ref("all"); // default active tab (can be "all", "customer", "agency")
+  meta: [{ name: "viewport", content: "width=1300" }],
+});
+
+const activeTab = ref("all");
 
 // ------------------- Customer Filters -------------------
 const customerFilters = ref({
-    name: "",
-    surname: "",
-    mobile: "",
-    email: "",
-    country: "",
-    gender: "",
+  name: "",
+  surname: "",
+  mobile: "",
+  email: "",
+  country: "",
+  gender: "",
 });
 const countryOptions = [
-    { value: 'Malta', label: 'Malta' },
-    { value: 'USA', label: 'USA' },
-    { value: 'UK', label: 'UK' }
-]
+  { value: "Malta", label: "Malta" },
+  { value: "USA", label: "USA" },
+  { value: "UK", label: "UK" },
+];
 const agencyCountryOptions = [
-    { value: 'Malta', label: 'Malta' },
-    { value: 'USA', label: 'USA' },
-    { value: 'UK', label: 'UK' }
-]
+  { value: "Malta", label: "Malta" },
+  { value: "USA", label: "USA" },
+  { value: "UK", label: "UK" },
+];
 const agencyNameOptions = [
-    { value: 'Remax', label: 'Remax' },
-    { value: 'Century', label: 'Century' },
-    { value: 'Coldwell', label: 'Coldwell' },
-]
+  { value: "Remax", label: "Remax" },
+  { value: "Century", label: "Century" },
+  { value: "Coldwell", label: "Coldwell" },
+];
 const genderOptions = [
-    { value: 'Male', label: 'Male' },
-    { value: 'Female', label: 'Female' },
-]
-
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+];
 const propertyTypeOptions = [
-    { value: 'Appartment', label: 'Appartment' },
-    { value: 'Villa', label: 'Villa' },
-]
+  { value: "Appartment", label: "Appartment" },
+  { value: "Villa", label: "Villa" },
+];
 
 // ------------------- Property Filters -------------------
 const propertyFilters = ref({
-    agencyName: "",
-    agencyCountry: "",
-    mpsId: "",
-    agencyPropertyId: "",
-    propertyType: "",
-    requestDate: "",
-    adminUsers: "",
-    adminUsersOperator: "=",
-    connectedProperties: "",
-    connectedPropertiesOperator: "=",
-    rentalProperties: "",
-    rentalPropertiesOperator: "=",
-    saleProperties: "",
-    salePropertiesOperator: "="
+  agencyName: "",
+  agencyCountry: "",
+  mpsId: "",
+  agencyPropertyId: "",
+  propertyType: "",
+  requestDate: "",
 });
 
-// ------------------- Users Table Data -------------------
+// ------------------- Users Data -------------------
 const users = ref([
-    {
-        id: 1,
-        agency: [{ img: "/Spanish.svg", value: "Remax" }],
-        agencyCountry: [{ img: "/Spanish.svg", value: "Malta" }],
-        MPSPropertyID: 5,
-        agencyPropertyID: 3249,
-        nameAndSurname: "Savannah Nguyen",
-        mobileNumber: "+356 99 314 342",
-        type: "Sale",
-        requestDate: "25/04/2026",
-        sentBy: "Agency",
-
-    },
-    {
-        id: 2,
-        agency: [{ img: "/Spanish.svg", value: "Alliance" }],
-        agencyCountry: [{ img: "/Spanish.svg", value: "Sweden" }],
-        MPSPropertyID: 3,
-        agencyPropertyID: 1500,
-        nameAndSurname: "Arlene McCoy",
-        mobileNumber: "+356 99 314 342",
-        type: "Rental",
-        requestDate: "25/04/2026",
-        sentBy: "Customer",
-    },
-    {
-        id: 3,
-        agency: [{ img: "/Spanish.svg", value: "Century 21" }],
-        agencyCountry: [{ img: "/Spanish.svg", value: "USA" }],
-        MPSPropertyID: 6,
-        agencyPropertyID: 2000,
-        nameAndSurname: "Cody Fisher",
-        mobileNumber: "+356 99 314 342",
-        type: "Sale",
-        requestDate: "25/04/2026",
-        sentBy: "Agency",
-    }
+  {
+    id: 1,
+    agency: [{ img: "/Spanish.svg", value: "Remax" }],
+    agencyCountry: [{ img: "/Spanish.svg", value: "Malta" }],
+    MPSPropertyID: 5,
+    agencyPropertyID: 3249,
+    nameAndSurname: "Savannah Nguyen",
+    mobileNumber: "+356 99 314 342",
+    type: "Sale",
+    requestDate: "25/04/2026",
+    sentBy: "Agency",
+  },
+  {
+    id: 2,
+    agency: [{ img: "/Spanish.svg", value: "Alliance" }],
+    agencyCountry: [{ img: "/Spanish.svg", value: "Sweden" }],
+    MPSPropertyID: 3,
+    agencyPropertyID: 1500,
+    nameAndSurname: "Arlene McCoy",
+    mobileNumber: "+356 99 314 342",
+    type: "Rental",
+    requestDate: "25/04/2026",
+    sentBy: "Customer",
+  },
+  {
+    id: 3,
+    agency: [{ img: "/Spanish.svg", value: "Century 21" }],
+    agencyCountry: [{ img: "/Spanish.svg", value: "USA" }],
+    MPSPropertyID: 6,
+    agencyPropertyID: 2000,
+    nameAndSurname: "Cody Fisher",
+    mobileNumber: "+356 99 314 342",
+    type: "Sale",
+    requestDate: "25/04/2026",
+    sentBy: "Agency",
+  },
 ]);
+
+// ------------------- Table Headers -------------------
 const tableHeaders = [
-    { key: 'MPSPropertyID', label: 'MPS Property ID' },
-    { key: 'agencyPropertyID', label: 'Agency Property ID' },
-    { key: 'nameAndSurname', label: 'Name & Surname', sortable: true },
-    { key: 'mobileNumber', label: 'Mobile Number' },
-    { key: 'type', label: 'Type', sortable: true },
-    { key: 'agency', label: 'Agency',type: 'array-with-flags', sortable: true },
-    { key: 'agencyCountry', label: 'Agency Country',type: 'array-with-flags',sortable: true },
-    { key: 'requestDate', label: 'Request Date',sortable: true },
-    { key: 'sentBy', label: 'Sent By', sortable: true },
+  { key: "MPSPropertyID", label: "MPS Property ID" },
+  { key: "agencyPropertyID", label: "Agency Property ID" },
+  { key: "nameAndSurname", label: "Name & Surname", sortable: true },
+  { key: "mobileNumber", label: "Mobile Number" },
+  { key: "type", label: "Type", sortable: true },
+  { key: "agency", label: "Agency", type: "array-with-flags", sortable: true },
+  {
+    key: "agencyCountry",
+    label: "Agency Country",
+    type: "array-with-flags",
+    sortable: true,
+  },
+  { key: "requestDate", label: "Request Date", sortable: true },
+  { key: "sentBy", label: "Sent By", sortable: true },
 ];
-// ------------------- Sorting Logic -------------------
+
+// ------------------- Sorting -------------------
 const sortColumn = ref(null);
 const sortOrder = ref(null);
 
 const toggleSort = (column) => {
-    if (sortColumn.value !== column) {
-        sortColumn.value = column;
-        sortOrder.value = "asc";
-    } else {
-        sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
-    }
+  if (sortColumn.value !== column) {
+    sortColumn.value = column;
+    sortOrder.value = "asc";
+  } else {
+    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+  }
 };
 
 const getSortIcon = (column) => {
-    if (sortColumn.value !== column || !sortOrder.value) {
-        return "switch-vertical.svg";
-    }
-    return "export-switch-vertical.svg";
+  if (sortColumn.value !== column || !sortOrder.value) {
+    return "switch-vertical.svg";
+  }
+  return "export-switch-vertical.svg";
 };
 
-// ------------------- Filtered Users Computed -------------------
+// ------------------- Filtered Users -------------------
+function formatDateDDMMYYYYtoYYYYMMDD(dateStr) {
+  // input: 25/04/2026 → output: 2026-04-25
+  const [day, month, year] = dateStr.split("/");
+  return `${year}-${month}-${day}`;
+}
+
 const filteredUsers = computed(() => {
-    let result = [...users.value];
+  let result = [...users.value];
 
-    // Apply property filters
-    if (propertyFilters.value.agencyName) {
-        result = result.filter(u =>
-            u.agency.some(a => a.value.toLowerCase() === propertyFilters.value.agencyName.toLowerCase())
-        );
-    }
-    if (propertyFilters.value.agencyCountry) {
-        result = result.filter(u =>
-            u.agencyCountry.some(c => c.value.toLowerCase() === propertyFilters.value.agencyCountry.toLowerCase())
-        );
-    }
+  // Apply filters
+  if (propertyFilters.value.agencyName) {
+    result = result.filter((u) =>
+      u.agency.some(
+        (a) =>
+          a.value.toLowerCase() ===
+          propertyFilters.value.agencyName.toLowerCase()
+      )
+    );
+  }
+  if (propertyFilters.value.agencyCountry) {
+    result = result.filter((u) =>
+      u.agencyCountry.some(
+        (c) =>
+          c.value.toLowerCase() ===
+          propertyFilters.value.agencyCountry.toLowerCase()
+      )
+    );
+  }
+  if (propertyFilters.value.mpsId) {
+    result = result.filter(
+      (u) => String(u.MPSPropertyID) === String(propertyFilters.value.mpsId)
+    );
+  }
+  if (propertyFilters.value.agencyPropertyId) {
+    result = result.filter(
+      (u) =>
+        String(u.agencyPropertyID) ===
+        String(propertyFilters.value.agencyPropertyId)
+    );
+  }
+  if (propertyFilters.value.propertyType) {
+    result = result.filter(
+      (u) =>
+        u.type.toLowerCase() ===
+        propertyFilters.value.propertyType.toLowerCase()
+    );
+  }
+  if (propertyFilters.value.requestDate) {
+    result = result.filter(
+      (u) =>
+        formatDateDDMMYYYYtoYYYYMMDD(u.requestDate) ===
+        propertyFilters.value.requestDate
+    );
+  }
 
-    // Numeric property filters
-    const applyNumericFilter = (key, value, operator) => {
-        if (!value) return;
-        const num = Number(value);
-        if (operator === "=") result = result.filter(u => u[key] === num);
-        else if (operator === ">") result = result.filter(u => u[key] > num);
-        else if (operator === "<") result = result.filter(u => u[key] < num);
-    };
+  // Sorting
+  if (sortColumn.value && sortOrder.value) {
+    result.sort((a, b) => {
+      let valA = "";
+      let valB = "";
+      if (sortColumn.value === "agency") {
+        valA = a.agency[0].value;
+        valB = b.agency[0].value;
+      } else if (sortColumn.value === "agencyCountry") {
+        valA = a.agencyCountry[0].value;
+        valB = b.agencyCountry[0].value;
+      } else {
+        valA = a[sortColumn.value];
+        valB = b[sortColumn.value];
+      }
+      if (typeof valA === "number" && typeof valB === "number") {
+        return sortOrder.value === "asc" ? valA - valB : valB - valA;
+      }
+      return sortOrder.value === "asc"
+        ? String(valA).localeCompare(String(valB))
+        : String(valB).localeCompare(String(valA));
+    });
+  }
 
-    applyNumericFilter("adminUsers", propertyFilters.value.adminUsers, propertyFilters.value.adminUsersOperator);
-    applyNumericFilter("totalConnectedProperties", propertyFilters.value.connectedProperties, propertyFilters.value.connectedPropertiesOperator);
-    applyNumericFilter("rentalProperties", propertyFilters.value.rentalProperties, propertyFilters.value.rentalPropertiesOperator);
-    applyNumericFilter("saleProperties", propertyFilters.value.saleProperties, propertyFilters.value.salePropertiesOperator);
-
-    // Sorting
-    if (sortColumn.value && sortOrder.value) {
-        result.sort((a, b) => {
-            let valA = "";
-            let valB = "";
-            if (sortColumn.value === "agency") {
-                valA = a.agency[0].value;
-                valB = b.agency[0].value;
-            } else if (sortColumn.value === "agencyCountry") {
-                valA = a.agencyCountry[0].value;
-                valB = b.agencyCountry[0].value;
-            } else {
-                valA = a[sortColumn.value];
-                valB = b[sortColumn.value];
-            }
-            if (typeof valA === "number" && typeof valB === "number") {
-                return sortOrder.value === "asc" ? valA - valB : valB - valA;
-            }
-            return sortOrder.value === "asc"
-                ? String(valA).localeCompare(String(valB))
-                : String(valB).localeCompare(String(valA));
-        });
-    }
-
-    return result;
+  return result;
 });
 
-// ------------------- Chips for Active Filters -------------------
+// ------------------- Active Filters -------------------
 const customerActiveFilters = computed(() => {
-    const result = [];
-    if (customerFilters.value.name) result.push({ key: "name", label: `Name: ${customerFilters.value.name}` });
-    if (customerFilters.value.surname) result.push({ key: "surname", label: `Surname: ${customerFilters.value.surname}` });
-    if (customerFilters.value.mobile) result.push({ key: "mobile", label: `Mobile: ${customerFilters.value.mobile}` });
-    if (customerFilters.value.email) result.push({ key: "email", label: `Email: ${customerFilters.value.email}` });
-    if (customerFilters.value.country) result.push({ key: "country", label: `Country: ${customerFilters.value.country}` });
-    if (customerFilters.value.gender) result.push({ key: "gender", label: `Gender: ${customerFilters.value.gender}` });
-    return result;
+  const result = [];
+  if (customerFilters.value.name)
+    result.push({ key: "name", label: `Name: ${customerFilters.value.name}` });
+  if (customerFilters.value.surname)
+    result.push({
+      key: "surname",
+      label: `Surname: ${customerFilters.value.surname}`,
+    });
+  if (customerFilters.value.mobile)
+    result.push({
+      key: "mobile",
+      label: `Mobile: ${customerFilters.value.mobile}`,
+    });
+  if (customerFilters.value.email)
+    result.push({
+      key: "email",
+      label: `Email: ${customerFilters.value.email}`,
+    });
+  if (customerFilters.value.country)
+    result.push({
+      key: "country",
+      label: `Country: ${customerFilters.value.country}`,
+    });
+  if (customerFilters.value.gender)
+    result.push({
+      key: "gender",
+      label: `Gender: ${customerFilters.value.gender}`,
+    });
+  return result;
 });
 
 const propertyActiveFilters = computed(() => {
-    const result = [];
-    if (propertyFilters.value.agencyName) result.push({ key: "agencyName", label: `Agency: ${propertyFilters.value.agencyName}` });
-    if (propertyFilters.value.agencyCountry) result.push({ key: "agencyCountry", label: `Agency Country: ${propertyFilters.value.agencyCountry}` });
-    if (propertyFilters.value.mpsId) result.push({ key: "mpsId", label: `MPS ID: ${propertyFilters.value.mpsId}` });
-    if (propertyFilters.value.agencyPropertyId) result.push({ key: "agencyPropertyId", label: `Agency Property ID: ${propertyFilters.value.agencyPropertyId}` });
-    if (propertyFilters.value.propertyType) result.push({ key: "propertyType", label: `Property Type: ${propertyFilters.value.propertyType}` });
-    if (propertyFilters.value.requestDate) result.push({ key: "requestDate", label: `Date: ${propertyFilters.value.requestDate}` });
-    if (propertyFilters.value.adminUsers) result.push({ key: "adminUsers", label: `Admin Users: ${propertyFilters.value.adminUsersOperator} ${propertyFilters.value.adminUsers}` });
-    if (propertyFilters.value.connectedProperties) result.push({ key: "connectedProperties", label: `Connected Properties: ${propertyFilters.value.connectedPropertiesOperator} ${propertyFilters.value.connectedProperties}` });
-    if (propertyFilters.value.rentalProperties) result.push({ key: "rentalProperties", label: `Rental Properties: ${propertyFilters.value.rentalPropertiesOperator} ${propertyFilters.value.rentalProperties}` });
-    if (propertyFilters.value.saleProperties) result.push({ key: "saleProperties", label: `Sale Properties: ${propertyFilters.value.salePropertiesOperator} ${propertyFilters.value.saleProperties}` });
-    return result;
+  const result = [];
+  if (propertyFilters.value.agencyName)
+    result.push({
+      key: "agencyName",
+      label: `Agency: ${propertyFilters.value.agencyName}`,
+    });
+  if (propertyFilters.value.agencyCountry)
+    result.push({
+      key: "agencyCountry",
+      label: `Agency Country: ${propertyFilters.value.agencyCountry}`,
+    });
+  if (propertyFilters.value.mpsId)
+    result.push({ key: "mpsId", label: `MPS ID: ${propertyFilters.value.mpsId}` });
+  if (propertyFilters.value.agencyPropertyId)
+    result.push({
+      key: "agencyPropertyId",
+      label: `Agency Property ID: ${propertyFilters.value.agencyPropertyId}`,
+    });
+  if (propertyFilters.value.propertyType)
+    result.push({
+      key: "propertyType",
+      label: `Property Type: ${propertyFilters.value.propertyType}`,
+    });
+  if (propertyFilters.value.requestDate)
+    result.push({
+      key: "requestDate",
+      label: `Date: ${propertyFilters.value.requestDate}`,
+    });
+  return result;
 });
 
-// ------------------- Remove Filter Functions -------------------
+// ------------------- Remove Filter -------------------
 function removeCustomerFilter(key) {
-    customerFilters.value[key] = "";
+  customerFilters.value[key] = "";
 }
-
 function removePropertyFilter(key) {
-    propertyFilters.value[key] = "";
+  propertyFilters.value[key] = "";
 }
 </script>
-
 
 <template>
     <div class="p-6 bg-gray-50">
@@ -316,8 +376,8 @@ function removePropertyFilter(key) {
 
                 <!-- Active Filters -->
                 <div class="mt-3">
+                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
                     <div class="flex items-center flex-wrap gap-2">
-                        <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in customerActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
 
@@ -382,8 +442,8 @@ function removePropertyFilter(key) {
 
                 <!-- Active Filters -->
                 <div class="mt-3">
+                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
                     <div class="flex items-center flex-wrap gap-2">
-                        <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in propertyActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
 

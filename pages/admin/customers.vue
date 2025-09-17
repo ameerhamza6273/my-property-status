@@ -113,7 +113,7 @@ const tableColumns = ref([
     { key: "nameAndSurname", label: "Name & Surname", sortable: true },
     { key: "mobileNumber", label: "Mobile Number" },
     { key: "email", label: "Email"},
-    { key: "customer", label: "Customer", sortable: true },
+    { key: "customer", label: "Customer Country", sortable: true },
     { key: "totalProperties", label: "Total Properties", sortable: true },
     { key: "rentalProperties", label: "Rental Properties", sortable: true },
     { key: "saleProperties", label: "Sale Properties", sortable: true },
@@ -252,13 +252,13 @@ function compare(value, filterValue, operator) {
                     </div>
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Date of Birth</label>
+                            <label class="block text-sm font-medium text-[#595959] mb-2">DOB (dd/mm/yyyy)</label>
                             <input v-model="customerFilters.dateOfBirth" type="date" style="height: 38px;"
                                 :class="customerFilters.dateOfBirth === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
                         </div>
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Birth Date</label>
+                            <label class="block text-sm font-medium text-[#595959] mb-2">Birth Day (dd/mm)</label>
                             <input v-model="customerFilters.birthDay" type="date" style="height: 38px;"
                                 :class="customerFilters.birthDay === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
@@ -268,8 +268,8 @@ function compare(value, filterValue, operator) {
 
                 <!-- Active Filters -->
                 <div class="mt-3">
+                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
                     <div class="flex items-center flex-wrap gap-2">
-                        <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in customerActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
                             <!-- Optional indicator based on filter key -->
@@ -363,7 +363,7 @@ function compare(value, filterValue, operator) {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">
-                                Pending Req sent by Agency
+                                Pending Request sent by Agency
                             </label>
                             <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
                                 style="height: 38px;">
@@ -400,8 +400,8 @@ function compare(value, filterValue, operator) {
 
                 <!-- Active Filters -->
                 <div class="mt-3">
+                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
                     <div class="flex items-center flex-wrap gap-2">
-                        <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in propertyActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
                             <!-- Indicator based on type -->

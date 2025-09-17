@@ -334,8 +334,8 @@ function removePropertyFilter(key) {
 
                 <!-- Active Filters -->
                 <div class="mt-3">
+                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
                     <div class="flex items-center flex-wrap gap-2">
-                        <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in customerActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
                             <!-- Optional indicator based on filter key -->
@@ -382,13 +382,13 @@ function removePropertyFilter(key) {
                     </div>
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Property Type</label>
-                            <Tailwinddropdown v-model="propertyFilters.propertyType" button-class="py-2 bg-[#F8F8F8]" placeholder="Property Type"
+                            <label class="block text-sm font-medium text-[#595959] mb-2">Property Status</label>
+                            <Tailwinddropdown v-model="propertyFilters.propertyType" button-class="py-2 bg-[#F8F8F8]" placeholder="Select Property Status"
                                 :options="propertyTypeOptions" />
 
                         </div>
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Request Date</label>
+                            <label class="block text-sm font-medium text-[#595959] mb-2">Date Available</label>
                             <input v-model="propertyFilters.dateofContract" type="date" style="height: 38px;"
                                 :class="propertyFilters.dateofContract === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
@@ -398,8 +398,8 @@ function removePropertyFilter(key) {
 
                 <!-- Active Filters -->
                 <div class="mt-3">
+                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
                     <div class="flex items-center flex-wrap gap-2">
-                        <span class="text-sm font-medium text-black">Filtered by:</span><br>
                         <div v-for="filter in propertyActiveFilters" :key="filter.key"
                             class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
 
@@ -430,9 +430,9 @@ function removePropertyFilter(key) {
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
 
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 MPS Property ID</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer"
                                     @click="toggleSort('nameAndSurname')">
                                     <span>Name & Surname</span>
@@ -440,25 +440,25 @@ function removePropertyFilter(key) {
                                 </div>
                             </th>
 
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 <div>
                                     <span>Agency Listings</span>
                                 </div>
                             </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 <div>
                                     <span>Agency Countries</span>
                                 </div>
                             </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 <div class="flex items-center cursor-pointer" @click="toggleSort('propertyStatus')">
                                     <span>Property Status</span>
                                     <NuxtImg :src="getSortIcon('propertyStatus')" width="14" height="14" />
                                 </div>
                             </th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date of Contract</th>
-                            <th class="px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
+                                Date Available</th>
+                            <th class="px-3 py-3 text-xs font-medium text-gray-500  tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('sentBy')">
                                     <span>In-App Action</span>
                                     <NuxtImg :src="getSortIcon('sentBy')" width="14" height="14" />
