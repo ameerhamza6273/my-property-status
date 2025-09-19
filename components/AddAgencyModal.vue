@@ -220,7 +220,7 @@ const handleFileUpload = (event) => {
 
 const formData = ref({
     agencyName: "",
-    agencyCountry: "",
+    agencyCountry: "malta",
     apiKey: "",
     contactName: "",
     contactSurname: "",
