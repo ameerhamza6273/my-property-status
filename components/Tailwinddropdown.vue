@@ -3,7 +3,7 @@
     <button
       @click="toggleDropdown"
       @blur="handleBlur"
-      class="w-full text-sm px-3 border border-[#D9D9D9] rounded-full text-left flex items-center justify-between focus:bg-white focus:ring-1 focus:ring-[#0F4841]"
+      class="w-full text-sm border border-[#D9D9D9] rounded-full text-left flex items-center justify-between focus:bg-white focus:ring-1 focus:ring-[#0F4841]"
       :class="selectedOption ? 'text-black' : 'text-[#BCBCBC]', buttonClass"
     >
       <!-- Button label -->
@@ -46,7 +46,7 @@
         v-for="option in options"
         :key="option.value"
         @click="selectOption(option)"
-        class="px-3 py-2 text-xs cursor-pointer hover:bg-[#F8F8F8] hover:text-[#0F4841] rounded-full transition-colors duration-150 flex items-center space-x-2"
+        class="px-2 py-2 text-xs cursor-pointer hover:bg-[#F8F8F8] hover:text-[#0F4841] rounded-full transition-colors duration-150 flex items-center space-x-2"
         :class="selectedOption?.value === option.value ? 'bg-[#F8F8F8] text-[#0F4841]' : 'text-gray-900'"
       >
         <NuxtImg

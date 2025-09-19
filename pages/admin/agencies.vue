@@ -3,7 +3,7 @@
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-semibold text-gray-900">Agencies</h1>
-            <button
+            <button @click="openAddAgencyModal"
                 class="flex text-sm items-center gap-2 px-3 py-2 bg-[#0F4841] text-white rounded-full hover:bg-teal-700 transition-colors">
                 <NuxtImg src="plus-circle.svg" width="16" height="16" />
                 Add New Agency
@@ -17,7 +17,7 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Name
                 </label>
-                <Tailwinddropdown v-model="filters.agencyName" button-class="py-2 bg-[#F8F8F8]"
+                <Tailwinddropdown v-model="filters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]"
                     placeholder="Select Agency " :options="agencyNameOptions" />
             </div>
 
@@ -26,86 +26,21 @@
                 <label class="block text-sm font-medium text-[#595959] mb-2">
                     Agency Country
                 </label>
-                <Tailwinddropdown v-model="filters.agencyCountry" button-class="py-2 bg-[#F8F8F8]"
+                <Tailwinddropdown v-model="filters.agencyCountry" button-class="py-2 px-3 bg-[#F8F8F8]"
                     placeholder="Select Agency Country" :options="agencyCountryOptions" />
             </div>
 
-            <!-- Admin Users -->
-            <div>
+            <!-- Number Filters -->
+            <div v-for="field in numberFilters" :key="field.key">
                 <label class="block text-sm font-medium text-[#595959] mb-2">
-                    Admin Users
+                    {{ field.label }}
                 </label>
-
-                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
-                    style="height: 38px;">
-                    <!-- <Tailwinddropdown v-model="filters.adminUsersOperator" button-class="py-1 bg-[#fff]"
-                     :options="adminUsersOperatorOptions" /> -->
-                    <select v-model="filters.adminUsersOperator"
-                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
-                        <option value="=">=</option>
-                        <option value=">"> ></option>
-                        <option value="<">
-                            < </option>
-                    </select>
-                    <input v-model="filters.adminUsers" type="number" placeholder="Type Number..."
-                        class="text-sm w-full outline-none bg-transparent" />
-                </div>
-            </div>
-
-            <!-- Total Connected Properties -->
-            <div>
-                <label class="block text-sm font-medium text-[#595959] mb-2">
-                    Total Connected Properties
-                </label>
-                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
-                    style="height: 38px;">
-                    <select v-model="filters.connectedPropertiesOperator"
-                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
-                        <option value="=">=</option>
-                        <option value=">"> ></option>
-                        <option value="<">
-                            < </option>
-                    </select>
-                    <input v-model="filters.connectedProperties" type="number" placeholder="Type Number..."
-                        class="text-sm w-full outline-none bg-transparent" />
-                </div>
-            </div>
-
-            <!-- Rental Properties -->
-            <div>
-                <label class="block text-sm font-medium text-[#595959] mb-2">
-                    Rental Properties
-                </label>
-                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
-                    style="height: 38px;">
-                    <select v-model="filters.rentalPropertiesOperator"
-                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
-                        <option value="=">=</option>
-                        <option value=">"> ></option>
-                        <option value="<">
-                            < </option>
-                    </select>
-                    <input v-model="filters.rentalProperties" type="number" placeholder="Type Number..."
-                        class="text-sm w-full outline-none bg-transparent" />
-                </div>
-            </div>
-
-            <!-- Sale Properties -->
-            <div>
-                <label class="block text-sm font-medium text-[#595959] mb-2">
-                    Sale Properties
-                </label>
-                <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
-                    style="height: 38px;">
-                    <select v-model="filters.salePropertiesOperator"
-                        class="rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2">
-                        <option value="=">=</option>
-                        <option value=">"> ></option>
-                        <option value="<">
-                            < </option>
-                    </select>
-                    <input v-model="filters.saleProperties" type="number" placeholder="Type Number..."
-                        class="text-sm w-full outline-none bg-transparent" />
+                <div
+                    class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2 h-[38px]">
+                    <Tailwinddropdown v-model="filters[field.operator]"
+                        button-class="py-0.5 px-2 bg-[#fff] border-white min-w-12" :options="operatorOptions" />
+                    <input v-model="filters[field.key]" type="number" :placeholder="`Type Number...`"
+                        class="text-sm w-full outline-none bg-transparent ml-2" />
                 </div>
             </div>
         </div>
@@ -128,11 +63,16 @@
 
         <!-- Results Count -->
         <div class="my-4">
-            <p class="text-sm text-[#0F4841] font-semibold">{{ filteredUsers.length }} Results</p>
+            <p class="text-sm text-[#0F4841] font-semibold">
+                {{ filteredUsers.length }} Results
+            </p>
         </div>
 
         <!-- Users Table -->
         <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100" />
+
+        <!-- Added the modal component -->
+        <AddAgencyModal :isOpen="isModalOpen" @close="closeAddAgencyModal" @submit="handleAddAgency" />
 
     </div>
 </template>
@@ -140,6 +80,39 @@
 <script setup>
 import { ref, computed } from "vue";
 
+const isModalOpen = ref(false)
+
+const openAddAgencyModal = () => {
+    isModalOpen.value = true
+}
+
+const closeAddAgencyModal = () => {
+    isModalOpen.value = false
+}
+
+const handleAddAgency = (agencyData) => {
+  // nayi agency object banate hain jo aapki table structure follow kare
+  const newAgency = {
+    id: users.value.length + 1, // auto id
+    agency: [{ img: "/Spanish.svg", value: agencyData.agencyName }],
+    agencyCountry: [{ img: "/Spanish.svg", value: agencyData.agencyCountry }],
+    adminUsers: Number(agencyData.adminUsers) || 0,
+    totalConnectedProperties: Number(agencyData.totalConnectedProperties) || 0,
+    rentalProperties: Number(agencyData.rentalProperties) || 0,
+    saleProperties: Number(agencyData.saleProperties) || 0,
+    apiKey: agencyData.apiKey || `API_KEY_${Math.random().toString(36).substring(2, 8)}`,
+    edit: [{ img: "/edit-red-icon.svg", value: "Edit" }],
+  }
+
+  // users list me add karo
+  users.value.push(newAgency)
+
+  // modal close karo
+  isModalOpen.value = false
+}
+
+
+// Mock Data
 const users = ref([
     {
         id: 1,
@@ -191,161 +164,186 @@ const users = ref([
     }
 ]);
 
+// Dropdown options
 const agencyCountryOptions = [
-    { value: 'Malta', label: 'Malta' },
-    { value: 'USA', label: 'USA' },
-    { value: 'UK', label: 'UK' }
+    { value: "Malta", label: "Malta" },
+    { value: "Sweden", label: "Sweden" },
 ];
 
 const agencyNameOptions = [
-    { value: 'Remax', label: 'Remax' },
-    { value: 'Century', label: 'Century' },
-    { value: 'Coldwell', label: 'Coldwell' },
-];
-const adminUsersOperatorOptions = [
-    { value: '=', label: '=' },
-    { value: '>', label: '>' },
-    { value: '<', label: '<' },
+    { value: "Remax", label: "Remax" },
+    { value: "Alliance", label: "Alliance" },
 ];
 
+const operatorOptions = [
+    { value: "=", label: "=" },
+    { value: ">", label: ">" },
+    { value: "<", label: "<" },
+];
+
+// Filters
 const filters = ref({
-    agencyName: '',
-    agencyCountry: '',
-    adminUsers: '',
-    adminUsersOperator: '=',
-    connectedProperties: '',
-    connectedPropertiesOperator: '=',
-    rentalProperties: '',
-    rentalPropertiesOperator: '=',
-    saleProperties: '',
-    salePropertiesOperator: '='
+    agencyName: "",
+    agencyCountry: "",
+    adminUsers: "",
+    adminUsersOperator: "=",
+    connectedProperties: "",
+    connectedPropertiesOperator: "=",
+    rentalProperties: "",
+    rentalPropertiesOperator: "=",
+    saleProperties: "",
+    salePropertiesOperator: "=",
 });
 
-const sortColumn = ref(null);
-const sortOrder = ref(null);
-
-const tableHeaders = [
-    { key: 'agency', label: 'Agency', type: 'array-with-flags', sortable: true },
-    { key: 'agencyCountry', label: 'Agency Country', type: 'array-with-flags', sortable: true },
-    { key: 'adminUsers', label: 'Admin Users', sortable: true },
-    { key: 'totalConnectedProperties', label: 'Total Connected Properties', sortable: true },
-    { key: 'rentalProperties', label: 'Rental Properties', sortable: true },
-    { key: 'saleProperties', label: 'Sale Properties', sortable: true },
-    { key: 'apiKey', label: 'API Key' },
-    { key: 'edit', label: '', type: 'array-with-flags' },
+// Number filter config
+const numberFilters = [
+    { key: "adminUsers", operator: "adminUsersOperator", label: "Admin Users" },
+    {
+        key: "connectedProperties",
+        operator: "connectedPropertiesOperator",
+        label: "Total Connected Properties",
+    },
+    {
+        key: "rentalProperties",
+        operator: "rentalPropertiesOperator",
+        label: "Rental Properties",
+    },
+    {
+        key: "saleProperties",
+        operator: "salePropertiesOperator",
+        label: "Sale Properties",
+    },
 ];
 
-const toggleSort = (column) => {
-    if (sortColumn.value !== column) {
-        sortColumn.value = column;
-        sortOrder.value = "asc";
-    } else {
-        sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
-    }
-};
+// Table headers
+const tableHeaders = [
+    { key: "agency", label: "Agency", type: "array-with-flags", sortable: true },
+    {
+        key: "agencyCountry",
+        label: "Agency Country",
+        type: "array-with-flags",
+        sortable: true,
+    },
+    { key: "adminUsers", label: "Admin Users", sortable: true },
+    {
+        key: "totalConnectedProperties",
+        label: "Total Connected Properties",
+        sortable: true,
+    },
+    { key: "rentalProperties", label: "Rental Properties", sortable: true },
+    { key: "saleProperties", label: "Sale Properties", sortable: true },
+    { key: "apiKey", label: "API Key" },
+    { key: "edit", label: "", type: "array-with-flags" },
+];
 
-const getSortIcon = (column) => {
-    if (sortColumn.value !== column || !sortOrder.value) {
-        return "switch-vertical.svg";
-    }
-    return "export-switch-vertical.svg";
-};
-
+// Computed filtered users
 const filteredUsers = computed(() => {
     let result = [...users.value];
 
     if (filters.value.agencyName) {
-        result = result.filter(u => u.agency.some(a => a.value.toLowerCase() === filters.value.agencyName.toLowerCase()));
+        result = result.filter((u) =>
+            u.agency.some(
+                (a) =>
+                    a.value.toLowerCase() === filters.value.agencyName.toLowerCase()
+            )
+        );
     }
 
     if (filters.value.agencyCountry) {
-        result = result.filter(u => u.agencyCountry.some(c => c.value.toLowerCase() === filters.value.agencyCountry.toLowerCase()));
+        result = result.filter((u) =>
+            u.agencyCountry.some(
+                (c) =>
+                    c.value.toLowerCase() === filters.value.agencyCountry.toLowerCase()
+            )
+        );
     }
 
     const applyNumericFilter = (key, value, operator) => {
         if (!value) return;
         const num = Number(value);
-        if (operator === "=") result = result.filter(u => u[key] === num);
-        else if (operator === ">") result = result.filter(u => u[key] > num);
-        else if (operator === "<") result = result.filter(u => u[key] < num);
+        if (operator === "=") result = result.filter((u) => u[key] === num);
+        else if (operator === ">") result = result.filter((u) => u[key] > num);
+        else if (operator === "<") result = result.filter((u) => u[key] < num);
     };
 
-    applyNumericFilter("adminUsers", filters.value.adminUsers, filters.value.adminUsersOperator);
-    applyNumericFilter("totalConnectedProperties", filters.value.connectedProperties, filters.value.connectedPropertiesOperator);
-    applyNumericFilter("rentalProperties", filters.value.rentalProperties, filters.value.rentalPropertiesOperator);
-    applyNumericFilter("saleProperties", filters.value.saleProperties, filters.value.salePropertiesOperator);
-
-    if (sortColumn.value && sortOrder.value) {
-        result.sort((a, b) => {
-            let valA = "";
-            let valB = "";
-            if (sortColumn.value === "agency") {
-                valA = a.agency[0].value;
-                valB = b.agency[0].value;
-            } else if (sortColumn.value === "agencyCountry") {
-                valA = a.agencyCountry[0].value;
-                valB = b.agencyCountry[0].value;
-            } else {
-                valA = a[sortColumn.value];
-                valB = b[sortColumn.value];
-            }
-
-            if (typeof valA === "number" && typeof valB === "number") {
-                return sortOrder.value === "asc" ? valA - valB : valB - valA;
-            }
-            return sortOrder.value === "asc"
-                ? String(valA).localeCompare(String(valB))
-                : String(valB).localeCompare(String(valA));
-        });
-    }
+    applyNumericFilter(
+        "adminUsers",
+        filters.value.adminUsers,
+        filters.value.adminUsersOperator
+    );
+    applyNumericFilter(
+        "totalConnectedProperties",
+        filters.value.connectedProperties,
+        filters.value.connectedPropertiesOperator
+    );
+    applyNumericFilter(
+        "rentalProperties",
+        filters.value.rentalProperties,
+        filters.value.rentalPropertiesOperator
+    );
+    applyNumericFilter(
+        "saleProperties",
+        filters.value.saleProperties,
+        filters.value.salePropertiesOperator
+    );
 
     return result;
 });
 
+// Active filters
 const activeFilters = computed(() => {
     const active = [];
 
     if (filters.value.agencyCountry) {
-        active.push({ key: 'agencyCountry', type: 'country', label: filters.value.agencyCountry });
+        active.push({
+            key: "agencyCountry",
+            type: "country",
+            label: filters.value.agencyCountry,
+        });
     }
     if (filters.value.agencyName) {
-        active.push({ key: 'agencyName', type: 'agency', label: filters.value.agencyName });
+        active.push({
+            key: "agencyName",
+            type: "agency",
+            label: filters.value.agencyName,
+        });
     }
 
     if (filters.value.adminUsers) {
         active.push({
-            key: 'adminUsers',
-            type: 'number',
-            label: `Admin Users: ${filters.value.adminUsersOperator} ${filters.value.adminUsers}`
+            key: "adminUsers",
+            type: "number",
+            label: `Admin Users: ${filters.value.adminUsersOperator} ${filters.value.adminUsers}`,
         });
     }
     if (filters.value.connectedProperties) {
         active.push({
-            key: 'connectedProperties',
-            type: 'number',
-            label: `Total Connected Properties: ${filters.value.connectedPropertiesOperator} ${filters.value.connectedProperties}`
+            key: "connectedProperties",
+            type: "number",
+            label: `Total Connected Properties: ${filters.value.connectedPropertiesOperator} ${filters.value.connectedProperties}`,
         });
     }
     if (filters.value.rentalProperties) {
         active.push({
-            key: 'rentalProperties',
-            type: 'number',
-            label: `Rental Properties: ${filters.value.rentalPropertiesOperator} ${filters.value.rentalProperties}`
+            key: "rentalProperties",
+            type: "number",
+            label: `Rental Properties: ${filters.value.rentalPropertiesOperator} ${filters.value.rentalProperties}`,
         });
     }
     if (filters.value.saleProperties) {
         active.push({
-            key: 'saleProperties',
-            type: 'number',
-            label: `Sale Properties: ${filters.value.salePropertiesOperator} ${filters.value.saleProperties}`
+            key: "saleProperties",
+            type: "number",
+            label: `Sale Properties: ${filters.value.salePropertiesOperator} ${filters.value.saleProperties}`,
         });
     }
 
     return active;
 });
 
+// Remove filter
 const removeFilter = (filterKey) => {
-    filters.value[filterKey] = '';
+    filters.value[filterKey] = "";
 };
 
 defineExpose({ filters });

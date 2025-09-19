@@ -8,29 +8,16 @@
         <table class="w-full min-w-[900px]">
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th
-                v-for="column in columns"
-                :key="column.key"
-                :class="[
-                  'px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider'
-                ]"
-                :style="{ minWidth: props.thWidth + 'px' }"
-              >
-                <div
-                  v-if="column.sortable"
-                  class="flex items-start gap-1 cursor-pointer"
-                  @click="toggleSort(column.key)"
-                >
+              <th v-for="column in columns" :key="column.key" :class="[
+                'px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider'
+              ]" :style="{ minWidth: props.thWidth + 'px' }">
+                <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer"
+                  @click="toggleSort(column.key)">
                   <span>{{ column.label }}</span>
 
                   <!-- dynamic icon -->
-                  <NuxtImg
-                    :src="getSortIcon(column.key)"
-                    width="16"
-                    height="16"
-                    alt="sort icon"
-                    class="transition-transform duration-150"
-                  />
+                  <NuxtImg :src="getSortIcon(column.key)" width="16" height="16" alt="sort icon"
+                    class="transition-transform duration-150" />
                 </div>
                 <span v-else>{{ column.label }}</span>
               </th>
@@ -38,44 +25,24 @@
           </thead>
 
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr
-              v-for="item in paginatedData"
-              :key="item.id"
-              class="hover:bg-gray-50"
-            >
-              <td
-                v-for="column in columns"
-                :key="column.key"
-                :class="[
-                  'p-3 whitespace-nowrap text-sm text-black',
-                  shouldCenter(getNestedValue(item, column.key), column)
-                    ? 'text-center'
-                    : ''
-                ]"
-              >
-                <slot
-                  :name="`cell-${column.key}`"
-                  :item="item"
-                  :value="getNestedValue(item, column.key)"
-                >
+            <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-gray-50">
+              <td v-for="column in columns" :key="column.key" :class="[
+                'p-3 whitespace-nowrap text-sm text-black',
+                shouldCenter(getNestedValue(item, column.key), column)
+                  ? 'text-center'
+                  : ''
+              ]">
+                <slot :name="`cell-${column.key}`" :item="item" :value="getNestedValue(item, column.key)">
                   <div v-if="column.type === 'array-with-flags'">
                     <div class="flex items-center space-x-2">
-                      <div
-                        v-for="arrayItem in getNestedValue(item, column.key)"
-                        :key="arrayItem.value"
-                        class="flex items-center space-x-1"
-                      >
-                        <img
-                          v-if="arrayItem.img"
-                          :src="arrayItem.img"
-                          :alt="arrayItem.value"
-                          class="w-4 h-4"
-                        />
-                        <span
-                          v-if="arrayItem.value"
-                          class="text-sm font-medium text-black"
-                          >{{ arrayItem.value }}</span
-                        >
+                      <div v-for="arrayItem in getNestedValue(item, column.key)" :key="arrayItem.value"
+                        class="flex items-center space-x-1">
+                        <img v-if="arrayItem.img" :src="arrayItem.img" :alt="arrayItem.value" class="w-4 h-4" />
+                        <span v-if="arrayItem.value" class="text-sm font-medium"
+                          :class="arrayItem.value === 'Edit' ? 'text-red-600' : 'text-black'">
+                          {{ arrayItem.value }}
+                        </span>
+
                       </div>
                     </div>
                   </div>
@@ -88,79 +55,48 @@
       </div>
 
       <!-- Pagination -->
-      <div
-        class="px-4 py-3 border-t border-gray-200 flex items-center justify-between"
-      >
+      <div class="px-4 py-3 border-t border-gray-200 flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <button
-            @click="goToPage(currentPage - 1)"
-            :disabled="currentPage === 1"
-            class="px-3 py-1 text-sm font-medium text-gray-500 bg-[#F8F8F8] border border-gray-300 rounded-full hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"
+            class="px-3 py-1 text-sm font-medium text-gray-500 bg-[#F8F8F8] border border-gray-300 rounded-full hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
             Previous
           </button>
 
           <div class="flex items-center space-x-1">
-            <button
-              v-if="currentPage > 3"
-              @click="goToPage(1)"
-              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            >
+            <button v-if="currentPage > 3" @click="goToPage(1)"
+              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               1
             </button>
 
-            <span
-              v-if="currentPage > 4"
-              class="px-2 py-1 text-sm text-gray-500"
-              >...</span
-            >
+            <span v-if="currentPage > 4" class="px-2 py-1 text-sm text-gray-500">...</span>
 
-            <button
-              v-for="page in visiblePages"
-              :key="page"
-              @click="goToPage(page)"
-              :class="[
-                'px-3 py-1 text-sm font-medium rounded-full',
-                page === currentPage
-                  ? 'bg-[#0F4841] text-white'
-                  : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
-              ]"
-            >
+            <button v-for="page in visiblePages" :key="page" @click="goToPage(page)" :class="[
+              'px-3 py-1 text-sm font-medium rounded-full',
+              page === currentPage
+                ? 'bg-[#0F4841] text-white'
+                : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
+            ]">
               {{ page }}
             </button>
 
-            <span
-              v-if="currentPage < totalPages - 3"
-              class="px-2 py-1 text-sm text-gray-500"
-              >...</span
-            >
+            <span v-if="currentPage < totalPages - 3" class="px-2 py-1 text-sm text-gray-500">...</span>
 
-            <button
-              v-if="currentPage < totalPages - 2"
-              @click="goToPage(totalPages)"
-              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            >
+            <button v-if="currentPage < totalPages - 2" @click="goToPage(totalPages)"
+              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               {{ totalPages }}
             </button>
           </div>
 
-          <button
-            @click="goToPage(currentPage + 1)"
-            :disabled="currentPage === totalPages"
-            class="px-3 py-1 text-sm font-medium text-gray-500 bg-[#F8F8F8] border border-gray-300 rounded-full hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages"
+            class="px-3 py-1 text-sm font-medium text-gray-500 bg-[#F8F8F8] border border-gray-300 rounded-full hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
             Next
           </button>
         </div>
 
         <div class="flex items-center space-x-2">
           <span class="text-sm text-gray-500">Result per page:</span>
-          <Tailwinddropdown
-            v-model="itemsPerPage"
-            button-class="py-1 bg-white"
-            :options="pagValue"
-            @update:modelValue="handleItemsPerPageChange"
-          />
+          <Tailwinddropdown v-model="itemsPerPage" button-class="py-1 px-3 bg-white" :options="pagValue"
+            @update:modelValue="handleItemsPerPageChange" />
         </div>
       </div>
     </div>

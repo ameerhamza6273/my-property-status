@@ -18,7 +18,7 @@
           <span class="text-sm text-black">Filter By : </span>
           <div class="relative">
             <Tailwinddropdown
-              button-class="py-1 bg-white border border-gray-300 text-sm rounded-full"
+              button-class="py-1 px-3 bg-white border border-gray-300 text-sm rounded-full"
               placeholder="Date Period From - To"
               :options="datePeriod"
             />
@@ -46,7 +46,7 @@
         <Tailwinddropdown
           v-model="selectedProfile"
           :options="profileOptions"
-          button-class="bg-white p-1"
+          button-class="bg-white p-1 "
           dropdownMinWidth="min-w-[140px]"
         />
       </div>

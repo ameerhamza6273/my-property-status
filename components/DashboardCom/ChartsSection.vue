@@ -3,7 +3,7 @@
     <div class="bg-white rounded-2xl shadow-sm p-3 pb-10 border border-gray-200">
       <div class="flex items-center justify-between mb-6 pb-3 border-b border-[#D9D9D9]">
         <h3 class="text-lg font-semibold text-gray-900">Listings Overview</h3>
-         <Tailwinddropdown class="w-20" button-class="py-1" placeholder="2021"
+         <Tailwinddropdown class="w-20" button-class="py-1 px-2" placeholder="2021"
            :options="listingYearOptions" />
         <!-- <select class="border border-[#D9D9D9] rounded-full px-2 py-1 text-sm bg-white focus:ring-1 focus:ring-gray-500 focus:border-gray-500">
         </select> -->
@@ -34,7 +34,7 @@
    <div class="bg-white rounded-2xl shadow-sm p-3 pb-10 border border-gray-200">
       <div class="flex items-center justify-between mb-6 pb-3 border-b border-[#D9D9D9]">
         <h3 class="text-lg font-semibold text-gray-900">Customers Overview</h3>
-         <Tailwinddropdown class="w-20" button-class="py-1" placeholder="2020"
+         <Tailwinddropdown class="w-20" button-class="py-1 px-2" placeholder="2020"
            :options="customerYearOptions" />
       </div>     
       
