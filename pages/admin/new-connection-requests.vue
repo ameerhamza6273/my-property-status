@@ -113,22 +113,6 @@ const tableHeaders = [
 const sortColumn = ref(null);
 const sortOrder = ref(null);
 
-const toggleSort = (column) => {
-  if (sortColumn.value !== column) {
-    sortColumn.value = column;
-    sortOrder.value = "asc";
-  } else {
-    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
-  }
-};
-
-const getSortIcon = (column) => {
-  if (sortColumn.value !== column || !sortOrder.value) {
-    return "switch-vertical.svg";
-  }
-  return "export-switch-vertical.svg";
-};
-
 // ------------------- Filtered Users -------------------
 function formatDateDDMMYYYYtoYYYYMMDD(dateStr) {
   // input: 25/04/2026 → output: 2026-04-25
@@ -139,7 +123,41 @@ function formatDateDDMMYYYYtoYYYYMMDD(dateStr) {
 const filteredUsers = computed(() => {
   let result = [...users.value];
 
-  // Apply filters
+  // ---------------- Customer Filters ----------------
+  if (customerFilters.value.name) {
+    result = result.filter(u =>
+      u.nameAndSurname.toLowerCase().includes(customerFilters.value.name.toLowerCase())
+    );
+  }
+  if (customerFilters.value.surname) {
+    result = result.filter(u =>
+      u.nameAndSurname.toLowerCase().split(" ").pop().includes(customerFilters.value.surname.toLowerCase())
+    );
+  }
+  if (customerFilters.value.mobile) {
+    result = result.filter(u =>
+      u.mobileNumber.includes(customerFilters.value.mobile)
+    );
+  }
+  if (customerFilters.value.email) {
+    result = result.filter(u =>
+      u.email?.toLowerCase().includes(customerFilters.value.email.toLowerCase())
+    );
+  }
+  if (customerFilters.value.country) {
+    result = result.filter(u =>
+      u.agencyCountry.some(c =>
+        c.value.toLowerCase() === customerFilters.value.country.toLowerCase()
+      )
+    );
+  }
+  if (customerFilters.value.gender) {
+    result = result.filter(u =>
+      u.gender?.toLowerCase() === customerFilters.value.gender.toLowerCase()
+    );
+  }
+
+  // ---------------- Property Filters ----------------
   if (propertyFilters.value.agencyName) {
     result = result.filter((u) =>
       u.agency.some(
@@ -185,7 +203,7 @@ const filteredUsers = computed(() => {
     );
   }
 
-  // Sorting
+  // ---------------- Sorting ----------------
   if (sortColumn.value && sortOrder.value) {
     result.sort((a, b) => {
       let valA = "";
@@ -211,6 +229,7 @@ const filteredUsers = computed(() => {
 
   return result;
 });
+
 
 // ------------------- Active Filters -------------------
 const customerActiveFilters = computed(() => {
@@ -287,187 +306,193 @@ function removePropertyFilter(key) {
 </script>
 
 <template>
-    <div class="p-6 bg-gray-50">
-        <!-- Header -->
-        <div class="flex items-center gap-6 mb-4">
-            <h1 class="text-2xl font-semibold text-gray-900">New Connection Requests</h1>
-        </div>
-
-        <!-- Tabs -->
-        <div class="inline-flex border border-[#D9D9D9] rounded-full bg-white">
-            <button @click="activeTab = 'all'" :class="[
-                'py-1.5 px-8 text-sm font-medium rounded-full transition-colors',
-                activeTab === 'all'
-                    ? 'bg-[#0F4841] text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-200'
-            ]">
-                All
-            </button>
-            <button @click="activeTab = 'customer'" :class="[
-                'py-1.5 px-8 text-sm font-medium rounded-full transition-colors',
-                activeTab === 'customer'
-                    ? 'bg-[#0F4841] text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-200'
-            ]">
-                By Customer
-            </button>
-            <button @click="activeTab = 'agency'" :class="[
-                'py-1.5 px-8 text-sm font-medium rounded-full transition-colors',
-                activeTab === 'agency'
-                    ? 'bg-[#0F4841] text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-200'
-            ]">
-                By Agency
-            </button>
-        </div>
-
-
-        <div class="grid grid-cols-2 gap-4 mt-6">
-            <!-- Customer Filters -->
-            <div class="mb-2">
-                <div class="bg-white rounded-xl p-5">
-                    <h3 class="text-base mb-3 font-semibold">Customer Filters</h3>
-                    <div class="flex gap-4">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Name</label>
-                            <input v-model="customerFilters.name" type="text" placeholder="Type Name.."
-                                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Surname</label>
-                            <input v-model="customerFilters.surname" type="text" placeholder="Type Surname.."
-                                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
-                        </div>
-                    </div>
-                    <div class="flex gap-4 mt-2">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Mobile Number</label>
-                            <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-3"
-                                style="height: 38px;">
-                                <select class="bg-transparent outline-none text-gray-600 text-sm mr-2">
-                                    <option>+356</option>
-                                    <option>+91</option>
-                                    <option>+92</option>
-                                </select>
-                                <input v-model="customerFilters.mobile" type="number" placeholder="Type Mobile Number.."
-                                    class="text-sm w-full outline-none bg-transparent border-l border-gray-300 pl-2" />
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Email</label>
-                            <input v-model="customerFilters.email" type="email" placeholder="Type Email.."
-                                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
-                        </div>
-                    </div>
-                    <div class="flex gap-4 mt-2">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Country</label>
-                            <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Country"
-                                :options="countryOptions" />
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Gender</label>
-                            <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Gender"
-                                :options="genderOptions" />
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Filters -->
-                <div class="mt-3">
-                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
-                    <div class="flex items-center flex-wrap gap-2">
-                        <div v-for="filter in customerActiveFilters" :key="filter.key"
-                            class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
-
-                            <!-- Optional indicator based on filter key -->
-                            <span v-if="filter.key === 'country'" class="w-2 h-2 bg-red-500 rounded-full"></span>
-                            <span v-else-if="filter.key === 'gender'" class="w-2 h-2 bg-blue-500 rounded-full"></span>
-
-                            <span class="text-[#595959]">{{ filter.label }}</span>
-                            <button @click="removeCustomerFilter(filter.key)" class="text-gray-500 hover:text-gray-700">
-                                <NuxtImg src="filter-cros-Icon.svg" width="14" height="14" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Property Filters -->
-            <div class="mb-2">
-                <div class="bg-white rounded-xl p-5">
-                    <h3 class="text-base mb-3 font-semibold">Property Filters</h3>
-                    <div class="flex gap-4">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Agency Name</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency Name"
-                                :options="agencyNameOptions" />
-
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Agency Country</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyCountry" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency Country"
-                                :options="agencyCountryOptions" />
-                        </div>
-                    </div>
-                    <div class="flex gap-4 mt-2">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">MPS Property ID</label>
-                            <input v-model="propertyFilters.mpsId" type="number" placeholder="Type MPS Property ID.."
-                                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Agency Property ID</label>
-                            <input v-model="propertyFilters.agencyPropertyId" type="number"
-                                placeholder="Type Agency Property ID.."
-                                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
-                        </div>
-                    </div>
-                    <div class="flex gap-4 mt-2">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Property Type</label>
-                            <Tailwinddropdown v-model="propertyFilters.propertyType" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Property Type"
-                                :options="propertyTypeOptions" />
-                            
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[#595959] mb-2">Request Date</label>
-                            <input v-model="propertyFilters.requestDate" type="date" style="height: 38px;"
-                                :class="propertyFilters.requestDate === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
-                                focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Filters -->
-                <div class="mt-3">
-                    <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
-                    <div class="flex items-center flex-wrap gap-2">
-                        <div v-for="filter in propertyActiveFilters" :key="filter.key"
-                            class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
-
-                            <!-- Indicator based on type -->
-                            <span v-if="filter.key === 'agencyCountry'" class="w-2 h-2 bg-red-500 rounded-full"></span>
-                            <span v-else-if="filter.key === 'agencyName'"
-                                class="w-2 h-2 bg-blue-500 rounded-full"></span>
-
-                            <span class="text-[#595959]">{{ filter.label }}</span>
-                            <button @click="removePropertyFilter(filter.key)" class="text-gray-500 hover:text-gray-700">
-                                <NuxtImg src="filter-cros-Icon.svg" width="14" height="14" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Count -->
-        <div class="my-4">
-            <p class="text-sm text-[#0F4841] font-semibold">{{ filteredUsers.length }} Results</p>
-        </div>
-
-        <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100" />
-
+  <div class="p-6 bg-gray-50">
+    <!-- Header -->
+    <div class="flex items-center gap-6 mb-4">
+      <h1 class="text-2xl font-semibold text-gray-900">New Connection Requests</h1>
     </div>
+
+    <!-- Tabs -->
+    <div class="inline-flex border border-[#D9D9D9] rounded-full bg-white">
+      <button @click="activeTab = 'all'" :class="[
+        'py-1.5 px-8 text-sm font-medium rounded-full transition-colors',
+        activeTab === 'all'
+          ? 'bg-[#0F4841] text-white'
+          : 'bg-white text-gray-600 hover:bg-gray-200'
+      ]">
+        All
+      </button>
+      <button @click="activeTab = 'customer'" :class="[
+        'py-1.5 px-8 text-sm font-medium rounded-full transition-colors',
+        activeTab === 'customer'
+          ? 'bg-[#0F4841] text-white'
+          : 'bg-white text-gray-600 hover:bg-gray-200'
+      ]">
+        By Customer
+      </button>
+      <button @click="activeTab = 'agency'" :class="[
+        'py-1.5 px-8 text-sm font-medium rounded-full transition-colors',
+        activeTab === 'agency'
+          ? 'bg-[#0F4841] text-white'
+          : 'bg-white text-gray-600 hover:bg-gray-200'
+      ]">
+        By Agency
+      </button>
+    </div>
+
+
+    <div class="grid grid-cols-2 gap-4 mt-6">
+      <!-- Customer Filters -->
+      <div class="mb-2">
+        <div class="bg-white rounded-xl p-5">
+          <h3 class="text-base mb-3 font-semibold">Customer Filters</h3>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Name</label>
+              <input v-model="customerFilters.name" type="text" placeholder="Type Name.."
+                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Surname</label>
+              <input v-model="customerFilters.surname" type="text" placeholder="Type Surname.."
+                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+            </div>
+          </div>
+          <div class="flex gap-4 mt-2">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Mobile Number</label>
+              <div
+                class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-3"
+                style="height: 38px;">
+                <select class="bg-transparent outline-none text-gray-600 text-sm mr-2">
+                  <option>+356</option>
+                  <option>+91</option>
+                  <option>+92</option>
+                </select>
+                <input v-model="customerFilters.mobile" type="number" placeholder="Type Mobile Number.."
+                  class="text-sm w-full outline-none bg-transparent border-l border-gray-300 pl-2" />
+              </div>
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Email</label>
+              <input v-model="customerFilters.email" type="email" placeholder="Type Email.."
+                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+            </div>
+          </div>
+          <div class="flex gap-4 mt-2">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Country</label>
+              <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 px-3 bg-[#F8F8F8]"
+                placeholder="Select Country" :options="countryOptions" />
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Gender</label>
+              <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 px-3 bg-[#F8F8F8]"
+                placeholder="Select Gender" :options="genderOptions" />
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filters -->
+        <div class="mt-3">
+          <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
+          <div class="flex items-center flex-wrap gap-2">
+            <div v-for="filter in customerActiveFilters" :key="filter.key"
+              class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
+
+              <!-- Optional indicator based on filter key -->
+              <span v-if="filter.key === 'country'" class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span v-else-if="filter.key === 'gender'" class="w-2 h-2 bg-blue-500 rounded-full"></span>
+
+              <span class="text-[#595959]">{{ filter.label }}</span>
+              <button @click="removeCustomerFilter(filter.key)" class="text-gray-500 hover:text-gray-700">
+                <NuxtImg src="filter-cros-Icon.svg" width="14" height="14" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Filters -->
+      <div class="mb-2">
+        <div class="bg-white rounded-xl p-5">
+          <h3 class="text-base mb-3 font-semibold">Property Filters</h3>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Agency Name</label>
+              <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]"
+                placeholder="Select Agency Name" :options="agencyNameOptions" />
+
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Agency Country</label>
+              <Tailwinddropdown v-model="propertyFilters.agencyCountry" button-class="py-2 px-3 bg-[#F8F8F8]"
+                placeholder="Select Agency Country" :options="agencyCountryOptions" />
+            </div>
+          </div>
+          <div class="flex gap-4 mt-2">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">MPS Property ID</label>
+              <input v-model="propertyFilters.mpsId" type="number" placeholder="Type MPS Property ID.."
+                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Agency Property ID</label>
+              <input v-model="propertyFilters.agencyPropertyId" type="number" placeholder="Type Agency Property ID.."
+                class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8] focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+            </div>
+          </div>
+          <div class="flex gap-4 mt-2">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Property Type</label>
+              <Tailwinddropdown v-model="propertyFilters.propertyType" button-class="py-2 px-3 bg-[#F8F8F8]"
+                placeholder="Select Property Type" :options="propertyTypeOptions" />
+
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-[#595959] mb-2">Request Date</label>
+              <div class="relative w-full">
+                <input v-model="propertyFilters.requestDate" type="date" class="peer text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
+                focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+                <!-- Fake placeholder -->
+                <span class="absolute left-3 top-3 text-[#BCBCBC] bg-[#F8F8F8] text-sm pointer-events-none
+                  peer-focus:hidden" v-if="!propertyFilters.requestDate">
+                  Select Request Date
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filters -->
+        <div class="mt-3">
+          <div class="text-sm font-medium text-black mb-1">Filtered by:</div>
+          <div class="flex items-center flex-wrap gap-2">
+            <div v-for="filter in propertyActiveFilters" :key="filter.key"
+              class="inline-flex items-center gap-2 px-2 py-1 bg-white rounded-full text-xs border border-[#D9D9D9]">
+
+              <!-- Indicator based on type -->
+              <span v-if="filter.key === 'agencyCountry'" class="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span v-else-if="filter.key === 'agencyName'" class="w-2 h-2 bg-blue-500 rounded-full"></span>
+
+              <span class="text-[#595959]">{{ filter.label }}</span>
+              <button @click="removePropertyFilter(filter.key)" class="text-gray-500 hover:text-gray-700">
+                <NuxtImg src="filter-cros-Icon.svg" width="14" height="14" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="my-4">
+      <p class="text-sm text-[#0F4841] font-semibold">{{ filteredUsers.length }} Results</p>
+    </div>
+
+    <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100" />
+
+  </div>
 </template>

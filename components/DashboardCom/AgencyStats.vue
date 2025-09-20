@@ -1,6 +1,6 @@
 <template>
-    <div class="grid grid-cols-3 gap-4 mb-4">
-        <div class="col-span-2">
+    <div class="grid grid-cols-12 gap-4 mb-4">
+        <div class="col-span-8">
             <div class="grid grid-cols-4 gap-3">
                 <div class="col-span-1">
                     <div class="bg-white   rounded-2xl py-5 px-4 border border-[#D9D9D9] cursor-pointer"
@@ -63,7 +63,7 @@
 
         </div>
 
-        <div class="border-l border-[#D9D9D9] pl-4">
+        <div class="border-l col-span-4 border-[#D9D9D9] pl-4">
             <div class="bg-white rounded-2xl  p-4 border border-[#D9D9D9]">
                 <p class="text-sm font-medium text-[#595959] text-center mb-2">Rental Properties Overview</p>
                 <div class="grid grid-cols-2 gap-4">
@@ -127,8 +127,8 @@ const modalData = {
         title: 'Pending Property Status Change Requests',
         tabs: [
             {
-                key: 'by-agency',
-                label: 'By Agency',
+                key: 'rental',
+                label: 'Rental',
                 headers: { left: 'Agency Country', middle: 'Agency', right: 'Property Listings' },
                 data: [
                     { country: 'Spain', flag: '🇪🇸', agency: 'Luxury Sales', agencyLogo: '💎', customers: 150 },
@@ -138,8 +138,8 @@ const modalData = {
                 ]
             },
             {
-                key: 'by-country',
-                label: 'By Country',
+                key: 'sale',
+                label: 'Sale',
                 headers: { left: 'Country', right: 'Properties' },
                 data: [
                     { country: 'Spain', flag: '🇪🇸', customers: 180 },
@@ -154,8 +154,8 @@ const modalData = {
         title: 'Pending Property Addition Requests',
         tabs: [
             {
-                key: 'by-agency',
-                label: 'By Agency',
+                key: 'rental',
+                label: 'Rental',
                 headers: { left: 'Agency Country', middle: 'Agency', right: 'Property Listings' },
                 data: [
                     { country: 'Spain', flag: '🇪🇸', agency: 'Luxury Sales', agencyLogo: '💎', customers: 150 },
@@ -165,8 +165,8 @@ const modalData = {
                 ]
             },
             {
-                key: 'by-country',
-                label: 'By Country',
+                key: 'sale',
+                label: 'Sale',
                 headers: { left: 'Country', right: 'Properties' },
                 data: [
                     { country: 'Spain', flag: '🇪🇸', customers: 180 },

@@ -2,238 +2,255 @@
 import { ref, computed } from "vue";
 
 useHead({
-    meta: [
-        { name: 'viewport', content: 'width=1300' }
-    ]
+  meta: [
+    { name: 'viewport', content: 'width=1300' }
+  ]
 })
 
-const activeTab = ref("all"); // default active tab (can be "all", "customer", "agency")
+const activeTab = ref("all"); // default active tab
 
 // ------------------- Customer Filters -------------------
 const customerFilters = ref({
-    name: "",
-    surname: "",
-    mobile: "",
-    email: "",
-    country: "",
-    gender: "",
+  name: "",
+  surname: "",
+  mobile: "",
+  email: "",
+  country: "",
+  gender: "",
 });
 const countryOptions = [
-    { value: 'Malta', label: 'Malta' },
-    { value: 'USA', label: 'USA' },
-    { value: 'UK', label: 'UK' }
+  { value: 'Malta', label: 'Malta' },
+  { value: 'USA', label: 'USA' },
+  { value: 'UK', label: 'UK' }
 ]
 const agencyCountriesOptions = [
-    { value: 'Malta', label: 'Malta' },
-    { value: 'USA', label: 'USA' },
-    { value: 'UK', label: 'UK' }
+  { value: 'Malta', label: 'Malta' },
+  { value: 'USA', label: 'USA' },
+  { value: 'UK', label: 'UK' }
 ]
 const agencyNameOptions = [
-    { value: 'Remax', label: 'Remax' },
-    { value: 'Century', label: 'Century' },
-    { value: 'Coldwell', label: 'Coldwell' },
+  { value: 'Remax', label: 'Remax' },
+  { value: 'Century', label: 'Century' },
+  { value: 'Coldwell', label: 'Coldwell' },
 ]
 const genderOptions = [
-    { value: 'Male', label: 'Male' },
-    { value: 'Female', label: 'Female' },
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
 ]
 
 const propertyTypeOptions = [
-    { value: 'Appartment', label: 'Appartment' },
-    { value: 'Villa', label: 'Villa' },
+  { value: 'Rented', label: 'Rented' },
+  { value: 'Available', label: 'Available' },
 ]
 
 // ------------------- Property Filters -------------------
 const propertyFilters = ref({
-    agencyName: "",
-    agencyCountries: "",
-    mpsId: "",
-    agencyPropertyId: "",
-    propertyType: "",
-    dateofContract: "",
-    adminUsers: "",
-    adminUsersOperator: "=",
-    connectedProperties: "",
-    connectedPropertiesOperator: "=",
-    rentalProperties: "",
-    rentalPropertiesOperator: "=",
-    saleProperties: "",
-    salePropertiesOperator: "="
+  agencyName: "",
+  agencyCountries: "",
+  mpsId: "",
+  propertyType: "",
+  dateofContract: "",
 });
 
 // ------------------- Users Table Data -------------------
 const users = ref([
-    {
-        id: 1,
-        agencyImages: [
-            { value: "Remax", img: "Spanish.svg" },
-            { value: "Century", img: "Spanish.svg" }
-        ],
-        agencyCountries: [
-            { value: "Malta", img: "Spanish.svg" },
-            { value: "USA", img: "Spanish.svg" },
-            { value: "UK", img: "Spanish.svg" }
-        ],
-        MPSPropertyID: 876543,
-        nameAndSurname: "Savannah Nguyen",
-        propertyStatus: "Rented",
-        inAppAction: "Archived",
-        dateofContract: "25/04/2026",
-        sentBy: "Agency",
-    },
-    {
-        id: 2,
-        agencyImages: [
-            { value: "Coldwell", img: "Spanish.svg" },
-            { value: "Remax", img: "Spanish.svg" }
-        ],
-        agencyCountries: [
-            { value: "Malta", img: "Spanish.svg" },
-            { value: "USA", img: "Spanish.svg" }
-        ],
-        MPSPropertyID: 23546,
-        nameAndSurname: "Arlene McCoy",
-        propertyStatus: "Available",
-        inAppAction: "Deleted",
-        dateofContract: "25/04/2026",
-        sentBy: "Customer",
-    },
-    {
-        id: 3,
-        agencyImages: [
-            { value: "Century", img: "Spanish.svg" },
-            { value: "Coldwell", img: "Spanish.svg" }
-        ],
-        agencyCountries: [
-            { value: "UK", img: "Spanish.svg" },
-            { value: "USA", img: "Spanish.svg" },
-            { value: "Malta", img: "Spanish.svg" }
-        ],
-        MPSPropertyID: 56789,
-        nameAndSurname: "Cody Fisher",
-        propertyStatus: "Available",
-        inAppAction: "Active",
-        dateofContract: "25/04/2026",
-        sentBy: "Agency",
-    }
+  {
+    id: 1,
+    agencyImages: [
+      { value: "Remax", img: "Spanish.svg" },
+      { value: "Century", img: "Spanish.svg" }
+    ],
+    agencyCountries: [
+      { value: "Malta", img: "Spanish.svg" },
+      { value: "USA", img: "Spanish.svg" },
+      { value: "UK", img: "Spanish.svg" }
+    ],
+    MPSPropertyID: 876543,
+    nameAndSurname: "Savannah Nguyen",
+    propertyStatus: "Rented",
+    inAppAction: "Archived",
+    dateofContract: "25/04/2026",
+    sentBy: "Agency",
+  },
+  {
+    id: 2,
+    agencyImages: [
+      { value: "Coldwell", img: "Spanish.svg" },
+      { value: "Remax", img: "Spanish.svg" }
+    ],
+    agencyCountries: [
+      { value: "Malta", img: "Spanish.svg" },
+      { value: "USA", img: "Spanish.svg" }
+    ],
+    MPSPropertyID: 23546,
+    nameAndSurname: "Arlene McCoy",
+    propertyStatus: "Available",
+    inAppAction: "Deleted",
+    dateofContract: "25/04/2026",
+    sentBy: "Customer",
+  },
+  {
+    id: 3,
+    agencyImages: [
+      { value: "Century", img: "Spanish.svg" },
+      { value: "Coldwell", img: "Spanish.svg" }
+    ],
+    agencyCountries: [
+      { value: "UK", img: "Spanish.svg" },
+      { value: "USA", img: "Spanish.svg" },
+      { value: "Malta", img: "Spanish.svg" }
+    ],
+    MPSPropertyID: 56789,
+    nameAndSurname: "Cody Fisher",
+    propertyStatus: "Available",
+    inAppAction: "Active",
+    dateofContract: "25/04/2026",
+    sentBy: "Agency",
+  }
 ]);
-
 
 // ------------------- Sorting Logic -------------------
 const sortColumn = ref(null);
 const sortOrder = ref(null);
 
 const toggleSort = (column) => {
-    if (sortColumn.value !== column) {
-        sortColumn.value = column;
-        sortOrder.value = "asc";
-    } else {
-        sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
-    }
+  if (sortColumn.value !== column) {
+    sortColumn.value = column;
+    sortOrder.value = "asc";
+  } else {
+    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+  }
 };
 
 const getSortIcon = (column) => {
-    if (sortColumn.value !== column || !sortOrder.value) {
-        return "switch-vertical.svg";
-    }
-    return "export-switch-vertical.svg";
+  if (sortColumn.value !== column || !sortOrder.value) {
+    return "switch-vertical.svg";
+  }
+  return "export-switch-vertical.svg";
 };
 
 // ------------------- Filtered Users Computed -------------------
 const filteredUsers = computed(() => {
-    let result = [...users.value];
+  let result = [...users.value];
 
-   if (propertyFilters.value.agencyName) {
+  // ---------------- Customer Filters ----------------
+  if (customerFilters.value.name) {
     result = result.filter(u =>
-        u.agencyImages.some(a => a.value.toLowerCase() === propertyFilters.value.agencyName.toLowerCase())
+      u.nameAndSurname.toLowerCase().includes(customerFilters.value.name.toLowerCase())
     );
-}
-if (propertyFilters.value.agencyCountries) {
+  }
+  if (customerFilters.value.surname) {
     result = result.filter(u =>
-        u.agencyCountries.some(c => c.value.toLowerCase() === propertyFilters.value.agencyCountries.toLowerCase())
+      u.nameAndSurname.toLowerCase().split(" ")[1]?.includes(customerFilters.value.surname.toLowerCase())
     );
-}
+  }
+  if (customerFilters.value.mobile) {
+    result = result.filter(u =>
+      u.mobile?.toString().includes(customerFilters.value.mobile.toString())
+    );
+  }
+  if (customerFilters.value.email) {
+    result = result.filter(u =>
+      u.email?.toLowerCase().includes(customerFilters.value.email.toLowerCase())
+    );
+  }
+  if (customerFilters.value.country) {
+    result = result.filter(u =>
+      u.agencyCountries.some(c => c.value.toLowerCase() === customerFilters.value.country.toLowerCase())
+    );
+  }
+  if (customerFilters.value.gender) {
+    result = result.filter(u =>
+      u.gender?.toLowerCase() === customerFilters.value.gender.toLowerCase()
+    );
+  }
 
+  // ---------------- Property Filters ----------------
+  if (propertyFilters.value.agencyName) {
+    result = result.filter(u =>
+      u.agencyImages.some(a => a.value.toLowerCase() === propertyFilters.value.agencyName.toLowerCase())
+    );
+  }
+  if (propertyFilters.value.agencyCountries) {
+    result = result.filter(u =>
+      u.agencyCountries.some(c => c.value.toLowerCase() === propertyFilters.value.agencyCountries.toLowerCase())
+    );
+  }
+  if (propertyFilters.value.mpsId) {
+    result = result.filter(u =>
+      u.MPSPropertyID.toString().includes(propertyFilters.value.mpsId.toString())
+    );
+  }
+  if (propertyFilters.value.propertyType) {
+    result = result.filter(u =>
+      u.propertyStatus.toLowerCase() === propertyFilters.value.propertyType.toLowerCase()
+    );
+  }
+  if (propertyFilters.value.dateofContract) {
+    result = result.filter(u =>
+      u.dateofContract === propertyFilters.value.dateofContract
+    );
+  }
 
-    // Numeric property filters
-    const applyNumericFilter = (key, value, operator) => {
-        if (!value) return;
-        const num = Number(value);
-        if (operator === "=") result = result.filter(u => u[key] === num);
-        else if (operator === ">") result = result.filter(u => u[key] > num);
-        else if (operator === "<") result = result.filter(u => u[key] < num);
-    };
+  // ---------------- Sorting ----------------
+  if (sortColumn.value && sortOrder.value) {
+    result.sort((a, b) => {
+      let valA = "";
+      let valB = "";
+      if (sortColumn.value === "agency") {
+        valA = a.agency[0].value;
+        valB = b.agency[0].value;
+      } else if (sortColumn.value === "agencyCountries") {
+        valA = a.agencyCountries[0].value;
+        valB = b.agencyCountries[0].value;
+      } else {
+        valA = a[sortColumn.value];
+        valB = b[sortColumn.value];
+      }
+      if (typeof valA === "number" && typeof valB === "number") {
+        return sortOrder.value === "asc" ? valA - valB : valB - valA;
+      }
+      return sortOrder.value === "asc"
+        ? String(valA).localeCompare(String(valB))
+        : String(valB).localeCompare(String(valA));
+    });
+  }
 
-    applyNumericFilter("adminUsers", propertyFilters.value.adminUsers, propertyFilters.value.adminUsersOperator);
-    applyNumericFilter("totalConnectedProperties", propertyFilters.value.connectedProperties, propertyFilters.value.connectedPropertiesOperator);
-    applyNumericFilter("rentalProperties", propertyFilters.value.rentalProperties, propertyFilters.value.rentalPropertiesOperator);
-    applyNumericFilter("saleProperties", propertyFilters.value.saleProperties, propertyFilters.value.salePropertiesOperator);
-
-    // Sorting
-    if (sortColumn.value && sortOrder.value) {
-        result.sort((a, b) => {
-            let valA = "";
-            let valB = "";
-            if (sortColumn.value === "agency") {
-                valA = a.agency[0].value;
-                valB = b.agency[0].value;
-            } else if (sortColumn.value === "agencyCountries") {
-                valA = a.agencyCountries[0].value;
-                valB = b.agencyCountries[0].value;
-            } else {
-                valA = a[sortColumn.value];
-                valB = b[sortColumn.value];
-            }
-            if (typeof valA === "number" && typeof valB === "number") {
-                return sortOrder.value === "asc" ? valA - valB : valB - valA;
-            }
-            return sortOrder.value === "asc"
-                ? String(valA).localeCompare(String(valB))
-                : String(valB).localeCompare(String(valA));
-        });
-    }
-
-    return result;
+  return result;
 });
 
 // ------------------- Chips for Active Filters -------------------
 const customerActiveFilters = computed(() => {
-    const result = [];
-    if (customerFilters.value.name) result.push({ key: "name", label: `Name: ${customerFilters.value.name}` });
-    if (customerFilters.value.surname) result.push({ key: "surname", label: `Surname: ${customerFilters.value.surname}` });
-    if (customerFilters.value.mobile) result.push({ key: "mobile", label: `Mobile: ${customerFilters.value.mobile}` });
-    if (customerFilters.value.email) result.push({ key: "email", label: `Email: ${customerFilters.value.email}` });
-    if (customerFilters.value.country) result.push({ key: "country", label: `Country: ${customerFilters.value.country}` });
-    if (customerFilters.value.gender) result.push({ key: "gender", label: `Gender: ${customerFilters.value.gender}` });
-    return result;
+  const result = [];
+  if (customerFilters.value.name) result.push({ key: "name", label: `Name: ${customerFilters.value.name}` });
+  if (customerFilters.value.surname) result.push({ key: "surname", label: `Surname: ${customerFilters.value.surname}` });
+  if (customerFilters.value.mobile) result.push({ key: "mobile", label: `Mobile: ${customerFilters.value.mobile}` });
+  if (customerFilters.value.email) result.push({ key: "email", label: `Email: ${customerFilters.value.email}` });
+  if (customerFilters.value.country) result.push({ key: "country", label: `Country: ${customerFilters.value.country}` });
+  if (customerFilters.value.gender) result.push({ key: "gender", label: `Gender: ${customerFilters.value.gender}` });
+  return result;
 });
 
 const propertyActiveFilters = computed(() => {
-    const result = [];
-    if (propertyFilters.value.agencyName) result.push({ key: "agencyName", label: `Agency: ${propertyFilters.value.agencyName}` });
-    if (propertyFilters.value.agencyCountries) result.push({ key: "agencyCountries", label: `Agency Country: ${propertyFilters.value.agencyCountries}` });
-    if (propertyFilters.value.mpsId) result.push({ key: "mpsId", label: `MPS ID: ${propertyFilters.value.mpsId}` });
-    if (propertyFilters.value.agencyPropertyId) result.push({ key: "agencyPropertyId", label: `Agency Property ID: ${propertyFilters.value.agencyPropertyId}` });
-    if (propertyFilters.value.propertyType) result.push({ key: "propertyType", label: `Property Type: ${propertyFilters.value.propertyType}` });
-    if (propertyFilters.value.dateofContract) result.push({ key: "dateofContract", label: `Date: ${propertyFilters.value.dateofContract}` });
-    if (propertyFilters.value.adminUsers) result.push({ key: "adminUsers", label: `Admin Users: ${propertyFilters.value.adminUsersOperator} ${propertyFilters.value.adminUsers}` });
-    if (propertyFilters.value.connectedProperties) result.push({ key: "connectedProperties", label: `Connected Properties: ${propertyFilters.value.connectedPropertiesOperator} ${propertyFilters.value.connectedProperties}` });
-    if (propertyFilters.value.rentalProperties) result.push({ key: "rentalProperties", label: `Rental Properties: ${propertyFilters.value.rentalPropertiesOperator} ${propertyFilters.value.rentalProperties}` });
-    if (propertyFilters.value.saleProperties) result.push({ key: "saleProperties", label: `Sale Properties: ${propertyFilters.value.salePropertiesOperator} ${propertyFilters.value.saleProperties}` });
-    return result;
+  const result = [];
+  if (propertyFilters.value.agencyName) result.push({ key: "agencyName", label: `Agency: ${propertyFilters.value.agencyName}` });
+  if (propertyFilters.value.agencyCountries) result.push({ key: "agencyCountries", label: `Agency Country: ${propertyFilters.value.agencyCountries}` });
+  if (propertyFilters.value.mpsId) result.push({ key: "mpsId", label: `MPS ID: ${propertyFilters.value.mpsId}` });
+  if (propertyFilters.value.propertyType) result.push({ key: "propertyType", label: `Property Type: ${propertyFilters.value.propertyType}` });
+  if (propertyFilters.value.dateofContract) result.push({ key: "dateofContract", label: `Date: ${propertyFilters.value.dateofContract}` });
+  return result;
 });
 
 // ------------------- Remove Filter Functions -------------------
 function removeCustomerFilter(key) {
-    customerFilters.value[key] = "";
+  customerFilters.value[key] = "";
 }
 
 function removePropertyFilter(key) {
-    propertyFilters.value[key] = "";
+  propertyFilters.value[key] = "";
 }
-
-
 </script>
+
 
 
 <template>
@@ -320,13 +337,13 @@ function removePropertyFilter(key) {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Country</label>
-                            <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Country"
-                                :options="countryOptions" />
+                            <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 px-3 bg-[#F8F8F8]"
+                                placeholder="Select Country" :options="countryOptions" />
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Gender</label>
-                            <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Gender"
-                                :options="genderOptions" />
+                            <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 px-3 bg-[#F8F8F8]"
+                                placeholder="Select Gender" :options="genderOptions" />
 
                         </div>
                     </div>
@@ -357,13 +374,14 @@ function removePropertyFilter(key) {
                     <div class="flex gap-4">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency Name</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Agency Name"
-                                :options="agencyNameOptions" />
+                            <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]"
+                                placeholder="Agency Name" :options="agencyNameOptions" />
 
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency Country</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyCountries" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency Country"
+                            <Tailwinddropdown v-model="propertyFilters.agencyCountries"
+                                button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency Country"
                                 :options="agencyCountriesOptions" />
                         </div>
                     </div>
@@ -383,15 +401,22 @@ function removePropertyFilter(key) {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Property Status</label>
-                            <Tailwinddropdown v-model="propertyFilters.propertyType" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Property Status"
+                            <Tailwinddropdown v-model="propertyFilters.propertyType"
+                                button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Property Status"
                                 :options="propertyTypeOptions" />
 
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Date Available</label>
-                            <input v-model="propertyFilters.dateofContract" type="date" style="height: 38px;"
-                                :class="propertyFilters.dateofContract === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
+                            <div class="relative w-full">
+                                <input v-model="propertyFilters.dateofContract" type="date" class="peer text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+                                <!-- Fake placeholder -->
+                                <span class="absolute left-3 top-3 text-[#BCBCBC] bg-[#F8F8F8] text-sm pointer-events-none
+                                peer-focus:hidden" v-if="!propertyFilters.dateofContract">
+                                    Select Request Date
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -503,7 +528,7 @@ function removePropertyFilter(key) {
                                 </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                <div class="inline-flex items-center rounded-full p-1 px-2" 
+                                <div class="inline-flex items-center rounded-full p-1 px-2"
                                     :class="user.propertyStatus.trim().toLowerCase() === 'available' ? 'bg-green-100' : 'bg-red-100'">
                                     <div :class="user.propertyStatus.trim().toLowerCase() === 'available' ? 'bg-green-500' : 'bg-red-500'"
                                         class="w-2 h-2 rounded-full mr-2"></div>

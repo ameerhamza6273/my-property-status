@@ -112,7 +112,7 @@ const customers = ref([
 const tableColumns = ref([
     { key: "nameAndSurname", label: "Name & Surname", sortable: true },
     { key: "mobileNumber", label: "Mobile Number" },
-    { key: "email", label: "Email"},
+    { key: "email", label: "Email" },
     { key: "customer", label: "Customer Country", sortable: true },
     { key: "totalProperties", label: "Total Properties", sortable: true },
     { key: "rentalProperties", label: "Rental Properties", sortable: true },
@@ -179,7 +179,11 @@ const filteredCustomers = computed(() => {
         return true;
     });
 });
-
+const operatorOptions = [
+    { value: "=", label: "=" },
+    { value: ">", label: ">" },
+    { value: "<", label: "<" },
+];
 // Helper function for comparisons
 function compare(value, filterValue, operator) {
     value = Number(value);
@@ -240,28 +244,42 @@ function compare(value, filterValue, operator) {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Country</label>
-                            <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Country"
-                                :options="countryOptions" />
+                            <Tailwinddropdown v-model="customerFilters.country" button-class="py-2 px-3 bg-[#F8F8F8]"
+                                placeholder="Select Country" :options="countryOptions" />
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Gender</label>
-                            <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Gender"
-                                :options="genderOptions" />
+                            <Tailwinddropdown v-model="customerFilters.gender" button-class="py-2 px-3 bg-[#F8F8F8]"
+                                placeholder="Select Gender" :options="genderOptions" />
 
                         </div>
                     </div>
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">DOB (dd/mm/yyyy)</label>
-                            <input v-model="customerFilters.dateOfBirth" type="date" style="height: 38px;"
-                                :class="customerFilters.dateOfBirth === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
+                           
+                                <div class="relative w-full">
+                                <input v-model="customerFilters.dateOfBirth" type="date" class="peer text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+                                <!-- Fake placeholder -->
+                                <span class="absolute left-3 top-3 w-[50%] text-[#BCBCBC] bg-[#F8F8F8] text-sm pointer-events-none
+                                 peer-focus:hidden" v-if="!customerFilters.dateOfBirth">
+                                    Select DOB
+                                </span>
+                            </div>
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Birth Day (dd/mm)</label>
-                            <input v-model="customerFilters.birthDay" type="date" style="height: 38px;"
-                                :class="customerFilters.birthDay === '' ? 'text-[#BCBCBC]' : 'text-black'" class="text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
+
+                            <div class="relative w-full">
+                                <input v-model="customerFilters.birthDay" type="date" class="peer text-sm w-full px-3 py-2 border border-[#D9D9D9] rounded-full bg-[#F8F8F8]
                                 focus:bg-white focus:ring-1 focus:ring-[#0F4841]" />
+                                <!-- Fake placeholder -->
+                                <span class="absolute left-3 top-3 text-[#BCBCBC] bg-[#F8F8F8] text-sm pointer-events-none
+                                 peer-focus:hidden" v-if="!customerFilters.birthDay">
+                                    Select Birth Date
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -296,15 +314,12 @@ function compare(value, filterValue, operator) {
                             </label>
                             <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
                                 style="height: 38px;">
-                                <select v-model="propertyFilters.totalPropertiesOperator"
-                                    class=" rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2 ">
-                                    <option value="="> = </option>
-                                    <option value=">"> > </option>
-                                    <option value="<">
-                                        < </option>
-                                </select>
+                                <Tailwinddropdown v-model="propertyFilters.totalPropertiesOperator"
+                                    button-class="py-0.5 px-2 bg-[#fff] border-white min-w-12"
+                                    :options="operatorOptions" />
+
                                 <input v-model="propertyFilters.totalProperties" type="number"
-                                    placeholder="Type Number..." class="text-sm w-full outline-none bg-transparent " />
+                                    placeholder="Type Number..." class="ml-2 text-sm w-full outline-none bg-transparent " />
                             </div>
                         </div>
                         <div class="flex-1">
@@ -317,15 +332,12 @@ function compare(value, filterValue, operator) {
                             </label>
                             <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
                                 style="height: 38px;">
-                                <select v-model="propertyFilters.rentalPropertiesOperator"
-                                    class=" rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2 ">
-                                    <option value="="> = </option>
-                                    <option value=">"> > </option>
-                                    <option value="<">
-                                        < </option>
-                                </select>
+                                <Tailwinddropdown v-model="propertyFilters.rentalPropertiesOperator"
+                                    button-class="py-0.5 px-2 bg-[#fff] border-white min-w-12"
+                                    :options="operatorOptions" />
+
                                 <input v-model="propertyFilters.rentalProperties" type="number"
-                                    placeholder="Type Number..." class="text-sm w-full outline-none bg-transparent " />
+                                    placeholder="Type Number..." class="ml-2 text-sm w-full outline-none bg-transparent " />
                             </div>
                         </div>
                         <div class="flex-1">
@@ -334,15 +346,12 @@ function compare(value, filterValue, operator) {
                             </label>
                             <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
                                 style="height: 38px;">
-                                <select v-model="propertyFilters.salePropertiesOperator"
-                                    class=" rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2 ">
-                                    <option value="="> = </option>
-                                    <option value=">"> > </option>
-                                    <option value="<">
-                                        < </option>
-                                </select>
+                                <Tailwinddropdown v-model="propertyFilters.salePropertiesOperator"
+                                    button-class="py-0.5 px-2 bg-[#fff] border-white min-w-12"
+                                    :options="operatorOptions" />
+
                                 <input v-model="propertyFilters.saleProperties" type="number"
-                                    placeholder="Type Number..." class="text-sm w-full outline-none bg-transparent " />
+                                    placeholder="Type Number..." class="ml-2 text-sm w-full outline-none bg-transparent " />
                             </div>
                         </div>
 
@@ -350,13 +359,14 @@ function compare(value, filterValue, operator) {
                     <div class="flex gap-4 mt-2">
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency </label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency"
-                                :options="agencyNameOptions" />
+                            <Tailwinddropdown v-model="propertyFilters.agencyName" button-class="py-2 px-3 bg-[#F8F8F8]"
+                                placeholder="Select Agency" :options="agencyNameOptions" />
 
                         </div>
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[#595959] mb-2">Agency Country</label>
-                            <Tailwinddropdown v-model="propertyFilters.agencyCountry" button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency Country"
+                            <Tailwinddropdown v-model="propertyFilters.agencyCountry"
+                                button-class="py-2 px-3 bg-[#F8F8F8]" placeholder="Select Agency Country"
                                 :options="agencyCountryOptions" />
                         </div>
                     </div>
@@ -367,15 +377,12 @@ function compare(value, filterValue, operator) {
                             </label>
                             <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
                                 style="height: 38px;">
-                                <select v-model="propertyFilters.sentbyAgencyOperator"
-                                    class=" rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2 ">
-                                    <option value="="> = </option>
-                                    <option value=">"> > </option>
-                                    <option value="<">
-                                        < </option>
-                                </select>
+                                <Tailwinddropdown v-model="propertyFilters.sentbyAgencyOperator"
+                                    button-class="py-0.5 px-2 bg-[#fff] border-white min-w-12"
+                                    :options="operatorOptions" />
+
                                 <input v-model="propertyFilters.sentbyAgency" type="number" placeholder="Type Number..."
-                                    class="text-sm w-full outline-none bg-transparent " />
+                                    class="ml-2 text-sm w-full outline-none bg-transparent " />
                             </div>
                         </div>
                         <div class="flex-1">
@@ -384,15 +391,12 @@ function compare(value, filterValue, operator) {
                             </label>
                             <div class="flex items-center w-full border border-gray-300 rounded-full bg-[#F8F8F8] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] px-2"
                                 style="height: 38px;">
-                                <select v-model="propertyFilters.sentbyCustomerOperator"
-                                    class=" rounded-full px-1 py-0.5 outline-none text-gray-600 text-sm mr-2 ">
-                                    <option value="="> = </option>
-                                    <option value=">"> > </option>
-                                    <option value="<">
-                                        < </option>
-                                </select>
+                                <Tailwinddropdown v-model="propertyFilters.sentbyCustomerOperator"
+                                    button-class="py-0.5 px-2 bg-[#fff] border-white min-w-12"
+                                    :options="operatorOptions" />
+
                                 <input v-model="propertyFilters.sentbyCustomer" type="number"
-                                    placeholder="Type Number..." class="text-sm w-full outline-none bg-transparent " />
+                                    placeholder="Type Number..." class="ml-2 text-sm w-full outline-none bg-transparent " />
                             </div>
                         </div>
                     </div>
@@ -419,17 +423,19 @@ function compare(value, filterValue, operator) {
             </div>
         </div>
 
-         <div class=" my-5">
+        <div class=" my-5">
             <p class="text-sm text-[#0F4841] font-semibold">{{ filteredCustomers.length }} Results</p>
         </div>
 
         <DataTable :data="filteredCustomers" :columns="tableColumns" :initial-items-per-page="10" :th-width="160">
             <!-- Custom slot for customer column with flag -->
             <template #cell-customer="{ item }">
-                <div :class="['flex', item.customer.country ? 'items-center space-x-2 justify-start' : 'justify-center']">
+                <div
+                    :class="['flex', item.customer.country ? 'items-center space-x-2 justify-start' : 'justify-center']">
                     <img v-if="item.customer.flag" :src="item.customer.flag" :alt="item.customer.country || 'flag'"
                         class="w-5 h-5" />
-                    <span v-if="item.customer.country" class="text-sm font-medium text-black"> {{ item.customer.country }} </span>
+                    <span v-if="item.customer.country" class="text-sm font-medium text-black"> {{ item.customer.country
+                    }} </span>
                 </div>
             </template>
 
