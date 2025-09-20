@@ -23,8 +23,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      // BASE_URL: 'https://www.x-trekkers.com/wp-json/wp/v2',    
-      GOOGLE_SHEETS_HOOK_URL: 'https://script.google.com/macros/s/AKfycbwBBuLMJxDVqpyD-q7pKAlRrADDS5JjjdYtBJp3ZVschc_ClC32kHZqAzN-tZuBiP0UPQ/exec?gid=0',
+      apiBase: process.env.API_BASE_URL,
     },
   },
   

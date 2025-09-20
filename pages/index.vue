@@ -36,14 +36,14 @@
             Password
           </label>
           <div class="relative w-full">
-            <input id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" required class="w-full px-4 pr-10 py-2 border border-gray-300 rounded-full 
+            <input id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" required
+              class="w-full px-4 pr-10 py-2 border border-gray-300 rounded-full 
            focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] 
            outline-none transition-colors" placeholder="Type Password.." />
 
             <button type="button" @click="showPassword = !showPassword"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
 
-              <!-- 👁 Eye (Show password) -->
               <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 
@@ -52,7 +52,6 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
 
-              <!-- 🚫 Eye Slash (Hide password) -->
               <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.09 
@@ -107,13 +106,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const { login } = useAuth()
 
-// Form data
 const form = reactive({
   email: '',
   password: '',
@@ -123,24 +122,30 @@ const form = reactive({
 const showPassword = ref(false)
 const loading = ref(false)
 
-// ✅ Updated Login Logic (Role Auto-Detect)
 const handleLogin = async () => {
   loading.value = true
   try {
-    const { email, password } = form
+    // ✅ API call
+    const res: any = await login(form.email, form.password)
+    console.log('API Response:', res)
 
-    // Fake role-based login
-    if (email === 'admin@test.com' && password === 'admin123') {
-      localStorage.setItem('user', JSON.stringify({ email, role: 'admin' }))
+    // ✅ access_token save karna hai, token nahi
+    if (res.access_token) {
+      localStorage.setItem('token', res.access_token)
+    }
+
+    // ✅ Role check (agar roles array hai to)
+    const roles = res.user?.relationships?.roles || []
+    if (roles.some((r: any) => r.name === 'admin')) {
       router.push('/admin/dashboard')
-    } else if (email === 'agency@test.com' && password === 'agency123') {
-      localStorage.setItem('user', JSON.stringify({ email, role: 'agency' }))
+    } else if (roles.some((r: any) => r.name === 'agency')) {
       router.push('/agency/dashboard')
     } else {
-      alert('Invalid credentials!')
+      router.push('/')
     }
-  } catch (error) {
-    console.error('Login error:', error)
+
+  } catch (error: any) {
+    alert(error?.data?.message || 'Login failed!')
   } finally {
     loading.value = false
   }
