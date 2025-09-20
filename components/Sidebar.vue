@@ -8,14 +8,21 @@
     <!-- Navigation -->
     <nav class="flex-1 p-4 overflow-y-auto custom-scroll">
       <ul class="space-y-1">
-        <li v-for="item in menuItems" :key="item.label" class="relative" @click.stop>
+        <li
+          v-for="item in menuItems"
+          :key="item.label"
+          class="relative"
+          @click.stop
+        >
           <!-- Parent -->
           <NuxtLink
             :to="item.to || '#'"
             class="group flex items-center justify-between px-3 py-2 rounded-full transition-colors duration-200"
-            :class="isActiveParent(item)
-              ? 'bg-[#0F4841] text-white'
-              : 'text-gray-600 hover:bg-[#0F4841] hover:text-white'"
+            :class="
+              isActiveParent(item)
+                ? 'bg-[#0F4841] text-white'
+                : 'text-gray-600 hover:bg-[#0F4841] hover:text-white'
+            "
             @click="handleClick(item, $event)"
           >
             <div class="flex items-center space-x-1">
@@ -24,15 +31,19 @@
                 :alt="item.label"
                 width="20"
                 class="transition-all duration-200"
-                :class="isActiveParent(item)
-                  ? 'filter brightness-[4.5]'
-                  : 'group-hover:filter group-hover:brightness-[4.5]'"
+                :class="
+                  isActiveParent(item)
+                    ? 'filter brightness-[4.5]'
+                    : 'group-hover:filter group-hover:brightness-[4.5]'
+                "
               />
               <span
                 class="text-sm transition-colors duration-200"
-                :class="isActiveParent(item)
-                  ? 'text-white'
-                  : 'text-[#595959] group-hover:text-white'"
+                :class="
+                  isActiveParent(item)
+                    ? 'text-white'
+                    : 'text-[#595959] group-hover:text-white'
+                "
               >
                 {{ item.label }}
               </span>
@@ -45,7 +56,7 @@
               alt="Dropdown"
               class="w-4 h-4 transition-transform"
               :class="[
-                (isDropdownOpen(item) ? 'rotate-180' : ''),
+                isDropdownOpen(item) ? 'rotate-180' : '',
                 isActiveParent(item)
                   ? 'filter brightness-[4.5]'
                   : 'group-hover:filter group-hover:brightness-[4.5]'
@@ -55,21 +66,28 @@
 
           <!-- Dropdown Items -->
           <transition name="fade">
-            <ul v-if="item.children && isDropdownOpen(item)" class="pl-4 mt-2 space-y-1">
-              <li
-                v-for="child in item.children"
-                :key="child.to"
-                class="flex items-center"
-              >
+            <ul
+              v-if="item.children && isDropdownOpen(item)"
+              class="pl-4 mt-2 space-y-1"
+            >
+              <li v-for="child in item.children" :key="child.to" class="flex items-center">
                 <NuxtLink
                   :to="child.to"
                   class="flex items-center space-x-2 text-sm transition-colors w-full pt-1"
-                  :class="isActive(child.to)
-                    ? 'font-semibold text-[#0F4841]'
-                    : 'text-[#595959] hover:text-[#0F4841]'"
+                  :class="
+                    isActive(child.to)
+                      ? 'font-semibold text-[#0F4841]'
+                      : 'text-[#595959] hover:text-[#0F4841]'
+                  "
                   @click="openDropdown = null"
                 >
-                  <NuxtImg src="/before-icon.svg" alt="icon" width="18" height="30" class="mt-[-20px]" />
+                  <NuxtImg
+                    src="/before-icon.svg"
+                    alt="icon"
+                    width="18"
+                    height="30"
+                    class="mt-[-20px]"
+                  />
                   <span>{{ child.label }}</span>
                 </NuxtLink>
               </li>
@@ -83,10 +101,14 @@
     <div class="p-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+          <div
+            class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center"
+          >
             <span class="text-white text-sm font-medium">M</span>
           </div>
-          <span class="text-gray-700 font-medium">{{ user?.role || 'User' }}</span>
+          <span class="text-gray-700 font-medium">
+            {{ user?.role || 'User' }}
+          </span>
         </div>
         <button
           @click="logout"
@@ -99,7 +121,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from '#app'
@@ -107,19 +128,20 @@ import { useRoute, useRouter } from '#app'
 const route = useRoute()
 const router = useRouter()
 const openDropdown = ref(null)
-const user = ref(null)
+const role = ref(null) // ✅ role alag rakhenge
 
-// ✅ Load user from localStorage
+// ✅ Load role from localStorage
 onMounted(() => {
-  const savedUser = localStorage.getItem('user')
-  if (savedUser) {
-    user.value = JSON.parse(savedUser)
+  const savedRole = localStorage.getItem('role')
+  if (savedRole) {
+    role.value = savedRole
   }
 })
 
 // ✅ Logout Function
 const logout = () => {
-  localStorage.removeItem('user')
+  localStorage.removeItem('token')
+  localStorage.removeItem('role')
   router.push('/')
 }
 
@@ -164,14 +186,13 @@ const agencyMenu = [
   { to: '/agency/dashboard', label: 'Dashboard', icon: '/dashboard-icon.svg' },
   { to: '/agency/new-connection-requests', label: 'New Connection Requests', icon: '/admin-icon.svg' },
   { to: '/agency/linked-rental-properties', label: 'Linked Rental Properties', icon: '/Linked-icon.svg' },
-  { to: '/agency/linked-sale-properties', label: 'Linked Sale Properties', icon: '/Linked-Sale.svg' },
-  
+  { to: '/agency/linked-sale-properties', label: 'Linked Sale Properties', icon: '/Linked-Sale.svg' }
 ]
 
 // ✅ Dynamic Menu based on role
 const menuItems = computed(() => {
-  if (!user.value) return []
-  return user.value.role === 'admin' ? adminMenu : agencyMenu
+  if (!role.value) return []
+  return role.value === 'admin' ? adminMenu : agencyMenu
 })
 
 // ✅ Active State Checks
@@ -188,7 +209,8 @@ const isActive = (path) => route.path === path
 const handleClick = (item, event) => {
   if (item.children) {
     event.preventDefault()
-    openDropdown.value = openDropdown.value === item.label ? null : item.label
+    openDropdown.value =
+      openDropdown.value === item.label ? null : item.label
   } else {
     openDropdown.value = null
   }
@@ -211,9 +233,11 @@ watch(
 const closeAllDropdowns = () => {
   openDropdown.value = null
 }
+
 onMounted(() => {
   document.addEventListener('click', closeAllDropdowns)
 })
+
 onBeforeUnmount(() => {
   document.removeEventListener('click', closeAllDropdowns)
 })

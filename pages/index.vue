@@ -1,5 +1,3 @@
-
- 
 <template>
   <div class="min-h-screen flex items-center justify-center relative">
     <div class="absolute inset-0 z-0">
@@ -31,8 +29,7 @@
             Password
           </label>
           <div class="relative w-full">
-            <input id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" required
-              class="w-full px-4 pr-10 py-2 border border-gray-300 rounded-full 
+            <input id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" required class="w-full px-4 pr-10 py-2 border border-gray-300 rounded-full 
            focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] 
            outline-none transition-colors" placeholder="Type Password.." />
 
@@ -121,18 +118,21 @@ const handleLogin = async () => {
     const res: any = await login(form.email, form.password)
     console.log('API Response:', res)
 
-    // ✅ access_token save karna hai, token nahi
+    // ✅ access_token save karna hai
     if (res.access_token) {
       localStorage.setItem('token', res.access_token)
     }
 
     // ✅ Role check (agar roles array hai to)
     const roles = res.user?.relationships?.roles || []
-    if (roles.some((r: any) => r.name === 'admin')) {
+    if (roles.some((r: any) => r.attributes?.name === 'admin')) {
+      localStorage.setItem('role', 'admin') // ✅ role save
       router.push('/admin/dashboard')
-    } else if (roles.some((r: any) => r.name === 'agency')) {
+    } else if (roles.some((r: any) => r.attributes?.name === 'agency')) {
+      localStorage.setItem('role', 'agency') // ✅ role save
       router.push('/agency/dashboard')
     } else {
+      localStorage.setItem('role', 'user') // ✅ fallback role
       router.push('/')
     }
 
@@ -142,6 +142,7 @@ const handleLogin = async () => {
     loading.value = false
   }
 }
+
 
 useHead({
   meta: [
