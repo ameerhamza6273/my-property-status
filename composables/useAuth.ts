@@ -4,8 +4,8 @@ export const useAuth = () => {
   const login = async (email: string, password: string) => {
     try {
       const response = await $fetch('/admin/auth/login', {
-        baseURL: config.public.apiBase,  // e.g. https://7779ea909c13.ngrok-free.app
-        method: 'POST',                  // 👈 Explicit POST method
+        baseURL: config.public.apiBase,  
+        method: 'POST',             
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

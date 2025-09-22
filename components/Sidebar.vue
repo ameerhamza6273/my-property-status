@@ -147,7 +147,7 @@ const logout = () => {
   openDropdown.value = null // dropdown band kar do
 
   // ✅ Redirect to login page (or home agar tumhe chahiye)
-  router.push('/login')
+  router.push('/')
 }
 
 // ✅ Admin & Agency Menus
