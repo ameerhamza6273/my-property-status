@@ -138,11 +138,16 @@ onMounted(() => {
   }
 })
 
-// ✅ Logout Function
 const logout = () => {
+  // ✅ Sab clear karna zaroori hai
   localStorage.removeItem('token')
   localStorage.removeItem('role')
-  router.push('/')
+
+  role.value = null // reactive state bhi reset
+  openDropdown.value = null // dropdown band kar do
+
+  // ✅ Redirect to login page (or home agar tumhe chahiye)
+  router.push('/login')
 }
 
 // ✅ Admin & Agency Menus
