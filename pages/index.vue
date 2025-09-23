@@ -100,7 +100,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { login } = useAuthLogin()
+const { login } = useAuth()
 
 const form = reactive({
   email: '',
@@ -115,7 +115,7 @@ const handleLogin = async () => {
   loading.value = true
   try {
     const res: any = await login(form.email, form.password)
-    // console.log('API Response:', res)
+    console.log('API Response:', res)
 
     // ✅ access_token save karna hai
     if (res.access_token) {
