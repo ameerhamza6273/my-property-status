@@ -67,7 +67,11 @@
                 {{ filteredUsers.length }} Results
             </p>
         </div>
-
+    <ul>
+      <li v-for="agency in agencies" :key="agency.id">
+        {{ agency.name }}
+      </li>
+    </ul>
         <!-- Users Table -->
         <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100" />
 
@@ -79,6 +83,17 @@
 
 <script setup>
 import { ref, computed } from "vue";
+
+const { getAgencies } = useAgency()
+
+onMounted(async () => {
+  try {
+    const data = await getAgencies()
+    console.log("Final Agencies Data:", data) // ✅ browser console me output aayega
+  } catch (e) {
+    console.error("Error while fetching agencies:", e)
+  }
+})
 
 const isModalOpen = ref(false)
 

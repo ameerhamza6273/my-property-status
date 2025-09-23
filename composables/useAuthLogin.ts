@@ -1,4 +1,4 @@
-export const useAuth = () => {
+export const useAuthLogin = () => {
   const config = useRuntimeConfig()
 
   const login = async (email: string, password: string) => {

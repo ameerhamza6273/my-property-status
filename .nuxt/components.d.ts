@@ -13,6 +13,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = (T & DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }>)
 interface _GlobalComponents {
       'AddAgencyModal': typeof import("../components/AddAgencyModal.vue")['default']
+    'ConfirmModal': typeof import("../components/ConfirmModal.vue")['default']
     'DashboardComAgencyHeader': typeof import("../components/DashboardCom/AgencyHeader.vue")['default']
     'DashboardComAgencyStats': typeof import("../components/DashboardCom/AgencyStats.vue")['default']
     'DashboardComChartsSection': typeof import("../components/DashboardCom/ChartsSection.vue")['default']
@@ -49,6 +50,7 @@ interface _GlobalComponents {
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
       'LazyAddAgencyModal': LazyComponent<typeof import("../components/AddAgencyModal.vue")['default']>
+    'LazyConfirmModal': LazyComponent<typeof import("../components/ConfirmModal.vue")['default']>
     'LazyDashboardComAgencyHeader': LazyComponent<typeof import("../components/DashboardCom/AgencyHeader.vue")['default']>
     'LazyDashboardComAgencyStats': LazyComponent<typeof import("../components/DashboardCom/AgencyStats.vue")['default']>
     'LazyDashboardComChartsSection': LazyComponent<typeof import("../components/DashboardCom/ChartsSection.vue")['default']>
@@ -91,6 +93,7 @@ declare module 'vue' {
 }
 
 export const AddAgencyModal: typeof import("../components/AddAgencyModal.vue")['default']
+export const ConfirmModal: typeof import("../components/ConfirmModal.vue")['default']
 export const DashboardComAgencyHeader: typeof import("../components/DashboardCom/AgencyHeader.vue")['default']
 export const DashboardComAgencyStats: typeof import("../components/DashboardCom/AgencyStats.vue")['default']
 export const DashboardComChartsSection: typeof import("../components/DashboardCom/ChartsSection.vue")['default']
@@ -127,6 +130,7 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
 export const LazyAddAgencyModal: LazyComponent<typeof import("../components/AddAgencyModal.vue")['default']>
+export const LazyConfirmModal: LazyComponent<typeof import("../components/ConfirmModal.vue")['default']>
 export const LazyDashboardComAgencyHeader: LazyComponent<typeof import("../components/DashboardCom/AgencyHeader.vue")['default']>
 export const LazyDashboardComAgencyStats: LazyComponent<typeof import("../components/DashboardCom/AgencyStats.vue")['default']>
 export const LazyDashboardComChartsSection: LazyComponent<typeof import("../components/DashboardCom/ChartsSection.vue")['default']>

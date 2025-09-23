@@ -8,86 +8,47 @@
     <!-- Navigation -->
     <nav class="flex-1 p-4 overflow-y-auto custom-scroll">
       <ul class="space-y-1">
-        <li
-          v-for="item in menuItems"
-          :key="item.label"
-          class="relative"
-          @click.stop
-        >
+        <li v-for="item in menuItems" :key="item.label" class="relative" @click.stop>
           <!-- Parent -->
-          <NuxtLink
-            :to="item.to || '#'"
+          <NuxtLink :to="item.to || '#'"
             class="group flex items-center justify-between px-3 py-2 rounded-full transition-colors duration-200"
-            :class="
-              isActiveParent(item)
+            :class="isActiveParent(item)
                 ? 'bg-[#0F4841] text-white'
                 : 'text-gray-600 hover:bg-[#0F4841] hover:text-white'
-            "
-            @click="handleClick(item, $event)"
-          >
+              " @click="handleClick(item, $event)">
             <div class="flex items-center space-x-1">
-              <NuxtImg
-                :src="item.icon"
-                :alt="item.label"
-                width="20"
-                class="transition-all duration-200"
-                :class="
-                  isActiveParent(item)
-                    ? 'filter brightness-[4.5]'
-                    : 'group-hover:filter group-hover:brightness-[4.5]'
-                "
-              />
-              <span
-                class="text-sm transition-colors duration-200"
-                :class="
-                  isActiveParent(item)
-                    ? 'text-white'
-                    : 'text-[#595959] group-hover:text-white'
-                "
-              >
+              <NuxtImg :src="item.icon" :alt="item.label" width="20" class="transition-all duration-200" :class="isActiveParent(item)
+                  ? 'filter brightness-[4.5]'
+                  : 'group-hover:filter group-hover:brightness-[4.5]'
+                " />
+              <span class="text-sm transition-colors duration-200" :class="isActiveParent(item)
+                  ? 'text-white'
+                  : 'text-[#595959] group-hover:text-white'
+                ">
                 {{ item.label }}
               </span>
             </div>
 
             <!-- Arrow -->
-            <NuxtImg
-              v-if="item.children"
-              src="/dropdown-icon.svg"
-              alt="Dropdown"
-              class="w-4 h-4 transition-transform"
+            <NuxtImg v-if="item.children" src="/dropdown-icon.svg" alt="Dropdown" class="w-4 h-4 transition-transform"
               :class="[
                 isDropdownOpen(item) ? 'rotate-180' : '',
                 isActiveParent(item)
                   ? 'filter brightness-[4.5]'
                   : 'group-hover:filter group-hover:brightness-[4.5]'
-              ]"
-            />
+              ]" />
           </NuxtLink>
 
           <!-- Dropdown Items -->
           <transition name="fade">
-            <ul
-              v-if="item.children && isDropdownOpen(item)"
-              class="pl-4 mt-2 space-y-1"
-            >
+            <ul v-if="item.children && isDropdownOpen(item)" class="pl-4 mt-2 space-y-1">
               <li v-for="child in item.children" :key="child.to" class="flex items-center">
-                <NuxtLink
-                  :to="child.to"
-                  class="flex items-center space-x-2 text-sm transition-colors w-full pt-1"
-                  :class="
-                    isActive(child.to)
+                <NuxtLink :to="child.to" class="flex items-center space-x-2 text-sm transition-colors w-full pt-1"
+                  :class="isActive(child.to)
                       ? 'font-semibold text-[#0F4841]'
                       : 'text-[#595959] hover:text-[#0F4841]'
-                  "
-                  @click="openDropdown = null"
-                >
-                  <NuxtImg
-                    src="/before-icon.svg"
-                    alt="icon"
-                    width="18"
-                    height="30"
-                    class="mt-[-20px]"
-                  />
+                    " @click="openDropdown = null">
+                  <NuxtImg src="/before-icon.svg" alt="icon" width="18" height="30" class="mt-[-20px]" />
                   <span>{{ child.label }}</span>
                 </NuxtLink>
               </li>
@@ -101,24 +62,31 @@
     <div class="p-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div
-            class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center"
-          >
-            <span class="text-white text-sm font-medium">M</span>
+          <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+            <span class="text-white text-sm font-medium">
+              {{name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U'}}
+            </span>
           </div>
           <span class="text-gray-700 font-medium">
-            {{ user?.role || 'User' }}
+            {{ name || 'User' }}
           </span>
+
         </div>
-        <button
-          @click="logout"
-          class="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors"
-          title="Logout"
-        >
+        <button @click="open = true" class="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" title="Logout">
           <NuxtImg src="user-red-icon.svg" alt="Logout" width="20" />
         </button>
       </div>
     </div>
+    <ConfirmModal
+    :show="open"
+    title="Log Out"
+    description="Are you sure you want to log out?"
+    confirm-text="Log Out"
+    cancel-text="Cancel"
+    icon="/logout-icon.svg"
+    @confirm="handleLogout"
+    @cancel="open = false"
+  />
   </div>
 </template>
 <script setup>
@@ -127,27 +95,27 @@ import { useRoute, useRouter } from '#app'
 
 const route = useRoute()
 const router = useRouter()
+const open = ref(false)
 const openDropdown = ref(null)
-const role = ref(null) // ✅ role alag rakhenge
+const role = ref(null)
+const name = ref(null)
 
-// ✅ Load role from localStorage
 onMounted(() => {
   const savedRole = localStorage.getItem('role')
-  if (savedRole) {
-    role.value = savedRole
-  }
+  if (savedRole) role.value = savedRole
+
+  const savedName = localStorage.getItem('name')
+  if (savedName) name.value = savedName
+
 })
 
-const logout = () => {
-  // ✅ Sab clear karna zaroori hai
-  localStorage.removeItem('token')
-  localStorage.removeItem('role')
+const handleLogout = () => {
+  localStorage.removeItem("token")
+  localStorage.removeItem("role")
+  localStorage.removeItem("name")
 
-  role.value = null // reactive state bhi reset
-  openDropdown.value = null // dropdown band kar do
-
-  // ✅ Redirect to login page (or home agar tumhe chahiye)
-  router.push('/')
+  open.value = false
+  router.push("/")
 }
 
 // ✅ Admin & Agency Menus
@@ -253,6 +221,7 @@ onBeforeUnmount(() => {
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
