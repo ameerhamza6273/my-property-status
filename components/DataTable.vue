@@ -9,7 +9,7 @@
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
               <th v-for="column in columns" :key="column.key" :class="[
-                'px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider'
+                'px-3 py-2 pt-3 text-left text-xs font-medium text-gray-500 tracking-wider'
               ]" :style="{ minWidth: props.thWidth + 'px' }">
                 <div v-if="column.sortable" class="flex items-start gap-1 cursor-pointer"
                   @click="toggleSort(column.key)">

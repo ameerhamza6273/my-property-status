@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 bg-gray-50 h-screen">
+    <div class="p-6 bg-gray-50">
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-semibold text-gray-900">Admin Users</h1>
@@ -12,81 +12,43 @@
 
         <!-- Results Count -->
         <div class="mb-4">
-            <p class="text-sm text-[#0F4841] font-semibold">{{ users.length }} Results</p>
+            <p class="text-sm text-[#0F4841] font-semibold">{{ usersData.length }} Results</p>
         </div>
 
-        <!-- Users Table -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <!-- Table Header -->
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort">
-                                    <span>Name & Surname</span>
-                                    <NuxtImg :src="sortIcon" width="16" height="16" />
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
-                                Mobile Number
-                            </th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
-                                Email
-                            </th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500  tracking-wider">
-                                Permissions
-                            </th>
-                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-500  tracking-wider">
-                            </th>
-                        </tr>
-                    </thead>
+        <DataTable :data="usersData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
 
-                    <!-- Table Body -->
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="user in users" :key="user.id" class="hover:bg-gray-50">
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm font-medium text-black">{{ user.name }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm text-black">{{ user.mobile }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-sm text-black">{{ user.email }}</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="flex flex-wrap gap-1">
-                                    <!-- Show first 3 permissions -->
-                                    <span v-for="(permission, index) in user.permissions.slice(0, 3)" :key="permission"
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
-                                        :class="getPermissionClass(permission)">
-                                        {{ permission }}
-                                    </span>
+           <!-- Permissions Column -->
+<!-- Permissions Column -->
+<template #cell-permissions="{ item }">
+  <div class="flex flex-wrap items-center gap-1">
+    <!-- Show first 3 permissions with style -->
+    <span v-for="(perm, index) in item.permissions.slice(0, 3)" :key="perm"
+          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F8F8] border border-[#D9D9D9]">
+      {{ perm.charAt(0).toUpperCase() + perm.slice(1) }}
+    </span>
 
-                                    <!-- Show +X if more than 3 permissions -->
-                                    <span v-if="user.permissions.length > 3"
-                                        :class="['inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium', getPermissionClass('+' + (user.permissions.length - 3))]">
-                                        +{{ user.permissions.length - 3 }}
-                                    </span>
-                                </div>
-                            </td>
+    <!-- Show "+N" if more than 3 without style -->
+    <span v-if="item.permissions.length > 3" class="text-sm font-medium text-[#0F4841]">
+      +{{ item.permissions.length - 3 }}
+    </span>
+  </div>
+</template>
 
 
-                            <td class="px-4 py-3 whitespace-nowrap text-right">
-                                <button @click="editUser(user.id)"
-                                    class="inline-flex items-center gap-1 px-3 py-1 text-sm text-[#E2522E]">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <!-- Edit Column -->
+            <template #cell-edit="{ item }">
+                <button @click="editUser(item.id)"
+                    class="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-[#E2522E]">
+                    <NuxtImg src="edit-red-icon.svg" width="16" height="16" />
+                    Edit
+                </button>
+            </template>
+
+        </DataTable>
+
+
+
+
 
         <!-- Add User Modal -->
         <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -94,7 +56,7 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-5 py-3 border-b border-[#D9D9D9]">
                     <h2 class="text-base font-semibold text-[#292929] max-w-[80%]">
-                        Add a New Admin User
+                        {{ modalMode === 'add' ? 'Add a New Admin User' : 'Edit Admin User' }}
                     </h2>
                     <button @click="closeModal" class="p-1 hover:bg-gray-100 rounded-full transition-colors">
                         <NuxtImg src="close-icon.svg" width="24" height="24" />
@@ -110,16 +72,16 @@
                                 Name
                             </label>
                             <input id="name" type="text" v-model="newUser.name" required
-                                class="text-sm w-full px-4 py-2 border border-gray-300 rounded-full bg-white focus:bg-white focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] outline-none transition-colors"
-                                placeholder="Type Name.." style="height: 42px;" />
+                                class="text-sm w-full px-4 py-2 h-[40px] border border-gray-300 rounded-full bg-white focus:bg-white focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] outline-none transition-colors"
+                                placeholder="Type Name.." />
                         </div>
                         <div class="flex-1">
                             <label for="surname" class="block text-sm font-medium text-[#767676] mb-2">
                                 Surname
                             </label>
                             <input id="surname" type="text" v-model="newUser.surname" required
-                                class="text-sm w-full px-4 py-2 border border-gray-300 rounded-full bg-white focus:bg-white focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] outline-none transition-colors"
-                                placeholder="Type Surname.." style="height: 42px;" />
+                                class="text-sm w-full px-4 py-2 h-[40px] border border-gray-300 rounded-full bg-white focus:bg-white focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] outline-none transition-colors"
+                                placeholder="Type Surname.." />
                         </div>
                     </div>
 
@@ -130,18 +92,22 @@
                             <label for="number" class="block text-sm font-medium text-[#767676] mb-2">
                                 Mobile Number
                             </label>
-                            <div class="flex items-center w-full border border-gray-300 rounded-full bg-white focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] focus-within:border-[#0F4841] transition-colors px-3"
-                                style="height: 42px;">
-                                <select class="bg-transparent outline-none text-gray-600 text-sm mr-2"
-                                    v-model="newUser.countryCode">
-                                    <option>+356</option>
-                                    <option>+91</option>
-                                    <option>+92</option>
-                                </select>
-                                <input id="number" type="number" placeholder="Type Mobile Number.."
-                                    v-model="newUser.mobile"
-                                    class="text-sm w-full outline-none bg-transparent border-l border-gray-300 pl-2" />
+                            <div
+                                class="flex items-center h-[40px] w-full border border-gray-300 rounded-full bg-white px-3">
+                                <input type="text" list="countryCodes" v-model="newUser.countryCode"
+                                    class="text-sm outline-none w-14 bg-transparent" placeholder="+356" />
+                                <datalist id="countryCodes">
+                                    <option value="+356">Malta</option>
+                                    <option value="+91">India</option>
+                                    <option value="+92">Pakistan</option>
+                                    <!-- You can add more common codes -->
+                                </datalist>
+                                <input id="number" type="number" v-model="newUser.mobile"
+                                    class="text-sm w-full outline-none bg-transparent border-l border-gray-300 pl-2"
+                                    placeholder="Type Mobile Number.." />
                             </div>
+
+
                         </div>
 
                         <!-- Email -->
@@ -150,8 +116,8 @@
                                 Email
                             </label>
                             <input id="email" type="email" v-model="newUser.email" required
-                                class="text-sm w-full px-4 py-2 border border-gray-300 rounded-full bg-white focus:bg-white focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] outline-none transition-colors"
-                                placeholder="Type Email.." style="height: 42px;" />
+                                class="text-sm w-full px-4 py-2 h-[40px] border border-gray-300 rounded-full bg-white focus:bg-white focus:ring-1 focus:ring-[#0F4841] focus:border-[#0F4841] outline-none transition-colors"
+                                placeholder="Type Email.." />
                         </div>
                     </div>
 
@@ -160,8 +126,8 @@
                         <label for="permission" class="block text-sm font-medium text-[#767676] mb-2">
                             Permissions
                         </label>
-                        <div class="flex flex-nowrap items-center gap-2 w-full px-3 py-1 border border-gray-300 rounded-full bg-white focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] focus-within:border-[#0F4841] transition-colors overflow-x-auto scrollbar-hide"
-                            style="min-height: 42px;" @click="focusInput">
+                        <div class="flex flex-nowrap items-center h-[40px] gap-2 w-full px-3 py-1 border border-gray-300 rounded-full bg-white focus-within:bg-white focus-within:ring-1 focus-within:ring-[#0F4841] focus-within:border-[#0F4841] transition-colors overflow-x-auto scrollbar-hide"
+                            @click="focusInput">
                             <!-- Selected Permissions -->
                             <span v-for="(perm, index) in selectedPermissions" :key="index"
                                 class="flex items-center gap-1 px-2 py-1 bg-[#F8F8F8] rounded-full text-[#0F4841] text-sm font-medium border border-[#D9D9D9] shrink-0">
@@ -181,13 +147,14 @@
 
 
                         <!-- Available Permissions -->
-                        <div class="flex flex-wrap gap-2 mt-3">
-                            <span v-for="permission in permissions" :key="permission"
-                                @click="selectPermission(permission)"
-                                class="px-2.5 py-1 bg-[#F8F8F8] rounded-full cursor-pointer hover:bg-gray-200 text-xs border border-[#D9D9D9]">
-                                {{ permission }}
-                            </span>
-                        </div>
+                       <div class="flex flex-wrap gap-2 mt-3">
+    <span v-for="permission in permissions" :key="permission"
+          @click="selectPermission(permission)"
+          class="px-2.5 py-1 bg-[#F8F8F8] rounded-full cursor-pointer hover:bg-gray-200 text-xs border border-[#D9D9D9]">
+        {{ permission.charAt(0).toUpperCase() + permission.slice(1) }}
+    </span>
+</div>
+
                     </div>
 
                     <!-- Save Button -->
@@ -203,190 +170,163 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 
-interface User {
-    id: number;
-    name: string;
-    mobile: string;
-    email: string;
-    permissions: string[];
+const { getAdminUsers, getAdminModules } = useAdminUsers()
+
+const usersData = ref([])
+const permissions = ref([]) // ✅ now reactive and dynamic
+const loading = ref(false)
+const error = ref(null)
+
+// ---------------- Permissions selected/input ----------------
+const selectedPermissions = ref([])
+const inputValue = ref("")
+const permissionInput = ref(null)
+const focusInput = () => permissionInput.value?.focus()
+const selectPermission = (permission) => {
+    if (!selectedPermissions.value.includes(permission)) {
+        selectedPermissions.value.push(permission)
+    }
+    inputValue.value = ""
 }
+const addPermission = () => {
+    if (inputValue.value.trim() && !selectedPermissions.value.includes(inputValue.value.trim())) {
+        selectedPermissions.value.push(inputValue.value.trim())
+    }
+    inputValue.value = ""
+}
+const removePermission = (index) => selectedPermissions.value.splice(index, 1)
 
-// State for modal
-const isModalOpen = ref(false);
-const openModal = () => {
-    isModalOpen.value = true;
-};
-const closeModal = () => {
-    isModalOpen.value = false;
-};
+// ---------------- Fetch data on mounted ----------------
+onMounted(async () => {
+  loading.value = true
+  try {
+    // Fetch admin users
+    const responseUsers = await getAdminUsers()
 
-// New user data
+    // Fetch backend permissions/modules
+    const responseModules = await getAdminModules()
+    const allModules = responseModules?.data || []
+
+    usersData.value = responseUsers?.data?.map((user) => ({
+      id: user.id,
+      name: user.attributes.name,
+      email: user.attributes.email,
+      phone_number: user.attributes.phone_number,
+      is_active: user.attributes.is_active,
+      created_at: user.attributes.created_at,
+      // Assign all modules temporarily for testing
+      permissions: [...allModules]
+    })) || []
+
+    // Save modules globally for modal selection
+    permissions.value = allModules
+
+  } catch (err) {
+    error.value = err.message || "Failed to fetch admin data"
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+})
+
+const tableHeaders = [
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'email', label: 'Email' },
+    { key: 'phone_number', label: 'Phone' },
+    { key: 'permissions', label: 'Permissions' },
+    { key: 'edit', label: '' },
+]
+
+// ---------------- Modal logic & user form ----------------
+const isModalOpen = ref(false)
+const modalMode = ref("add") // "add" or "edit"
+
 const newUser = ref({
+    id: null,
     name: "",
     surname: "",
     countryCode: "+356",
     mobile: "",
     email: "",
-});
+})
 
-// Permissions
-const permissions = [
-    "Full Permission",
-    "Dashboard",
-    "Admin",
-    "Agencies",
-    "Properties",
-    "Customers",
-    "Notifications",
-    "What's new",
-    "Support",
-    "Reports",
-];
+const openModal = () => {
+    modalMode.value = "add"
+    resetForm()
+    isModalOpen.value = true
+}
 
-// Selected permissions
-const selectedPermissions = ref<string[]>([]);
-const inputValue = ref("");
-const permissionInput = ref<HTMLInputElement | null>(null);
+const closeModal = () => {
+    isModalOpen.value = false
+}
 
-const focusInput = () => {
-    permissionInput.value?.focus();
-};
+const editUser = (userId) => {
+    const user = usersData.value.find(u => u.id === userId)
+    if (!user) return
 
-const selectPermission = (permission: string) => {
-    if (!selectedPermissions.value.includes(permission)) {
-        selectedPermissions.value.push(permission);
-    }
-    inputValue.value = "";
-};
+    const [firstName, ...rest] = (user.name || "").split(" ")
+    const surname = rest.join(" ")
 
-const addPermission = () => {
-    if (
-        inputValue.value.trim() &&
-        !selectedPermissions.value.includes(inputValue.value.trim())
-    ) {
-        selectedPermissions.value.push(inputValue.value.trim());
-    }
-    inputValue.value = "";
-};
-
-const removePermission = (index: number) => {
-    selectedPermissions.value.splice(index, 1);
-};
-
-// Sample data
-const users = ref<User[]>([
-    {
-        id: 1,
-        name: "Kathryn Murphy",
-        mobile: "+356 79 394 592",
-        email: "Kathryn@mypropertystatus.com",
-        permissions: ["Full Permission"],
-    },
-    {
-        id: 2,
-        name: "Ronald Richards",
-        mobile: "+356 79 344 232",
-        email: "Ronald@mypropertystatus.com",
-        permissions: ["Agencies", "Customers", "Support", "Reports"],
-    },
-    {
-        id: 3,
-        name: "Courtney Henry",
-        mobile: "+356 99 314 342",
-        email: "Courtney@mypropertystatus.com",
-        permissions: ["Reports"],
-    },
-    {
-        id: 4,
-        name: "Cameron Williamson",
-        mobile: "+356 79 594 592",
-        email: "Cameron@mypropertystatus.com",
-        permissions: ["Properties", "Notifications"],
-    },
-]);
-
-// Save new user
-const saveUser = () => {
-    const fullName = `${newUser.value.name} ${newUser.value.surname}`;
-    users.value.push({
-        id: users.value.length + 1,
-        name: fullName,
-        mobile: `${newUser.value.countryCode} ${newUser.value.mobile}`,
-        email: newUser.value.email,
-        permissions: [...selectedPermissions.value],
-    });
-    // Reset
     newUser.value = {
+        id: user.id,
+        name: firstName,
+        surname: surname,
+        countryCode: user.phone_number?.split(" ")[0] || "+356",
+        mobile: user.phone_number?.split(" ")[1] || "",
+        email: user.email || "",
+    }
+
+    selectedPermissions.value = user.permissions ? [...user.permissions] : []
+    modalMode.value = "edit"
+    isModalOpen.value = true
+}
+
+const saveUser = () => {
+    const fullName = `${newUser.value.name} ${newUser.value.surname}`
+    if (modalMode.value === "add") {
+        usersData.value.push({
+            id: usersData.value.length + 1,
+            name: fullName,
+            phone_number: `${newUser.value.countryCode} ${newUser.value.mobile}`,
+            email: newUser.value.email,
+            permissions: [...selectedPermissions.value],
+        })
+    } else if (modalMode.value === "edit") {
+        const idx = usersData.value.findIndex(u => u.id === newUser.value.id)
+        if (idx !== -1) {
+            usersData.value[idx] = {
+                ...usersData.value[idx],
+                name: fullName,
+                phone_number: `${newUser.value.countryCode} ${newUser.value.mobile}`,
+                email: newUser.value.email,
+                permissions: [...selectedPermissions.value],
+            }
+        }
+    }
+    resetForm()
+    closeModal()
+}
+
+const resetForm = () => {
+    newUser.value = {
+        id: null,
         name: "",
         surname: "",
         countryCode: "+356",
         mobile: "",
         email: "",
-    };
-    selectedPermissions.value = [];
-    inputValue.value = "";
-    closeModal();
-};
-
-const getPermissionClass = (permission: string) => {
-    const baseClasses = "bg-[#F8F8F8] text-black border border-[#D9D9D9]";
-    // If permission starts with "+", remove background & border
-    return permission.startsWith("+")
-        ? "bg-transparent text-black border-none"
-        : baseClasses;
-};
-
-
-
-// Edit action
-const editUser = (userId: number) => {
-    console.log("Edit user:", userId);
-};
-
-// Sorting state
-const sortOrder = ref<"asc" | "desc" | null>(null);
-const sortIcon = computed(() => {
-    return sortOrder.value === null
-        ? "switch-vertical.svg"
-        : "export-switch-vertical.svg";
-});
-
-// Toggle sort logic (three states)
-const toggleSort = () => {
-    if (sortOrder.value === null) {
-        sortOrder.value = "asc";
-    } else if (sortOrder.value === "asc") {
-        sortOrder.value = "desc";
-    } else {
-        sortOrder.value = null;
     }
-    sortUsers();
-};
+    selectedPermissions.value = []
+    inputValue.value = ""
+}
 
-// Apply sorting or reset
-const sortUsers = () => {
-    if (sortOrder.value === null) {
-        users.value = [...users.value].sort((a, b) => a.id - b.id);
-        return;
-    }
-
-    users.value.sort((a, b) => {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        return sortOrder.value === "asc"
-            ? nameA.localeCompare(nameB)
-            : nameB.localeCompare(nameA);
-    });
-};
-useHead({
-    meta: [
-        { name: 'viewport', content: 'width=1300' }
-    ]
-})
 </script>
+
+
+
 
 
 <style scoped>
