@@ -17,22 +17,22 @@
 
         <DataTable :data="usersData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
 
-           <!-- Permissions Column -->
-<!-- Permissions Column -->
-<template #cell-permissions="{ item }">
-  <div class="flex flex-wrap items-center gap-1">
-    <!-- Show first 3 permissions with style -->
-    <span v-for="(perm, index) in item.permissions.slice(0, 3)" :key="perm"
-          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F8F8] border border-[#D9D9D9]">
-      {{ perm.charAt(0).toUpperCase() + perm.slice(1) }}
-    </span>
+            <!-- Permissions Column -->
+            <!-- Permissions Column -->
+            <template #cell-permissions="{ item }">
+                <div class="flex flex-wrap items-center gap-1">
+                    <!-- Show first 3 permissions with style -->
+                    <span v-for="(perm, index) in item.permissions.slice(0, 3)" :key="perm"
+                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F8F8] border border-[#D9D9D9]">
+                        {{ perm.charAt(0).toUpperCase() + perm.slice(1) }}
+                    </span>
 
-    <!-- Show "+N" if more than 3 without style -->
-    <span v-if="item.permissions.length > 3" class="text-sm font-medium text-[#0F4841]">
-      +{{ item.permissions.length - 3 }}
-    </span>
-  </div>
-</template>
+                    <!-- Show "+N" if more than 3 without style -->
+                    <span v-if="item.permissions.length > 3" class="text-sm font-medium text-[#0F4841]">
+                        +{{ item.permissions.length - 3 }}
+                    </span>
+                </div>
+            </template>
 
 
             <!-- Edit Column -->
@@ -145,15 +145,15 @@
                                 @keydown.enter.prevent="addPermission" />
                         </div>
 
-
                         <!-- Available Permissions -->
-                       <div class="flex flex-wrap gap-2 mt-3">
-    <span v-for="permission in permissions" :key="permission"
-          @click="selectPermission(permission)"
-          class="px-2.5 py-1 bg-[#F8F8F8] rounded-full cursor-pointer hover:bg-gray-200 text-xs border border-[#D9D9D9]">
-        {{ permission.charAt(0).toUpperCase() + permission.slice(1) }}
-    </span>
-</div>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span v-for="permission in permissions.filter(p => !selectedPermissions.includes(p))"
+                                :key="permission" @click="selectPermission(permission)"
+                                class="px-2.5 py-1 bg-[#F8F8F8] rounded-full cursor-pointer hover:bg-gray-200 text-xs border border-[#D9D9D9]">
+                                {{ permission.charAt(0).toUpperCase() + permission.slice(1) }}
+                            </span>
+                        </div>
+
 
                     </div>
 
@@ -201,35 +201,50 @@ const removePermission = (index) => selectedPermissions.value.splice(index, 1)
 
 // ---------------- Fetch data on mounted ----------------
 onMounted(async () => {
-  loading.value = true
-  try {
-    // Fetch admin users
-    const responseUsers = await getAdminUsers()
+    loading.value = true
+    try {
+        // Fetch admin users
+        const responseUsers = await getAdminUsers()
 
-    // Fetch backend permissions/modules
-    const responseModules = await getAdminModules()
-    const allModules = responseModules?.data || []
+        // Fetch backend permissions/modules
+        const responseModules = await getAdminModules()
+        const allModules = responseModules?.data || []
 
-    usersData.value = responseUsers?.data?.map((user) => ({
-      id: user.id,
-      name: user.attributes.name,
-      email: user.attributes.email,
-      phone_number: user.attributes.phone_number,
-      is_active: user.attributes.is_active,
-      created_at: user.attributes.created_at,
-      // Assign all modules temporarily for testing
-      permissions: [...allModules]
-    })) || []
+        usersData.value = responseUsers?.data?.map((user) => {
+            const roles = user.relationships?.roles || []
+            let userPermissions = []
 
-    // Save modules globally for modal selection
-    permissions.value = allModules
+            roles.forEach(role => {
+                const perms = role.relationships?.permissions?.data || []
+                userPermissions.push(...perms.map(p => p.module_name))
+            })
 
-  } catch (err) {
-    error.value = err.message || "Failed to fetch admin data"
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
+            // ✅ unique bana do
+            const uniquePermissions = [...new Set(userPermissions)]
+
+            return {
+                id: user.id,
+                name: user.attributes.name,
+                email: user.attributes.email,
+                phone_number: user.attributes.phone_number,
+                is_active: user.attributes.is_active,
+                created_at: user.attributes.created_at,
+                // ✅ sirf pehla module (index 0) show kare
+                permissions: uniquePermissions.length > 0 ? [uniquePermissions[0]] : []
+            }
+        }) || []
+
+
+
+        // Save modules globally for modal selection
+        permissions.value = allModules
+
+    } catch (err) {
+        error.value = err.message || "Failed to fetch admin data"
+        console.error(err)
+    } finally {
+        loading.value = false
+    }
 })
 
 const tableHeaders = [

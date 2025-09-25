@@ -1,17 +1,17 @@
 // composables/useAdminUsers.ts
 export const useAdminUsers = () => {
   const config = useRuntimeConfig()
+  const getToken = () => localStorage.getItem("token")
 
-  // Fetch admin users
+  // ✅ Fetch admin users
   const getAdminUsers = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await $fetch('/admin/users', {
+      const response = await $fetch("/admin/users?include=roles,all_permissions", {
         baseURL: config.public.apiBase,
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
+          Accept: "application/json",
+          Authorization: `Bearer ${getToken()}`
         }
       })
       console.log("Admin Users response:", response)
@@ -22,16 +22,15 @@ export const useAdminUsers = () => {
     }
   }
 
-  // Fetch permissions/modules
+  // ✅ Fetch modules (master permission list)
   const getAdminModules = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await $fetch('/admin/permissions/modules', {
+      const response = await $fetch("/admin/permissions/modules", {
         baseURL: config.public.apiBase,
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`
+          Accept: "application/json",
+          Authorization: `Bearer ${getToken()}`
         }
       })
       console.log("Admin Modules response:", response)
@@ -42,5 +41,11 @@ export const useAdminUsers = () => {
     }
   }
 
-  return { getAdminUsers, getAdminModules }
+
+
+  return {
+    getAdminUsers,
+    getAdminModules,
+   
+  }
 }
