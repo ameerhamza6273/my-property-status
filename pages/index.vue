@@ -128,17 +128,21 @@ const handleLogin = async () => {
     }
 
     // ✅ Role check
-    const roles = res.user?.relationships?.roles || []
-    if (roles.some((r: any) => r.attributes?.name === 'admin')) {
-      localStorage.setItem('role', 'admin')
-      router.push('/admin/dashboard')
-    } else if (roles.some((r: any) => r.attributes?.name === 'agency')) {
-      localStorage.setItem('role', 'agency')
-      router.push('/agency/dashboard')
-    } else {
-      localStorage.setItem('role', 'user')
-      router.push('/')
-    }
+   // ✅ Role check
+const roles = res.user?.relationships?.roles || []
+
+if (roles.some((r: any) => ['admin', 'super-admin'].includes(r.attributes?.name))) {
+  // Agar role admin ya super-admin hai
+  localStorage.setItem('role', 'admin')
+  router.push('/admin/dashboard')
+} else if (roles.some((r: any) => r.attributes?.name === 'agency')) {
+  localStorage.setItem('role', 'agency')
+  router.push('/agency/dashboard')
+} else {
+  localStorage.setItem('role', 'user')
+  router.push('/')
+}
+
 
   } catch (error: any) {
     alert(error?.data?.message || 'Login failed!')

@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
   app: {
@@ -19,14 +18,26 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   css: [
     '~/assets/main.css',
-    '@fortawesome/fontawesome-free/css/all.min.css', // Add Font Awesome CSS
+    '@fortawesome/fontawesome-free/css/all.min.css',
   ],
   runtimeConfig: {
     public: {
       apiBase: process.env.API_BASE_URL,
     },
   },
-  
   devtools: { enabled: true },
-});
 
+  // ✅ Use vite.server.proxy (not devServer)
+  vite: {
+    server: {
+      proxy: {
+        "/api": {
+          target: "https://naetar.com/mps",
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path: string) => path.replace(/^\/api/, ""),
+        },
+      },
+    },
+  },
+})

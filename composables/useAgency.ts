@@ -1,18 +1,15 @@
 export const useAgency = () => {
-  const config = useRuntimeConfig()
-  const getToken = () => localStorage.getItem("token") // ✅ Token fetch
+  const getToken = () => localStorage.getItem("token")
 
   const getAgencies = async () => {
     try {
-      const response = await $fetch("/agency/agencies", {
-        baseURL: config.public.apiBase,
-        method: "GET",
+      const response = await $fetch("/api/agency/agencies", {
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${getToken()}` // ✅ Token send
+          Authorization: `Bearer ${getToken()}`
         }
       })
-      console.log("Agencies response:", response)
+      // console.log("Agencies response:", response)
       return response
     } catch (error) {
       console.error("Agencies fetch error:", error)
