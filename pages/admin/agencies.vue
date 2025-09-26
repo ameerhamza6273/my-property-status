@@ -1,4 +1,6 @@
 <template>
+
+
   <div class="p-6">
     <!-- Header Section -->
     <div class="flex items-center justify-between mb-6">
@@ -46,7 +48,7 @@
     </div>
 
     <!-- Active Filters -->
-    <div v-if="activeFilters.length > 0">
+    <div v-if="activeFilters.length > 0" class="mb-4">
       <div class="flex items-center flex-wrap gap-2">
         <span class="text-sm font-medium text-gray-700">Filtered by:</span>
         <div v-for="filter in activeFilters" :key="filter.key"
@@ -67,20 +69,27 @@
         {{ filteredUsers.length }} Results
       </p>
     </div>
-    <!-- Users Table -->
-    <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
-      <!-- Edit Column -->
-      <template #cell-edit="{ item }">
-        <button class="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-[#E2522E]">
-          <NuxtImg src="edit-red-icon.svg" width="16" height="16" />
-          Edit
-        </button>
-      </template>
-    </DataTable>
+
+
+    <div class="relative min-h-[200px]">
+      <div v-if="loading">
+        <SnipLoader /> <!-- ✅ sirf yahan loader dikhayenge -->
+      </div>
+      <DataTable v-else :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
+        <template #cell-edit="{ item }">
+          <button @click="openEditAgencyModal(item)"
+            class="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-[#E2522E]">
+            <NuxtImg src="edit-red-icon.svg" width="16" height="16" /> Edit
+          </button>
+        </template>
+      </DataTable>
+    </div>
 
     <!-- Modal -->
-    <AddAgencyModal :isOpen="isModalOpen" @close="closeAddAgencyModal" @submit="handleAddAgency" />
+    <AddAgencyModal :isOpen="isModalOpen" :initialData="modalData" :mode="modalMode" @close="closeModal"
+      @submit="handleAddAgency" />
   </div>
+
 </template>
 
 <script setup>
@@ -88,20 +97,23 @@ import { ref, computed, onMounted } from "vue";
 
 const { getAgencies } = useAgency();
 
+const loading = ref(true);
 const users = ref([]);
 const isModalOpen = ref(false);
+const modalMode = ref("add"); // "add" or "edit"
+const modalData = ref(null);
 
 // Dropdown options
 const agencyCountryOptions = [
   { value: "Malta", label: "Malta" },
   { value: "Sweden", label: "Sweden" },
-  { value: "Pakistan", label: "Pakistan" }, // example from API
+  { value: "Pakistan", label: "Pakistan" },
 ];
 
 const agencyNameOptions = [
   { value: "Remax", label: "Remax" },
   { value: "Alliance", label: "Alliance" },
-  { value: "Ameer Hamza", label: "Ameer Hamza" }, // example from API
+  { value: "Ameer Hamza", label: "Ameer Hamza" },
 ];
 
 const operatorOptions = [
@@ -127,21 +139,9 @@ const filters = ref({
 // Number filter config
 const numberFilters = [
   { key: "adminUsers", operator: "adminUsersOperator", label: "Admin Users" },
-  {
-    key: "totalConnectedProperties",
-    operator: "connectedPropertiesOperator",
-    label: "Total Connected Properties",
-  },
-  {
-    key: "rentalProperties",
-    operator: "rentalPropertiesOperator",
-    label: "Rental Properties",
-  },
-  {
-    key: "saleProperties",
-    operator: "salePropertiesOperator",
-    label: "Sale Properties",
-  },
+  { key: "totalConnectedProperties", operator: "connectedPropertiesOperator", label: "Total Connected Properties" },
+  { key: "rentalProperties", operator: "rentalPropertiesOperator", label: "Rental Properties" },
+  { key: "saleProperties", operator: "salePropertiesOperator", label: "Sale Properties" },
 ];
 
 // Table headers
@@ -156,49 +156,84 @@ const tableHeaders = [
   { key: "edit", label: "" },
 ];
 
-// Fetch agencies and map API response to table format
+// Fetch agencies
 onMounted(async () => {
   try {
     const data = await getAgencies();
     users.value = data.data.map(item => ({
       id: item.id,
-      agency: [{ value: item.attributes.name }],           // no img
-      agencyCountry: [{ value: item.attributes.country }], // no img
+      agency: [{ value: item.attributes.name }],
+      agencyCountry: [{ value: item.attributes.country }],
       adminUsers: item.attributes.admin_id,
       totalConnectedProperties: item.attributes.totalConnectedProperties || 0,
       rentalProperties: item.attributes.rentalProperties || 0,
       saleProperties: item.attributes.saleProperties || 0,
       apiKey: item.attributes.api_key,
     }));
-    console.log("Mapped Agencies:", users.value);
+    console.log("agencies data:", users.value);
   } catch (e) {
     console.error("Error fetching agencies:", e);
+  } finally {
+    loading.value = false; // ✅ API call complete hone ke baad loader hide
   }
 });
 
+// Modal functions
+const openAddAgencyModal = () => {
+  modalMode.value = "add";
+  modalData.value = null;
+  isModalOpen.value = true;
+};
 
-// Modal controls
-const openAddAgencyModal = () => (isModalOpen.value = true);
-const closeAddAgencyModal = () => (isModalOpen.value = false);
-
-// Add agency handler
-const handleAddAgency = (agencyData) => {
-  const newAgency = {
-    id: users.value.length + 1,
-    agency: [{ value: agencyData.agencyName }],           // no img
-    agencyCountry: [{ value: agencyData.agencyCountry }], // no img
-    adminUsers: Number(agencyData.adminUsers) || 0,
-    totalConnectedProperties: Number(agencyData.totalConnectedProperties) || 0,
-    rentalProperties: Number(agencyData.rentalProperties) || 0,
-    saleProperties: Number(agencyData.saleProperties) || 0,
-    apiKey: agencyData.apiKey || `API_KEY_${Math.random().toString(36).substring(2, 8)}`,
+const openEditAgencyModal = (agency) => {
+  modalMode.value = "edit";
+  modalData.value = {
+    agencyName: agency.agency[0].value,
+    agencyCountry: agency.agencyCountry[0],
+    adminUsers: agency.adminUsers,
+    totalConnectedProperties: agency.totalConnectedProperties,
+    rentalProperties: agency.rentalProperties,
+    saleProperties: agency.saleProperties,
+    apiKey: agency.apiKey,
   };
-  users.value.push(newAgency);
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
   isModalOpen.value = false;
 };
 
+// Add/Edit handler
+const handleAddAgency = (data) => {
+  if (modalMode.value === "add") {
+    users.value.push({
+      id: users.value.length + 1,
+      agency: [{ value: data.agencyName }],
+      agencyCountry: [{ value: data.agencyCountry }],
+      adminUsers: Number(data.adminUsers),
+      totalConnectedProperties: Number(data.totalConnectedProperties),
+      rentalProperties: Number(data.rentalProperties),
+      saleProperties: Number(data.saleProperties),
+      apiKey: data.apiKey || `API_KEY_${Math.random().toString(36).substring(2, 8)}`
+    });
+  } else if (modalMode.value === "edit") {
+    const index = users.value.findIndex(u => u.apiKey === data.apiKey);
+    if (index !== -1) {
+      users.value[index] = {
+        ...users.value[index],
+        agency: [{ value: data.agencyName }],
+        agencyCountry: [{ value: data.agencyCountry }],
+        adminUsers: Number(data.adminUsers),
+        totalConnectedProperties: Number(data.totalConnectedProperties),
+        rentalProperties: Number(data.rentalProperties),
+        saleProperties: Number(data.saleProperties),
+      };
+    }
+  }
+  isModalOpen.value = false;
+};
 
-// Computed filtered users
+// Computed filters
 const filteredUsers = computed(() => {
   let result = [...users.value];
 
@@ -232,14 +267,12 @@ const filteredUsers = computed(() => {
 // Active filters
 const activeFilters = computed(() => {
   const active = [];
-
   if (filters.value.agencyCountry) active.push({ key: "agencyCountry", type: "country", label: filters.value.agencyCountry });
   if (filters.value.agencyName) active.push({ key: "agencyName", type: "agency", label: filters.value.agencyName });
   if (filters.value.adminUsers) active.push({ key: "adminUsers", type: "number", label: `Admin Users: ${filters.value.adminUsersOperator} ${filters.value.adminUsers}` });
   if (filters.value.connectedProperties) active.push({ key: "connectedProperties", type: "number", label: `Total Connected Properties: ${filters.value.connectedPropertiesOperator} ${filters.value.connectedProperties}` });
   if (filters.value.rentalProperties) active.push({ key: "rentalProperties", type: "number", label: `Rental Properties: ${filters.value.rentalPropertiesOperator} ${filters.value.rentalProperties}` });
   if (filters.value.saleProperties) active.push({ key: "saleProperties", type: "number", label: `Sale Properties: ${filters.value.salePropertiesOperator} ${filters.value.saleProperties}` });
-
   return active;
 });
 

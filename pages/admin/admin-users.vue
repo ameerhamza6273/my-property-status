@@ -14,38 +14,41 @@
         <div class="mb-4">
             <p class="text-sm text-[#0F4841] font-semibold">{{ usersData.length }} Results</p>
         </div>
+        <div class="relative min-h-[200px]">
+            <div v-if="loading">
+                <SnipLoader /> <!-- ✅ sirf yahan loader dikhayenge -->
+            </div>
+            <DataTable v-else :data="usersData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
 
-        <DataTable :data="usersData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
+                <!-- Permissions Column -->
+                <!-- Permissions Column -->
+                <template #cell-permissions="{ item }">
+                    <div class="flex flex-wrap items-center gap-1">
+                        <!-- Show first 3 permissions with style -->
+                        <span v-for="(perm, index) in item.permissions.slice(0, 3)" :key="perm"
+                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F8F8] border border-[#D9D9D9]">
+                            {{ perm.charAt(0).toUpperCase() + perm.slice(1) }}
+                        </span>
 
-            <!-- Permissions Column -->
-            <!-- Permissions Column -->
-            <template #cell-permissions="{ item }">
-                <div class="flex flex-wrap items-center gap-1">
-                    <!-- Show first 3 permissions with style -->
-                    <span v-for="(perm, index) in item.permissions.slice(0, 3)" :key="perm"
-                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F8F8] border border-[#D9D9D9]">
-                        {{ perm.charAt(0).toUpperCase() + perm.slice(1) }}
-                    </span>
-
-                    <!-- Show "+N" if more than 3 without style -->
-                    <span v-if="item.permissions.length > 3" class="text-sm font-medium text-[#0F4841]">
-                        +{{ item.permissions.length - 3 }}
-                    </span>
-                </div>
-            </template>
+                        <!-- Show "+N" if more than 3 without style -->
+                        <span v-if="item.permissions.length > 3" class="text-sm font-medium text-[#0F4841]">
+                            +{{ item.permissions.length - 3 }}
+                        </span>
+                    </div>
+                </template>
 
 
-            <!-- Edit Column -->
-            <template #cell-edit="{ item }">
-                <button @click="editUser(item.id)"
-                    class="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-[#E2522E]">
-                    <NuxtImg src="edit-red-icon.svg" width="16" height="16" />
-                    Edit
-                </button>
-            </template>
+                <!-- Edit Column -->
+                <template #cell-edit="{ item }">
+                    <button @click="editUser(item.id)"
+                        class="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-[#E2522E]">
+                        <NuxtImg src="edit-red-icon.svg" width="16" height="16" />
+                        Edit
+                    </button>
+                </template>
 
-        </DataTable>
-
+            </DataTable>
+        </div>
 
 
 
@@ -177,7 +180,7 @@ const { getAdminUsers, getAdminModules } = useAdminUsers()
 
 const usersData = ref([])
 const permissions = ref([]) // ✅ now reactive and dynamic
-const loading = ref(false)
+const loading = ref(true);
 const error = ref(null)
 
 // ---------------- Permissions selected/input ----------------
@@ -201,7 +204,6 @@ const removePermission = (index) => selectedPermissions.value.splice(index, 1)
 
 // ---------------- Fetch data on mounted ----------------
 onMounted(async () => {
-    loading.value = true
     try {
         // Fetch admin users
         const responseUsers = await getAdminUsers()

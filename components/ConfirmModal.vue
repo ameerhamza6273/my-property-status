@@ -1,10 +1,7 @@
 <template>
-  <div
-    v-if="show"
-    class="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-  >
+  <div v-if="show" class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
     <div class="bg-white rounded-3xl shadow-lg p-6 w-[90%] max-w-sm text-center">
-      
+
       <!-- ✅ Icon/Image -->
       <div class="flex justify-center mb-4">
         <img v-if="icon" :src="icon" alt="icon" class="w-16 h-16" />
@@ -18,16 +15,15 @@
 
       <!-- ✅ Buttons -->
       <div class="flex justify-center space-x-3 mt-5">
-        <button
-          @click="$emit('confirm')"
-          class="px-4 py-2 bg-[#C03D3A] text-base  text-white w-full rounded-full hover:bg-red-700"
-        >
+        <button @click="$emit('confirm')" :class="[
+          'px-4 py-2 text-base text-white w-full rounded-full',
+          confirmText === 'Add' ? 'bg-[#00743C] hover:bg-green-700' : 'bg-[#C03D3A] hover:bg-red-700'
+        ]">
           {{ confirmText }}
         </button>
-        <button
-          @click="$emit('cancel')"
-          class="px-4 py-2 bg-gray-100 text-base text-gray-700 w-full rounded-full hover:bg-gray-300"
-        >
+
+        <button @click="$emit('cancel')"
+          class="px-4 py-2 bg-gray-100 text-base text-gray-700 w-full rounded-full hover:bg-gray-300">
           {{ cancelText }}
         </button>
       </div>
