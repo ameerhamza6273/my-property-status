@@ -68,7 +68,7 @@
       </p>
     </div>
     <!-- Users Table -->
-    <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="150">
+    <DataTable :data="filteredUsers" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
       <!-- Edit Column -->
       <template #cell-edit="{ item }">
         <button class="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-[#E2522E]">

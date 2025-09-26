@@ -40,7 +40,7 @@
                         <img v-if="arrayItem.img" :src="arrayItem.img" :alt="arrayItem.value" class="w-4 h-4" />
                         <span v-if="arrayItem.value" class="text-sm font-medium"
                           :class="arrayItem.value === 'Edit' ? 'text-red-600' : 'text-black'">
-                          {{ arrayItem.value.length > 20 ? arrayItem.value.slice(0, 20) + '...' : arrayItem.value }}
+                          {{ arrayItem.value.length > 12 ? arrayItem.value.slice(0, 12) + '...' : arrayItem.value }}
                         </span>
 
 
@@ -49,8 +49,8 @@
                   </div>
                   <span v-else>
                     {{
-                      typeof getNestedValue(item, column.key) === 'string' && getNestedValue(item, column.key).length > 20
-                        ? getNestedValue(item, column.key).slice(0, 20) + '...'
+                      typeof getNestedValue(item, column.key) === 'string' && getNestedValue(item, column.key).length > 15
+                        ? getNestedValue(item, column.key).slice(0, 15) + '...'
                     : getNestedValue(item, column.key)
                     }}
                   </span>
