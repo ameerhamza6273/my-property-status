@@ -50,9 +50,6 @@
             </DataTable>
         </div>
 
-
-
-
         <!-- Add User Modal -->
         <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white w-full max-w-xl rounded-xl shadow-lg relative">
@@ -109,8 +106,6 @@
                                     class="text-sm w-full outline-none bg-transparent border-l border-gray-300 pl-2"
                                     placeholder="Type Mobile Number.." />
                             </div>
-
-
                         </div>
 
                         <!-- Email -->
@@ -156,15 +151,13 @@
                                 {{ permission.charAt(0).toUpperCase() + permission.slice(1) }}
                             </span>
                         </div>
-
-
                     </div>
 
                     <!-- Save Button -->
                     <div class="text-right mt-6">
-                        <button @click="saveUser"
-                            class="text-sm bg-[#0F4841] text-white px-10 py-1 rounded-full hover:bg-teal-700">
-                            Save
+                        <button @click="saveUser" :disabled="saving"
+                            class="text-sm bg-[#0F4841] text-white px-10 py-1 rounded-full hover:bg-teal-700 disabled:opacity-60">
+                            {{ saving ? "Saving..." : "Save" }}
                         </button>
                     </div>
                 </div>
@@ -173,14 +166,16 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref, onMounted } from "vue";
 
-const { getAdminUsers, getAdminModules } = useAdminUsers()
+const { getAdminUsers, getAdminModules, createAdminUser, updateAdminUser } = useAdminUsers()
 
 const usersData = ref([])
-const permissions = ref([]) // ✅ now reactive and dynamic
+const permissions = ref([]) // reactive and normalized array of strings
 const loading = ref(true);
+const saving = ref(false);
 const error = ref(null)
 
 // ---------------- Permissions selected/input ----------------
@@ -195,55 +190,81 @@ const selectPermission = (permission) => {
     inputValue.value = ""
 }
 const addPermission = () => {
-    if (inputValue.value.trim() && !selectedPermissions.value.includes(inputValue.value.trim())) {
-        selectedPermissions.value.push(inputValue.value.trim())
+    const val = inputValue.value.trim()
+    if (val && !selectedPermissions.value.includes(val)) {
+        selectedPermissions.value.push(val)
     }
     inputValue.value = ""
 }
 const removePermission = (index) => selectedPermissions.value.splice(index, 1)
 
+// ---------------- Helper: normalize modules (permissions) ----------------
+const normalizeModules = (modules) => {
+    if (!modules) return []
+    // modules might be array of strings or array of objects
+    return (Array.isArray(modules) ? modules : [])
+        .map(m => {
+            if (!m) return null
+            if (typeof m === "string") return m
+            return m.module_name ?? m.name ?? m.attributes?.module_name ?? m.attributes?.name ?? null
+        })
+        .filter(Boolean)
+}
+
+// ---------------- Helper: map users response to UI-friendly shape ----------------
+const mapUsers = (usersArray) => {
+    if (!Array.isArray(usersArray)) return []
+    return usersArray.map(user => {
+        const attrs = user.attributes ?? {}
+        // roles might be in user.relationships.roles or relationships.roles.data or user.roles
+        const rolesRaw = user.relationships?.roles ?? user.relationships?.roles?.data ?? user.roles ?? []
+        const roles = Array.isArray(rolesRaw) ? rolesRaw : (rolesRaw?.data ?? [])
+        let userPermissions = []
+
+        roles.forEach(role => {
+            const permsRaw = role.relationships?.permissions ?? role.relationships?.permissions?.data ?? role.permissions ?? []
+            const perms = Array.isArray(permsRaw) ? permsRaw : (permsRaw?.data ?? [])
+            perms.forEach(p => {
+                if (!p) return
+                const moduleName = (typeof p === "string")
+                    ? p
+                    : (p.module_name ?? p.name ?? p.attributes?.module_name ?? p.attributes?.name)
+                if (moduleName) userPermissions.push(moduleName)
+            })
+        })
+
+        const uniquePermissions = [...new Set(userPermissions)]
+
+        return {
+            id: user.id ?? attrs.id,
+            name: attrs.name ?? attrs.full_name ?? "",
+            email: attrs.email ?? "",
+            phone_number: attrs.phone_number ?? attrs.phone ?? "",
+            is_active: attrs.is_active ?? 0,
+            created_at: attrs.created_at ?? "",
+            permissions: uniquePermissions // full list (template will slice for display)
+        }
+    })
+}
+
 // ---------------- Fetch data on mounted ----------------
 onMounted(async () => {
     try {
-        // Fetch admin users
+        loading.value = true
+
         const responseUsers = await getAdminUsers()
-
-        // Fetch backend permissions/modules
         const responseModules = await getAdminModules()
-        const allModules = responseModules?.data || []
 
-        usersData.value = responseUsers?.data?.map((user) => {
-            const roles = user.relationships?.roles || []
-            let userPermissions = []
+        // modules normalization
+        const allModules = responseModules?.data ?? responseModules ?? []
+        permissions.value = normalizeModules(allModules)
 
-            roles.forEach(role => {
-                const perms = role.relationships?.permissions?.data || []
-                userPermissions.push(...perms.map(p => p.module_name))
-            })
-
-            // ✅ unique bana do
-            const uniquePermissions = [...new Set(userPermissions)]
-
-            return {
-                id: user.id,
-                name: user.attributes.name,
-                email: user.attributes.email,
-                phone_number: user.attributes.phone_number,
-                is_active: user.attributes.is_active,
-                created_at: user.attributes.created_at,
-                // ✅ sirf pehla module (index 0) show kare
-                permissions: uniquePermissions.length > 0 ? [uniquePermissions[0]] : []
-            }
-        }) || []
-
-
-
-        // Save modules globally for modal selection
-        permissions.value = allModules
-
+        // users mapping (handle different response shapes)
+        const usersPayload = responseUsers?.data ?? responseUsers ?? []
+        usersData.value = mapUsers(Array.isArray(usersPayload) ? usersPayload : [])
     } catch (err) {
-        error.value = err.message || "Failed to fetch admin data"
-        console.error(err)
+        error.value = err?.message || "Failed to fetch admin data"
+        console.error("onMounted fetch error:", err)
     } finally {
         loading.value = false
     }
@@ -268,6 +289,9 @@ const newUser = ref({
     countryCode: "+356",
     mobile: "",
     email: "",
+    // optional: password fields (we use defaults if empty)
+    password: "",
+    password_confirmation: ""
 })
 
 const openModal = () => {
@@ -294,6 +318,8 @@ const editUser = (userId) => {
         countryCode: user.phone_number?.split(" ")[0] || "+356",
         mobile: user.phone_number?.split(" ")[1] || "",
         email: user.email || "",
+        password: "",
+        password_confirmation: ""
     }
 
     selectedPermissions.value = user.permissions ? [...user.permissions] : []
@@ -301,30 +327,73 @@ const editUser = (userId) => {
     isModalOpen.value = true
 }
 
-const saveUser = () => {
-    const fullName = `${newUser.value.name} ${newUser.value.surname}`
+const saveUser = async () => {
+    const fullName = `${newUser.value.name} ${newUser.value.surname}`.trim()
+
     if (modalMode.value === "add") {
-        usersData.value.push({
-            id: usersData.value.length + 1,
-            name: fullName,
-            phone_number: `${newUser.value.countryCode} ${newUser.value.mobile}`,
-            email: newUser.value.email,
-            permissions: [...selectedPermissions.value],
-        })
-    } else if (modalMode.value === "edit") {
-        const idx = usersData.value.findIndex(u => u.id === newUser.value.id)
-        if (idx !== -1) {
-            usersData.value[idx] = {
-                ...usersData.value[idx],
-                name: fullName,
-                phone_number: `${newUser.value.countryCode} ${newUser.value.mobile}`,
+        saving.value = true
+        try {
+            const payload = {
                 email: newUser.value.email,
+                name: fullName,
+                password: newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344",
+                password_confirmation: newUser.value.password_confirmation && newUser.value.password_confirmation.length ? newUser.value.password_confirmation : (newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344"),
+                phone_number: `${newUser.value.countryCode}${newUser.value.mobile}`.trim(),
                 permissions: [...selectedPermissions.value],
+                is_active: 1
             }
+
+            const res = await createAdminUser(payload)
+            console.log("✅ Create Admin User response:", res)
+
+            // Refresh users list — handle multiple response shapes
+            const responseUsers = await getAdminUsers()
+            const usersPayload = responseUsers?.data ?? responseUsers ?? []
+            usersData.value = mapUsers(Array.isArray(usersPayload) ? usersPayload : [])
+
+            closeModal()
+            resetForm()
+        } catch (err) {
+            console.error("Failed to create user:", err, {
+                response: err?.response ?? err?.data ?? err?.response?._data
+            })
+            const serverMessage = err?.response?._data?.message ?? err?.response?._data ?? err?.data?.message ?? err?.message
+            alert(`Error creating user: ${serverMessage ?? "See console for details"}`)
+        } finally {
+            saving.value = false
+        }
+    } else if (modalMode.value === "edit") {
+        saving.value = true
+        try {
+            const payload = {
+                name: fullName,
+                email: newUser.value.email,
+                password: newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344",
+                password_confirmation: newUser.value.password_confirmation && newUser.value.password_confirmation.length ? newUser.value.password_confirmation : (newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344"),
+                is_active: true,
+                roles: [3], // 👈 yahan aapko actual roles array dena hoga
+                phone_number: `${newUser.value.countryCode} ${newUser.value.mobile}`.trim(),
+                sort_order: 1 // 👈 agar aapke API me required hai
+            }
+
+            await updateAdminUser(newUser.value.id, payload)
+
+            // Refresh list after update
+            const responseUsers = await getAdminUsers()
+            const usersPayload = responseUsers?.data ?? responseUsers ?? []
+            usersData.value = mapUsers(Array.isArray(usersPayload) ? usersPayload : [])
+
+            closeModal()
+            resetForm()
+        } catch (err) {
+            console.error("Failed to update user:", err)
+            const serverMessage = err?.response?._data?.message ?? err?.message
+            alert(`Error updating user: ${serverMessage ?? "See console for details"}`)
+        } finally {
+            saving.value = false
         }
     }
-    resetForm()
-    closeModal()
+
 }
 
 const resetForm = () => {
@@ -335,28 +404,23 @@ const resetForm = () => {
         countryCode: "+356",
         mobile: "",
         email: "",
+        password: "",
+        password_confirmation: ""
     }
     selectedPermissions.value = []
     inputValue.value = ""
+    saving.value = false
 }
 
 </script>
 
-
-
-
-
 <style scoped>
-/* Hide scrollbar but keep scroll functionality */
 .scrollbar-hide {
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Opera */
 }
 </style>
