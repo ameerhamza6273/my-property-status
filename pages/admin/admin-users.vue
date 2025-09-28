@@ -460,7 +460,11 @@ const resetForm = () => {
     inputValue.value = ""
     saving.value = false
 }
-
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=1330' }
+  ]
+})
 </script>
 
 <style scoped>
