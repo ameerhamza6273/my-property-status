@@ -25,7 +25,7 @@ definePageMeta({
 })
 useHead({
   meta: [
-    { name: 'viewport', content: 'width=1300' }
+    { name: 'viewport', content: 'width=1330' }
   ]
 })
 </script>
