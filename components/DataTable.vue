@@ -72,7 +72,7 @@
 
           <div class="flex items-center space-x-1">
             <button v-if="currentPage > 3" @click="goToPage(1)"
-              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full hover:bg-gray-50">
               1
             </button>
 
@@ -90,7 +90,7 @@
             <span v-if="currentPage < totalPages - 3" class="px-2 py-1 text-sm text-gray-500">...</span>
 
             <button v-if="currentPage < totalPages - 2" @click="goToPage(totalPages)"
-              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              class="px-3 py-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full hover:bg-gray-50">
               {{ totalPages }}
             </button>
           </div>

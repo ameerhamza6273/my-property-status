@@ -14,21 +14,27 @@ export const useAdminUsers = () => {
     }
   }
 
-  // ✅ Fetch admin users
-  const getAdminUsers = async () => {
-    try {
-      const response = await $fetch("/admin/users?include=roles,all_permissions", {
-        baseURL: config.public.apiBase,
-        method: "GET",
-        headers: getHeaders()
-      })
-      console.log("✅ Admin Users response:", response)
-      return response
-    } catch (error: any) {
-      console.error("❌ Admin Users fetch error:", error?.response?._data || error)
-      throw error
-    }
+ // ✅ Fetch admin users
+const getAdminUsers = async (page: number = 1, perPage: number = 100) => {
+  try {
+    const response = await $fetch("/admin/users", {
+      baseURL: config.public.apiBase,
+      method: "GET",
+      headers: getHeaders(),
+      params: {
+        include: "roles,all_permissions",
+        page,
+        per_page: perPage, // 👈 yahan jitna chaho
+      }
+    })
+    console.log("✅ Admin Users response:", response)
+    return response
+  } catch (error: any) {
+    console.error("❌ Admin Users fetch error:", error?.response?._data || error)
+    throw error
   }
+}
+
 
   // ✅ Fetch modules (master permission list)
   const getAdminModules = async () => {

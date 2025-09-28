@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-span-2">
-                    <div class="bg-white   rounded-2xl p-5 border border-[#D9D9D9] cursor-pointer"
+                    <div class="bg-white   rounded-2xl p-5 px-4 border border-[#D9D9D9] cursor-pointer"
                         @click="openModal('sale')">
                         <div class="flex items-center justify-center">
                             <p class="text-sm font-medium text-[#595959]">Pending Property Status Change Requests</p>

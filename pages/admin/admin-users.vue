@@ -2,7 +2,7 @@
     <div class="p-6 bg-gray-50">
         <!-- Header Section -->
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-semibold text-gray-900">Admin Users</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Admin Users</h1>
             <button @click="openModal"
                 class="flex text-sm items-center gap-2 px-3 py-2 bg-[#0F4841] text-white rounded-full hover:bg-teal-700 transition-colors">
                 <NuxtImg src="plus-circle.svg" width="16" height="16" />
@@ -20,22 +20,29 @@
             </div>
             <DataTable v-else :data="usersData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
 
-                <!-- Permissions Column -->
-                <!-- Permissions Column -->
-                <template #cell-permissions="{ item }">
-                    <div class="flex flex-wrap items-center gap-1">
-                        <!-- Show first 3 permissions with style -->
-                        <span v-for="(perm, index) in item.permissions.slice(0, 3)" :key="perm"
-                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F8F8] border border-[#D9D9D9]">
-                            {{ perm.charAt(0).toUpperCase() + perm.slice(1) }}
-                        </span>
+  <template #cell-permissions="{ item }">
+  <div class="flex flex-wrap items-center gap-1">
+    <!-- ✅ Sirf woh modules show karo jo item.permissions mein hain -->
+    <span
+      v-for="(module, index) in permissions.filter(m => item.permissions.includes(m)).slice(0, 3)"
+      :key="module"
+      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-[#F8F8F8] text-[#292929] border-[#D9D9D9]"
+    >
+      {{ module.charAt(0).toUpperCase() + module.slice(1) }}
+    </span>
 
-                        <!-- Show "+N" if more than 3 without style -->
-                        <span v-if="item.permissions.length > 3" class="text-sm font-medium text-[#0F4841]">
-                            +{{ item.permissions.length - 3 }}
-                        </span>
-                    </div>
-                </template>
+    <!-- ✅ Agar zyada ho toh +N count -->
+    <span
+      v-if="permissions.filter(m => item.permissions.includes(m)).length > 3"
+      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-[#F8F8F8] text-[#292929] border-[#D9D9D9]"
+    >
+      +{{ permissions.filter(m => item.permissions.includes(m)).length - 3 }}
+    </span>
+  </div>
+</template>
+
+
+
 
 
                 <!-- Edit Column -->
@@ -297,8 +304,12 @@ const newUser = ref({
 const openModal = () => {
     modalMode.value = "add"
     resetForm()
+    selectedPermissions.value = []   // ✅ ensure empty on new user
     isModalOpen.value = true
+    console.log("Selected perms before save:", selectedPermissions.value)
+
 }
+
 
 const closeModal = () => {
     isModalOpen.value = false
@@ -311,15 +322,28 @@ const editUser = (userId) => {
     const [firstName, ...rest] = (user.name || "").split(" ")
     const surname = rest.join(" ")
 
+    const phone = user.phone_number || ""
+    let countryCode = "+356"
+    let mobile = phone
+
+    if (phone.startsWith("+")) {
+        const match = phone.match(/^(\+\d{1,4})(\d+)$/)
+        if (match) {
+            countryCode = match[1]
+            mobile = match[2]
+        }
+    }
+
     newUser.value = {
         id: user.id,
         name: firstName,
         surname: surname,
-        countryCode: user.phone_number?.split(" ")[0] || "+356",
-        mobile: user.phone_number?.split(" ")[1] || "",
+        countryCode,
+        mobile,
         email: user.email || "",
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
+        is_active: typeof user.is_active !== "undefined" ? user.is_active : 1
     }
 
     selectedPermissions.value = user.permissions ? [...user.permissions] : []
@@ -327,8 +351,13 @@ const editUser = (userId) => {
     isModalOpen.value = true
 }
 
+
+
 const saveUser = async () => {
     const fullName = `${newUser.value.name} ${newUser.value.surname}`.trim()
+
+    // ✅ phone_number normalize
+    const formattedPhone = `${newUser.value.countryCode.replace("+", "")}${newUser.value.mobile}`.trim()
 
     if (modalMode.value === "add") {
         saving.value = true
@@ -336,17 +365,24 @@ const saveUser = async () => {
             const payload = {
                 email: newUser.value.email,
                 name: fullName,
-                password: newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344",
-                password_confirmation: newUser.value.password_confirmation && newUser.value.password_confirmation.length ? newUser.value.password_confirmation : (newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344"),
-                phone_number: `${newUser.value.countryCode}${newUser.value.mobile}`.trim(),
-                permissions: [...selectedPermissions.value],
+                password: newUser.value.password && newUser.value.password.length
+                    ? newUser.value.password
+                    : "11223344",
+                password_confirmation:
+                    newUser.value.password_confirmation && newUser.value.password_confirmation.length
+                        ? newUser.value.password_confirmation
+                        : (newUser.value.password && newUser.value.password.length
+                            ? newUser.value.password
+                            : "11223344"),
+                phone_number: formattedPhone,
+                permissions: Array.isArray(selectedPermissions.value) ? [...selectedPermissions.value] : [],
                 is_active: 1
             }
 
             const res = await createAdminUser(payload)
             console.log("✅ Create Admin User response:", res)
 
-            // Refresh users list — handle multiple response shapes
+            // Refresh users list
             const responseUsers = await getAdminUsers()
             const usersPayload = responseUsers?.data ?? responseUsers ?? []
             usersData.value = mapUsers(Array.isArray(usersPayload) ? usersPayload : [])
@@ -357,7 +393,11 @@ const saveUser = async () => {
             console.error("Failed to create user:", err, {
                 response: err?.response ?? err?.data ?? err?.response?._data
             })
-            const serverMessage = err?.response?._data?.message ?? err?.response?._data ?? err?.data?.message ?? err?.message
+            const serverMessage =
+                err?.response?._data?.message ??
+                err?.response?._data ??
+                err?.data?.message ??
+                err?.message
             alert(`Error creating user: ${serverMessage ?? "See console for details"}`)
         } finally {
             saving.value = false
@@ -368,13 +408,12 @@ const saveUser = async () => {
             const payload = {
                 name: fullName,
                 email: newUser.value.email,
-                password: newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344",
-                password_confirmation: newUser.value.password_confirmation && newUser.value.password_confirmation.length ? newUser.value.password_confirmation : (newUser.value.password && newUser.value.password.length ? newUser.value.password : "11223344"),
-                is_active: true,
-                roles: [3], // 👈 yahan aapko actual roles array dena hoga
-                phone_number: `${newUser.value.countryCode} ${newUser.value.mobile}`.trim(),
-                sort_order: 1 // 👈 agar aapke API me required hai
+                phone_number: formattedPhone,
+                permissions: Array.isArray(selectedPermissions.value) ? [...selectedPermissions.value] : [],
+                is_active: 1
             }
+
+            console.log("📤 Update payload:", payload)
 
             await updateAdminUser(newUser.value.id, payload)
 
@@ -386,15 +425,23 @@ const saveUser = async () => {
             closeModal()
             resetForm()
         } catch (err) {
-            console.error("Failed to update user:", err)
-            const serverMessage = err?.response?._data?.message ?? err?.message
-            alert(`Error updating user: ${serverMessage ?? "See console for details"}`)
+            console.error("Failed to update user:", err, {
+                status: err?.response?.status,
+                data: err?.response?._data ?? err?.data ?? err
+            })
+            const serverMessage =
+                (err && err.response && err.response._data && err.response._data.message) ||
+                (err && err.data && err.data.message) ||
+                err.message
+            alert(`Error updating user: ${serverMessage || "See console for details"}`)
         } finally {
             saving.value = false
         }
     }
 
 }
+
+
 
 const resetForm = () => {
     newUser.value = {
@@ -405,7 +452,8 @@ const resetForm = () => {
         mobile: "",
         email: "",
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
+        is_active: 1
     }
     selectedPermissions.value = []
     inputValue.value = ""

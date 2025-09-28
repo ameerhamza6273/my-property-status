@@ -1,12 +1,12 @@
 <template>
   <div class="flex h-screen bg-gray-50">
     <!-- Sidebar: Show only on dashboard routes -->
-    <div v-if="showSidebar" class="w-[18%] h-screen">
+    <div v-if="showSidebar" class="w-[19%] h-screen">
       <Sidebar />
     </div>
     
     <!-- Main Content -->
-    <div :class="showSidebar ? 'w-[82%] h-screen overflow-y-auto' : 'w-full h-screen overflow-y-auto'">
+    <div :class="showSidebar ? 'w-[81%] h-screen overflow-y-auto' : 'w-full h-screen overflow-y-auto'">
       <NuxtPage />
     </div>
   </div>

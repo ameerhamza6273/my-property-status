@@ -6,7 +6,7 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="flex-1 p-4 overflow-y-auto custom-scroll">
+    <nav class="flex-1 p-4 px-3 overflow-y-auto custom-scroll">
       <ul class="space-y-1">
         <li v-for="item in menuItems" :key="item.label" class="relative" @click.stop>
           <!-- Parent -->
@@ -163,10 +163,23 @@ const agencyMenu = [
 ]
 
 // ✅ Dynamic Menu based on role
+// ✅ Dynamic Menu based on role
 const menuItems = computed(() => {
   if (!role.value) return []
+
+  if (role.value === 'super_admin') {
+    // Admin menu clone karke agency ke items merge karenge
+    // Lekin agency dashboard skip karenge
+    const mergedMenus = [
+      ...adminMenu,
+      ...agencyMenu.filter(item => item.label !== 'Dashboard')
+    ]
+    return mergedMenus
+  }
+
   return role.value === 'admin' ? adminMenu : agencyMenu
 })
+
 
 // ✅ Active State Checks
 const isActiveParent = (item) => {
@@ -225,5 +238,5 @@ onBeforeUnmount(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
+} 
 </style>

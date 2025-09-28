@@ -130,9 +130,12 @@ const handleLogin = async () => {
     // ✅ Role check
    // ✅ Role check
 const roles = res.user?.relationships?.roles || []
-
-if (roles.some((r: any) => ['admin', 'super-admin'].includes(r.attributes?.name))) {
-  // Agar role admin ya super-admin hai
+if (roles.some((r: any) => r.attributes?.name === 'super-admin')) {
+  // Agar role super-admin hai
+  localStorage.setItem('role', 'super_admin')
+  router.push('/admin/dashboard') // ✅ super-admin ko bhi admin dashboard bhejna hai
+} else if (roles.some((r: any) => r.attributes?.name === 'admin')) {
+  // Agar role sirf admin hai
   localStorage.setItem('role', 'admin')
   router.push('/admin/dashboard')
 } else if (roles.some((r: any) => r.attributes?.name === 'agency')) {
@@ -142,6 +145,7 @@ if (roles.some((r: any) => ['admin', 'super-admin'].includes(r.attributes?.name)
   localStorage.setItem('role', 'user')
   router.push('/')
 }
+
 
 
   } catch (error: any) {
