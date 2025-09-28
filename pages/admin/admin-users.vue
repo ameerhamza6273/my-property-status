@@ -19,30 +19,37 @@
                 <SnipLoader /> <!-- ✅ sirf yahan loader dikhayenge -->
             </div>
             <DataTable v-else :data="usersData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100">
-
-  <template #cell-permissions="{ item }">
+<template #cell-permissions="{ item }">
   <div class="flex flex-wrap items-center gap-1">
-    <!-- ✅ Sirf woh modules show karo jo item.permissions mein hain -->
+    <!-- ✅ Agar user ke permissions mein authentication hai, to saare modules -->
     <span
-      v-for="(module, index) in permissions.filter(m => item.permissions.includes(m)).slice(0, 3)"
+      v-for="(module, index) in (item.permissions.includes('authentication') 
+        ? permissions 
+        : permissions.filter(m => item.permissions.includes(m))
+      ).slice(0, 3)"
       :key="module"
       class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-[#F8F8F8] text-[#292929] border-[#D9D9D9]"
     >
       {{ module.charAt(0).toUpperCase() + module.slice(1) }}
     </span>
 
-    <!-- ✅ Agar zyada ho toh +N count -->
+    <!-- ✅ Agar zyada modules hain to +N -->
     <span
-      v-if="permissions.filter(m => item.permissions.includes(m)).length > 3"
+      v-if="(item.permissions.includes('authentication') 
+        ? permissions.length 
+        : permissions.filter(m => item.permissions.includes(m)).length
+      ) > 3"
       class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-[#F8F8F8] text-[#292929] border-[#D9D9D9]"
     >
-      +{{ permissions.filter(m => item.permissions.includes(m)).length - 3 }}
+      +{{
+        (item.permissions.includes('authentication') 
+          ? permissions.length 
+          : permissions.filter(m => item.permissions.includes(m)).length
+        ) - 3
+      }}
     </span>
   </div>
 </template>
-
-
-
 
 
                 <!-- Edit Column -->
