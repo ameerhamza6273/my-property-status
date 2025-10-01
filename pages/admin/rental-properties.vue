@@ -53,61 +53,61 @@ const propertyFilters = ref({
 });
 
 // ------------------- Users Table Data -------------------
-// const users = ref([
-//   {
-//     id: 1,
-//     agencyImages: [
-//       { value: "Remax", img: "Spanish.svg" },
-//       { value: "Century", img: "Spanish.svg" }
-//     ],
-//     agencyCountries: [
-//       { value: "Malta", img: "Spanish.svg" },
-//       { value: "USA", img: "Spanish.svg" },
-//       { value: "UK", img: "Spanish.svg" }
-//     ],
-//     MPSPropertyID: 876543,
-//     nameAndSurname: "Savannah Nguyen",
-//     propertyStatus: "Rented",
-//     inAppAction: "Archived",
-//     dateofContract: "25/04/2026",
-//     sentBy: "Agency",
-//   },
-//   {
-//     id: 2,
-//     agencyImages: [
-//       { value: "Coldwell", img: "Spanish.svg" },
-//       { value: "Remax", img: "Spanish.svg" }
-//     ],
-//     agencyCountries: [
-//       { value: "Malta", img: "Spanish.svg" },
-//       { value: "USA", img: "Spanish.svg" }
-//     ],
-//     MPSPropertyID: 23546,
-//     nameAndSurname: "Arlene McCoy",
-//     propertyStatus: "Available",
-//     inAppAction: "Deleted",
-//     dateofContract: "25/04/2026",
-//     sentBy: "Customer",
-//   },
-//   {
-//     id: 3,
-//     agencyImages: [
-//       { value: "Century", img: "Spanish.svg" },
-//       { value: "Coldwell", img: "Spanish.svg" }
-//     ],
-//     agencyCountries: [
-//       { value: "UK", img: "Spanish.svg" },
-//       { value: "USA", img: "Spanish.svg" },
-//       { value: "Malta", img: "Spanish.svg" }
-//     ],
-//     MPSPropertyID: 56789,
-//     nameAndSurname: "Cody Fisher",
-//     propertyStatus: "Available",
-//     inAppAction: "Active",
-//     dateofContract: "25/04/2026",
-//     sentBy: "Agency",
-//   }
-// ]);
+const users = ref([
+  {
+    id: 1,
+    agencyImages: [
+      { value: "Remax", img: "Spanish.svg" },
+      { value: "Century", img: "Spanish.svg" }
+    ],
+    agencyCountries: [
+      { value: "Malta", img: "Spanish.svg" },
+      { value: "USA", img: "Spanish.svg" },
+      { value: "UK", img: "Spanish.svg" }
+    ],
+    MPSPropertyID: 876543,
+    nameAndSurname: "Savannah Nguyen",
+    propertyStatus: "Rented",
+    inAppAction: "Archived",
+    dateofContract: "25/04/2026",
+    sentBy: "Agency",
+  },
+  {
+    id: 2,
+    agencyImages: [
+      { value: "Coldwell", img: "Spanish.svg" },
+      { value: "Remax", img: "Spanish.svg" }
+    ],
+    agencyCountries: [
+      { value: "Malta", img: "Spanish.svg" },
+      { value: "USA", img: "Spanish.svg" }
+    ],
+    MPSPropertyID: 23546,
+    nameAndSurname: "Arlene McCoy",
+    propertyStatus: "Available",
+    inAppAction: "Deleted",
+    dateofContract: "25/04/2026",
+    sentBy: "Customer",
+  },
+  {
+    id: 3,
+    agencyImages: [
+      { value: "Century", img: "Spanish.svg" },
+      { value: "Coldwell", img: "Spanish.svg" }
+    ],
+    agencyCountries: [
+      { value: "UK", img: "Spanish.svg" },
+      { value: "USA", img: "Spanish.svg" },
+      { value: "Malta", img: "Spanish.svg" }
+    ],
+    MPSPropertyID: 56789,
+    nameAndSurname: "Cody Fisher",
+    propertyStatus: "Available",
+    inAppAction: "Active",
+    dateofContract: "25/04/2026",
+    sentBy: "Agency",
+  }
+]);
 
 // ------------------- Filtered Users Computed -------------------
 const filteredUsers = computed(() => {
