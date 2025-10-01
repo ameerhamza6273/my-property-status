@@ -93,6 +93,7 @@ declare global {
   const tryUseNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt')['tryUseNuxtApp']
   const unref: typeof import('vue')['unref']
   const updateAppConfig: typeof import('../../node_modules/nuxt/dist/app/config')['updateAppConfig']
+  const useAdminProperties: typeof import('../../composables/useAdminProperties')['useAdminProperties']
   const useAdminUsers: typeof import('../../composables/useAdminUsers')['useAdminUsers']
   const useAgency: typeof import('../../composables/useAgency')['useAgency']
   const useAppConfig: typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']
@@ -277,6 +278,7 @@ declare module 'vue' {
     readonly tryUseNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['tryUseNuxtApp']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly updateAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/config')['updateAppConfig']>
+    readonly useAdminProperties: UnwrapRef<typeof import('../../composables/useAdminProperties')['useAdminProperties']>
     readonly useAdminUsers: UnwrapRef<typeof import('../../composables/useAdminUsers')['useAdminUsers']>
     readonly useAgency: UnwrapRef<typeof import('../../composables/useAgency')['useAgency']>
     readonly useAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']>

@@ -53,81 +53,61 @@ const propertyFilters = ref({
 });
 
 // ------------------- Users Table Data -------------------
-const users = ref([
-  {
-    id: 1,
-    agencyImages: [
-      { value: "Remax", img: "Spanish.svg" },
-      { value: "Century", img: "Spanish.svg" }
-    ],
-    agencyCountries: [
-      { value: "Malta", img: "Spanish.svg" },
-      { value: "USA", img: "Spanish.svg" },
-      { value: "UK", img: "Spanish.svg" }
-    ],
-    MPSPropertyID: 876543,
-    nameAndSurname: "Savannah Nguyen",
-    propertyStatus: "Rented",
-    inAppAction: "Archived",
-    dateofContract: "25/04/2026",
-    sentBy: "Agency",
-  },
-  {
-    id: 2,
-    agencyImages: [
-      { value: "Coldwell", img: "Spanish.svg" },
-      { value: "Remax", img: "Spanish.svg" }
-    ],
-    agencyCountries: [
-      { value: "Malta", img: "Spanish.svg" },
-      { value: "USA", img: "Spanish.svg" }
-    ],
-    MPSPropertyID: 23546,
-    nameAndSurname: "Arlene McCoy",
-    propertyStatus: "Available",
-    inAppAction: "Deleted",
-    dateofContract: "25/04/2026",
-    sentBy: "Customer",
-  },
-  {
-    id: 3,
-    agencyImages: [
-      { value: "Century", img: "Spanish.svg" },
-      { value: "Coldwell", img: "Spanish.svg" }
-    ],
-    agencyCountries: [
-      { value: "UK", img: "Spanish.svg" },
-      { value: "USA", img: "Spanish.svg" },
-      { value: "Malta", img: "Spanish.svg" }
-    ],
-    MPSPropertyID: 56789,
-    nameAndSurname: "Cody Fisher",
-    propertyStatus: "Available",
-    inAppAction: "Active",
-    dateofContract: "25/04/2026",
-    sentBy: "Agency",
-  }
-]);
-
-// ------------------- Sorting Logic -------------------
-const sortColumn = ref(null);
-const sortOrder = ref(null);
-
-const toggleSort = (column) => {
-  if (sortColumn.value !== column) {
-    sortColumn.value = column;
-    sortOrder.value = "asc";
-  } else {
-    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
-  }
-};
-
-const getSortIcon = (column) => {
-  if (sortColumn.value !== column || !sortOrder.value) {
-    return "switch-vertical.svg";
-  }
-  return "export-switch-vertical.svg";
-};
+// const users = ref([
+//   {
+//     id: 1,
+//     agencyImages: [
+//       { value: "Remax", img: "Spanish.svg" },
+//       { value: "Century", img: "Spanish.svg" }
+//     ],
+//     agencyCountries: [
+//       { value: "Malta", img: "Spanish.svg" },
+//       { value: "USA", img: "Spanish.svg" },
+//       { value: "UK", img: "Spanish.svg" }
+//     ],
+//     MPSPropertyID: 876543,
+//     nameAndSurname: "Savannah Nguyen",
+//     propertyStatus: "Rented",
+//     inAppAction: "Archived",
+//     dateofContract: "25/04/2026",
+//     sentBy: "Agency",
+//   },
+//   {
+//     id: 2,
+//     agencyImages: [
+//       { value: "Coldwell", img: "Spanish.svg" },
+//       { value: "Remax", img: "Spanish.svg" }
+//     ],
+//     agencyCountries: [
+//       { value: "Malta", img: "Spanish.svg" },
+//       { value: "USA", img: "Spanish.svg" }
+//     ],
+//     MPSPropertyID: 23546,
+//     nameAndSurname: "Arlene McCoy",
+//     propertyStatus: "Available",
+//     inAppAction: "Deleted",
+//     dateofContract: "25/04/2026",
+//     sentBy: "Customer",
+//   },
+//   {
+//     id: 3,
+//     agencyImages: [
+//       { value: "Century", img: "Spanish.svg" },
+//       { value: "Coldwell", img: "Spanish.svg" }
+//     ],
+//     agencyCountries: [
+//       { value: "UK", img: "Spanish.svg" },
+//       { value: "USA", img: "Spanish.svg" },
+//       { value: "Malta", img: "Spanish.svg" }
+//     ],
+//     MPSPropertyID: 56789,
+//     nameAndSurname: "Cody Fisher",
+//     propertyStatus: "Available",
+//     inAppAction: "Active",
+//     dateofContract: "25/04/2026",
+//     sentBy: "Agency",
+//   }
+// ]);
 
 // ------------------- Filtered Users Computed -------------------
 const filteredUsers = computed(() => {
@@ -192,30 +172,6 @@ const filteredUsers = computed(() => {
     );
   }
 
-  // ---------------- Sorting ----------------
-  if (sortColumn.value && sortOrder.value) {
-    result.sort((a, b) => {
-      let valA = "";
-      let valB = "";
-      if (sortColumn.value === "agency") {
-        valA = a.agency[0].value;
-        valB = b.agency[0].value;
-      } else if (sortColumn.value === "agencyCountries") {
-        valA = a.agencyCountries[0].value;
-        valB = b.agencyCountries[0].value;
-      } else {
-        valA = a[sortColumn.value];
-        valB = b[sortColumn.value];
-      }
-      if (typeof valA === "number" && typeof valB === "number") {
-        return sortOrder.value === "asc" ? valA - valB : valB - valA;
-      }
-      return sortOrder.value === "asc"
-        ? String(valA).localeCompare(String(valB))
-        : String(valB).localeCompare(String(valA));
-    });
-  }
-
   return result;
 });
 
@@ -249,6 +205,52 @@ function removeCustomerFilter(key) {
 function removePropertyFilter(key) {
   propertyFilters.value[key] = "";
 }
+
+
+const { getAdminProperties } = useAdminProperties()
+
+// ✅ table headers
+const tableHeaders = [
+  { key: "id", label: "MPS Property ID", sortable: true },
+  { key: "name", label: "Name & Surname", sortable: true },
+  { key: "agencyListings", label: "Agency Listings", sortable: true },
+  { key: "agencyCountries", label: "Agency Countries", sortable: true },
+  { key: "status", label: "Property Status", sortable: true },
+  { key: "dateAvailable", label: "Date Available", sortable: false },
+  { key: "actions", label: "In-App Action", sortable: false },
+]
+
+const tableData = ref([])
+const loading = ref(true)
+
+onMounted(async () => {
+  try {
+    const res = await getAdminProperties(1, 50)
+    console.log("✅ Properties API raw response:", res)
+
+    // ✅ map API data to table format
+    tableData.value = res.data.map(item => {
+      const attrs = item.attributes || {}
+
+      return {
+        id: item.id,
+        name: attrs.owner_name || attrs.full_name || "-",
+        agencyListings: attrs.agency_listings || 0,
+        agencyCountries: (attrs.agency_countries || []).join(", "),
+        status: attrs.type || "-",
+        dateAvailable: attrs.date_available || "-",
+        actions: "..." // custom action buttons here
+      }
+    })
+
+    console.log("✅ Table Data mapped:", tableData.value)
+  } catch (err) {
+    console.error("❌ Error loading properties:", err)
+  } finally {
+    loading.value = false
+  }
+})
+
 </script>
 
 
@@ -449,6 +451,8 @@ function removePropertyFilter(key) {
             <p class="text-sm text-[#0F4841] font-semibold">{{ filteredUsers.length }} Results</p>
         </div>
 
+        <DataTable  v-if="!loading"  :data="tableData" :columns="tableHeaders" :initial-items-per-page="10" :th-width="100"/>
+        <!--
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[900px]">
@@ -459,9 +463,9 @@ function removePropertyFilter(key) {
                                 MPS Property ID</th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 <div class="flex items-center gap-1 cursor-pointer"
-                                    @click="toggleSort('nameAndSurname')">
+                                   >
                                     <span>Name & Surname</span>
-                                    <NuxtImg :src="getSortIcon('nameAndSurname')" width="14" height="14" />
+                                    
                                 </div>
                             </th>
 
@@ -476,36 +480,30 @@ function removePropertyFilter(key) {
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
-                                <div class="flex items-center cursor-pointer" @click="toggleSort('propertyStatus')">
+                                <div class="flex items-center cursor-pointer" >
                                     <span>Property Status</span>
-                                    <NuxtImg :src="getSortIcon('propertyStatus')" width="14" height="14" />
                                 </div>
                             </th>
                             <th class="px-3 py-3 text-left text-xs font-medium text-gray-500  tracking-wider">
                                 Date Available</th>
                             <th class="px-3 py-3 text-xs font-medium text-gray-500  tracking-wider">
-                                <div class="flex items-center gap-1 cursor-pointer" @click="toggleSort('sentBy')">
+                                <div class="flex items-center gap-1 cursor-pointer" >
                                     <span>In-App Action</span>
-                                    <NuxtImg :src="getSortIcon('sentBy')" width="14" height="14" />
                                 </div>
                             </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
-
-
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.MPSPropertyID }}</td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-black">{{ user.nameAndSurname }}</td>
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <div class="flex items-center space-x-2">
-                                    <!-- First 3 images -->
                                     <div v-for="(item, index) in user.agencyImages.slice(0, 3)" :key="index"
                                         class="flex items-center space-x-1">
                                         <NuxtImg :src="item.img" alt="agency" class="w-5 h-5 rounded-full" />
                                     </div>
 
-                                    <!-- If more than 3, show +X -->
                                     <div v-if="user.agencyImages.length > 3" class="text-xs font-medium text-gray-600">
                                         +{{ user.agencyImages.length - 3 }}
                                     </div>
@@ -514,13 +512,11 @@ function removePropertyFilter(key) {
 
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <div class="flex items-center space-x-2">
-                                    <!-- First 3 images -->
                                     <div v-for="(item, index) in user.agencyCountries.slice(0, 3)" :key="index"
                                         class="flex items-center space-x-1">
                                         <NuxtImg :src="item.img" alt="country" class="w-5 h-5 rounded-full" />
                                     </div>
 
-                                    <!-- If more than 3, show +X -->
                                     <div v-if="user.agencyCountries.length > 3"
                                         class="text-xs font-medium text-gray-600">
                                         +{{ user.agencyCountries.length - 3 }}
@@ -538,12 +534,10 @@ function removePropertyFilter(key) {
                                 </div>
                             </td>
 
-                            <!-- Date of Contract Column (no conditional styling) -->
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-black">
                                 {{ user.dateofContract }}
                             </td>
 
-                            <!-- In-App Action Column with conditional styling -->
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                 <span :class="user.inAppAction === 'Archived' ? 'text-green-800' : 'text-red-800'"
                                     class="px-2 py-1 rounded-full text-sm font-medium">
@@ -554,6 +548,6 @@ function removePropertyFilter(key) {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>-->
     </div>
 </template>
